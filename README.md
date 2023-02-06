@@ -59,3 +59,7 @@ Follow κάποιου χρήστη
 - Τα retweets δεν έχουν likes, retweets και replies.
 
 - Ο χρήστης μπορεί να κάνει μόνο μια φορά retweet ένα συγκεκριμένο tweet. 
+
+**Πεδίο Μοντέλου**
+
+<img src="https://github.com/softeng-aueb/team2-pt-2022-23/blob/main/domainModel.png" alt="Domain Model" style="height: 500px; width:600px;"/>
