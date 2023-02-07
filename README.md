@@ -60,6 +60,6 @@ Follow κάποιου χρήστη
 
 - Ο χρήστης μπορεί να κάνει μόνο μια φορά retweet ένα συγκεκριμένο tweet. 
 
-**Πεδίο Μοντέλου**
+**Μοντέλο Πεδίου**
 
 <img src="https://github.com/softeng-aueb/team2-pt-2022-23/blob/main/domainModel.png" alt="Domain Model" style="height: 500px; width:600px;"/>
