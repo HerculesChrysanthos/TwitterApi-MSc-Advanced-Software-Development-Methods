@@ -3,6 +3,7 @@ package com.twitter.domain;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 @Embeddable
 public class EmailAddress {
@@ -16,6 +17,23 @@ public class EmailAddress {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * Checks if email is valid
+     * Email type accepted:
+     * [A-Z] characters allowed
+     * [a-z] characters allowed
+     * [0-9] numbers allowed
+     * Email may contain only dot(.), dash(-) and underscore(_)
+     * @param emailAddress The string to check
+     * @return boolean
+     */
+    public Boolean isValid(String emailAddress){
+        String regexPattern = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return Pattern.compile(regexPattern)
+                .matcher(emailAddress)
+                .matches();
     }
 
     @Override
