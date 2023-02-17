@@ -32,16 +32,18 @@ public abstract class Post {
     @Column(name = "likeCount")
     private Integer likeCount;
 
-    @ManyToOne( fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
 
-    @ManyToMany(mappedBy = "likedPosts", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany(mappedBy = "likedPosts", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Set<User> likes = new HashSet<User>();
 
-    @OneToMany(mappedBy = "reply", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    // if you delete a post, you also delete and the reply
+    @OneToMany(mappedBy = "reply", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Reply> replies = new HashSet<Reply>();
 
+    // if you delete a post, you don't delete the retweet
     @OneToMany(mappedBy = "retweet", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     private Set<Retweet> retweets = new HashSet<Retweet>();
 
