@@ -24,16 +24,10 @@ public class User {
     @Embedded
     private DateOfBirth dateOfBirth;
 
-    @Column(name = "followersCount")
-    private Integer followersCount;
-
-    @Column(name = "followingCount")
-    private Integer followingCount;
-
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     private Set<Post> posts = new HashSet<Post>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "posts",
             joinColumns = { @JoinColumn(name = "userId")},
@@ -41,7 +35,7 @@ public class User {
             )
     private Set<Post> likedPosts = new HashSet<Post>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users",
             joinColumns = { @JoinColumn(name = "userId")},
@@ -88,22 +82,6 @@ public class User {
 
     public void setDateOfBirth(DateOfBirth dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public Integer getFollowersCount() {
-        return followersCount;
-    }
-
-    public void setFollowersCount(Integer followersCount) {
-        this.followersCount = followersCount;
-    }
-
-    public Integer getFollowingCount() {
-        return followingCount;
-    }
-
-    public void setFollowingCount(Integer followingCount) {
-        this.followingCount = followingCount;
     }
 
     public Set<Post> getPosts() {
