@@ -3,21 +3,27 @@ package com.twitter.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "retweets")
-public class Retweet {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
-    @Column(name = "content")
-    private String content;
+@DiscriminatorValue("RETWEET")
+public class Retweet extends Post{
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "tweetId")
-    private Tweet tweet;
+    @JoinColumn(name = "postId")
+    private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "userId")
-    private User user;
+    public Retweet(){
+
+    }
+
+    public Retweet(User user, TweetBody tweetBody, Post post) {
+        super(user);
+        this.post = post;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
 }
