@@ -23,15 +23,6 @@ public abstract class Post {
     @Column(name = "createdAt")
     private LocalDate dateTime = SystemDate.now();
 
-    @Column(name = "retweetCount")
-    private Integer retweetCount;
-
-    @Column(name = "replyCount")
-    private Integer replyCount;
-
-    @Column(name = "likeCount")
-    private Integer likeCount;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
@@ -53,9 +44,6 @@ public abstract class Post {
 
     public Post(User user) {
         this.user = user;
-        this.retweetCount = 0;
-        this.replyCount = 0;
-        this.likeCount = 0;
     }
 
     public LocalDate getDateTime() {
@@ -68,30 +56,6 @@ public abstract class Post {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Integer getRetweetCount() {
-        return retweetCount;
-    }
-
-    public void setRetweetCount(Integer retweetCount) {
-        this.retweetCount = retweetCount;
-    }
-
-    public Integer getReplyCount() {
-        return replyCount;
-    }
-
-    public void setReplyCount(Integer replyCount) {
-        this.replyCount = replyCount;
-    }
-
-    public Integer getLikeCount() {
-        return likeCount;
-    }
-
-    public void setLikeCount(Integer likeCount) {
-        this.likeCount = likeCount;
     }
 
     public Set<User> getLikes() {
