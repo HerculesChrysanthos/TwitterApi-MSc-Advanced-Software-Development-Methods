@@ -6,6 +6,7 @@ import javax.persistence.*;
 @DiscriminatorValue("RETWEET")
 public class Retweet extends Post{
 
+    // if you delete a retweet, you don't delete the post but only you update its set of retweets
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "postId")
     private Post post;
