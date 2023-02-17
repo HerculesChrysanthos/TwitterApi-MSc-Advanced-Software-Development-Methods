@@ -1,29 +1,13 @@
 package com.twitter.domain;
 
-import com.twitter.util.SystemDate;
-
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
-@Table(name = "tweets")
-public class Tweet {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+@DiscriminatorValue("TWEET")
+public class Tweet extends Post {
 
-    @Column(name = "tweetBody", length = 50, nullable = false)
-    private String tweetBody;
-
-    @Column(name = "dateTime", nullable = false)
-    private LocalDate dateTime = SystemDate.now();
-
-    @Column(name = "retweetCount")
-    private Integer retweetCount;
-
-    @Column(name = "likeCount")
-    private Integer likeCount;
+    @Column(name = "content", length = 50, nullable = false)
+    private TweetBody content;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "userId")
@@ -31,38 +15,17 @@ public class Tweet {
 
     public Tweet() { }
 
-    public Tweet(String tweetBody) {
-        this.tweetBody = tweetBody;
-        this.retweetCount = 0;
-        this.likeCount = 0;
+    public Tweet(TweetBody content) {
+        this.content = content;
+
     }
 
-    public Integer getRetweetCount() {
-        return retweetCount;
+    public TweetBody getTweetBody() {
+        return content;
     }
 
-    public void setRetweetCount(Integer retweetCount) {
-        this.retweetCount = retweetCount;
-    }
-
-    public Integer getLikeCount() {
-        return likeCount;
-    }
-
-    public void setLikeCount(Integer likeCount) {
-        this.likeCount = likeCount;
-    }
-
-    public String getTweetBody() {
-        return tweetBody;
-    }
-
-    public void setTweetBody(String tweetBody) {
-        this.tweetBody = tweetBody;
-    }
-
-    public LocalDate getDateTime() {
-        return dateTime;
+    public void setTweetBody(TweetBody tweetBody) {
+        this.content = tweetBody;
     }
 
     public User getUser() {
