@@ -1,6 +1,8 @@
 package com.twitter.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -16,8 +18,11 @@ public class User {
     @Column(name = "password", length = 30, nullable = false)
     private String password;
 
-    @Column(name = "email", length = 30, nullable = false, unique = true)
-    private String email;
+    @Embedded
+    private EmailAddress email;
+
+    @Embedded
+    private DateOfBirth dateOfBirth;
 
     @Column(name = "followersCount")
     private Integer followersCount;
@@ -25,12 +30,32 @@ public class User {
     @Column(name = "followingCount")
     private Integer followingCount;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    private Set<Post> posts = new HashSet<Post>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "posts",
+            joinColumns = { @JoinColumn(name = "userId")},
+            inverseJoinColumns = { @JoinColumn(name = "postId")}
+            )
+    private Set<Post> likedPosts = new HashSet<Post>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "users",
+            joinColumns = { @JoinColumn(name = "userId")},
+            inverseJoinColumns = { @JoinColumn(name = "userId")}
+    )
+    private Set<User> follows = new HashSet<User>();
+
     public User() { }
 
-    public User (String username, String password, String email) {
+    public User(String username, String password, DateOfBirth dateOfBirth, EmailAddress email) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getUsername() {
@@ -49,12 +74,20 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
+    public EmailAddress getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(EmailAddress email) {
         this.email = email;
+    }
+
+    public DateOfBirth getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(DateOfBirth dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Integer getFollowersCount() {
@@ -71,5 +104,29 @@ public class User {
 
     public void setFollowingCount(Integer followingCount) {
         this.followingCount = followingCount;
+    }
+
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+
+    public Set<Post> getLikedPosts() {
+        return likedPosts;
+    }
+
+    public void setLikedPosts(Set<Post> likedPosts) {
+        this.likedPosts = likedPosts;
+    }
+
+    public Set<User> getFollows() {
+        return follows;
+    }
+
+    public void setFollows(Set<User> follows) {
+        this.follows = follows;
     }
 }
