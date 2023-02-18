@@ -32,11 +32,11 @@ public class Reply extends Post {
         this.content = content;
     }
 
-    public Post getPost() {
+    public Post getReply() {
         return reply;
     }
 
-    public void setPost(Post post) {
-        this.reply = post;
+    public void setReply(Post reply) {
+        this.reply = reply;
     }
 }
