@@ -29,7 +29,7 @@ public class User {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "posts",
+            name = "user_posts",
             joinColumns = { @JoinColumn(name = "userId")},
             inverseJoinColumns = { @JoinColumn(name = "postId")}
             )
@@ -37,11 +37,11 @@ public class User {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "users",
-            joinColumns = { @JoinColumn(name = "userId")},
+            name = "following_users",
+            joinColumns = { @JoinColumn(name = "following")},
             inverseJoinColumns = { @JoinColumn(name = "userId")}
     )
-    private Set<User> follows = new HashSet<User>();
+    private Set<User> following = new HashSet<User>();
 
     public User() { }
 
@@ -84,27 +84,41 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Set<Post> getPosts() {
-        return posts;
+//    public Set<Post> getPosts() {
+//        return posts;
+//    }
+//
+//    public void setPosts(Set<Post> posts) {
+//        this.posts = posts;
+//    }
+//
+//    public Set<Post> getLikedPosts() {
+//        return likedPosts;
+//    }
+//
+//    public void setLikedPosts(Set<Post> likedPosts) {
+//        this.likedPosts = likedPosts;
+//    }
+//
+
+
+    public Set<User> getFollowing() {
+        return following;
+    }
+//
+    public void setFollowing(User followingUser) {
+        this.following.add(followingUser);
     }
 
-    public void setPosts(Set<Post> posts) {
-        this.posts = posts;
-    }
 
-    public Set<Post> getLikedPosts() {
-        return likedPosts;
-    }
-
-    public void setLikedPosts(Set<Post> likedPosts) {
-        this.likedPosts = likedPosts;
-    }
-
-    public Set<User> getFollows() {
-        return follows;
-    }
-
-    public void setFollows(Set<User> follows) {
-        this.follows = follows;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email=" + email +
+                ", dateOfBirth=" + dateOfBirth +
+                '}';
     }
 }
