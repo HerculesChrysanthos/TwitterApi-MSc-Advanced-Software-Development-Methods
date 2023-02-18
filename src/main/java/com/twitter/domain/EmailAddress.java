@@ -19,6 +19,13 @@ public class EmailAddress {
         this.email = email;
     }
 
+    public EmailAddress() {
+    }
+
+    public EmailAddress(String email) {
+        this.email = email;
+    }
+
     /**
      * Checks if email is valid
      * Email type accepted:

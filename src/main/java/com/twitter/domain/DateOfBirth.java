@@ -16,6 +16,16 @@ public class DateOfBirth {
     @Column(name = "year")
     private Integer year;
 
+    public DateOfBirth(){
+
+    }
+
+    public DateOfBirth(Integer day, Integer month, Integer year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+
     public Integer getDay() {
         return day;
     }
