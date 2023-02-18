@@ -1,6 +1,8 @@
-package com.twitter.persistence;
+package com.twitter.Domain;
 
 import com.twitter.domain.Tweet;
+import com.twitter.persistence.Initializer;
+import com.twitter.persistence.JPAUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

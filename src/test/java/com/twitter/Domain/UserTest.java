@@ -1,6 +1,8 @@
-package com.twitter.persistence;
+package com.twitter.Domain;
 
 import com.twitter.domain.User;
+import com.twitter.persistence.Initializer;
+import com.twitter.persistence.JPAUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +30,7 @@ public class UserTest {
 
     @Test
     public void listUsers() {
+
         Query usersQuery = em.createQuery("select user from User user");
         List<User> results = usersQuery.getResultList();
         System.out.println(results.toString());
