@@ -19,7 +19,6 @@ public abstract class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "createdAt")
     private LocalDate dateTime = SystemDate.now();
 
@@ -57,28 +56,37 @@ public abstract class Post {
     public void setUser(User user) {
         this.user = user;
     }
+//
+//    public Set<User> getLikes() {
+//        return likes;
+//    }
+//
+//    public void setLikes(Set<User> likes) {
+//        this.likes = likes;
+//    }
+//
+//    public Set<Reply> getReplies() {
+//        return replies;
+//    }
+//
+//    public void setReplies(Set<Reply> replies) {
+//        this.replies = replies;
+//    }
+//
+//    public Set<Retweet> getRetweets() {
+//        return retweets;
+//    }
+//
+//    public void setRetweets(Set<Retweet> retweets) {
+//        this.retweets = retweets;
+//    }
 
-    public Set<User> getLikes() {
-        return likes;
-    }
 
-    public void setLikes(Set<User> likes) {
-        this.likes = likes;
-    }
-
-    public Set<Reply> getReplies() {
-        return replies;
-    }
-
-    public void setReplies(Set<Reply> replies) {
-        this.replies = replies;
-    }
-
-    public Set<Retweet> getRetweets() {
-        return retweets;
-    }
-
-    public void setRetweets(Set<Retweet> retweets) {
-        this.retweets = retweets;
+    @Override
+    public String toString() {
+        return "Post{" +
+                "dateTime=" + dateTime +
+                ", user=" + user +
+                '}';
     }
 }
