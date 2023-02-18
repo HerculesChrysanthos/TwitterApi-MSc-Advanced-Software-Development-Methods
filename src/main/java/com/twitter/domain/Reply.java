@@ -7,36 +7,36 @@ import javax.persistence.*;
 public class Reply extends Post {
 
     @Column(name = "content", length = 50, nullable = false)
-    private TweetBody content;
+    private String content;
 
     // if you delete a reply, you don't delete the post but only you update its set of replies
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "postId")
-    private Post post;
+    private Post reply;
 
     public Reply() {
 
     }
 
-    public Reply(User user, TweetBody content, Post post) {
-        super(user);
-        this.content = content;
-        this.post = post;
-    }
+//    public Reply(User user, TweetBody content, Post post) {
+//        super(user);
+//        this.content = content;
+//        this.reply = post;
+//    }
 
-    public TweetBody getContent() {
+    public String getContent() {
         return content;
     }
 
-    public void setContent(TweetBody content) {
+    public void setContent(String content) {
         this.content = content;
     }
 
     public Post getPost() {
-        return post;
+        return reply;
     }
 
     public void setPost(Post post) {
-        this.post = post;
+        this.reply = post;
     }
 }

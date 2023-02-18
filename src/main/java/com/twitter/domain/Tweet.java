@@ -7,32 +7,20 @@ import javax.persistence.*;
 public class Tweet extends Post {
 
     @Column(name = "content", length = 50, nullable = false)
-    private TweetBody content;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "userId")
-    private User user;
+    private String content;
 
     public Tweet() { }
 
-    public Tweet(TweetBody content) {
+    public Tweet(String content) {
         this.content = content;
 
     }
 
-    public TweetBody getTweetBody() {
+    public String getTweetBody() {
         return content;
     }
 
-    public void setTweetBody(TweetBody tweetBody) {
+    public void setTweetBody(String tweetBody) {
         this.content = tweetBody;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }
