@@ -4,9 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
-import com.twitter.customTypes.EmailAddress;
-import com.twitter.domain.Tweet;
-import com.twitter.domain.User;
+import com.twitter.domain.*;
 
 public class Initializer  {
 
@@ -15,8 +13,7 @@ public class Initializer  {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
-        em.createNativeQuery("delete from replies").executeUpdate();
-        em.createNativeQuery("delete from tweets").executeUpdate();
+        em.createNativeQuery("delete from posts").executeUpdate();
         em.createNativeQuery("delete from users").executeUpdate();
 
         tx.commit();
@@ -30,11 +27,22 @@ public class Initializer  {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
-        User user1 = new User("nikolaslepidas", "1234", "nl@gmail.com");
-        Tweet tweet1 = new Tweet("My first tweet");
+        User user1 = new User("herculesCh","1234",new DateOfBirth(1,7,1999),new EmailAddress("h@gmail.com"));
+        Tweet tweet1 = new Tweet("kalispera kai kali vradia");
+
+        User user2 = new User("nikolaslepidas","1234",new DateOfBirth(1,7,1999),new EmailAddress("nl@gmail.com"));
+
+        User user3 = new User("mikeathanasopoulos","1234",new DateOfBirth(1,7,1999),new EmailAddress("mike@gmail.com"));
+
+        user1.setFollowing(user2);
+        user1.setFollowing(user3);
+
         tweet1.setUser(user1);
 
         em.persist(user1);
+        em.persist(user2);
+        em.persist(user3);
+
         em.persist(tweet1);
 
         tx.commit();
