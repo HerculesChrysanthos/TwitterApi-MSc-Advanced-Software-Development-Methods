@@ -87,4 +87,72 @@ public class PostTest {
         List<Post> tweets = query.getResultList();
         Assertions.assertEquals( 1, tweets.get(0).getReplies().size());
     }
+    @Test
+    public void userLikesTweet() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet ");
+        List<Post> tweets = query.getResultList();
+        Assertions.assertEquals( 2, tweets.get(0).getLikes().size());
+
+        Query query2 = em.createQuery("select user from User user");
+        List<User> users = query2.getResultList();
+        Assertions.assertTrue(tweets.get(0).getLikes().contains(users.get(1)));
+        Assertions.assertTrue(tweets.get(0).getLikes().contains(users.get(6)));
+        Assertions.assertFalse(tweets.get(0).getLikes().contains(users.get(2)));
+    }
+    @Test
+    public void userLikesReply() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Reply ");
+        List<Post> replies = query.getResultList();
+        Assertions.assertEquals( 1, replies.get(0).getLikes().size());
+
+        Query query2 = em.createQuery("select user from User user");
+        List<User> users = query2.getResultList();
+        Assertions.assertTrue(replies.get(0).getLikes().contains(users.get(3)));
+        Assertions.assertFalse(replies.get(0).getLikes().contains(users.get(6)));
+    }
+
+    //TODO
+    public void userLikesRetweets() {
+
+    }
+
+    @Test
+    public void userRemovesLikeTweet() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet ");
+        List<Post> tweets = query.getResultList();
+        Assertions.assertEquals( 2, tweets.get(0).getLikes().size());
+
+        Query query2 = em.createQuery("select user from User user");
+        List<User> users = query2.getResultList();
+        Assertions.assertTrue(tweets.get(0).getLikes().contains(users.get(1)));
+
+        tweets.get(0).removeLike(users.get(1));
+
+        Assertions.assertFalse(tweets.get(0).getLikes().contains(users.get(1)));
+        Assertions.assertEquals( 1, tweets.get(0).getLikes().size());
+    }
+    @Test
+    public void userRemovesLikeReply() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Reply ");
+        List<Post> replies = query.getResultList();
+        Assertions.assertEquals( 1, replies.get(0).getLikes().size());
+
+        Query query2 = em.createQuery("select user from User user");
+        List<User> users = query2.getResultList();
+        Assertions.assertTrue(replies.get(0).getLikes().contains(users.get(3)));
+
+        replies.get(0).removeLike(users.get(3));
+
+        Assertions.assertFalse(replies.get(0).getLikes().contains(users.get(3)));
+        Assertions.assertEquals( 0, replies.get(0).getLikes().size());
+    }
+
+    //TODO
+    public void userRemovesLikeRetweets() {
+
+    }
 }

@@ -4,6 +4,7 @@ import com.twitter.domain.Tweet;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.util.Objects;
 
 @Embeddable
 public class TweetBody {
@@ -36,4 +37,16 @@ public class TweetBody {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TweetBody tweetBody1 = (TweetBody) o;
+        return tweetBody.equals(tweetBody1.tweetBody);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tweetBody);
+    }
 }

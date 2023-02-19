@@ -26,7 +26,13 @@ public abstract class Post {
     @JoinColumn(name = "userId")
     private User user;
 
-    @ManyToMany(mappedBy = "likedPosts", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+//    @ManyToMany(mappedBy = "likedPosts", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "user_posts",
+            joinColumns = { @JoinColumn(name = "postId")},
+            inverseJoinColumns = { @JoinColumn(name = "userId")}
+            )
     private Set<User> likes = new HashSet<User>();
 
     // if you delete a post, you also delete and the reply
@@ -70,6 +76,22 @@ public abstract class Post {
 
     public void addRetweet(Retweet newRetweet) {
         this.retweets.add(newRetweet);
+    }
+
+    public boolean addLike(User user) {
+        if (likes.contains(user)) {
+            return false;
+        }
+        this.likes.add(user);
+        return true;
+    }
+
+    public boolean removeLike(User user) {
+        if (!likes.contains(user)) {
+            return false;
+        }
+        likes.remove(user);
+        return true;
     }
 
     @Override

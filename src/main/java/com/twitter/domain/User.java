@@ -28,13 +28,13 @@ public class User {
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
 //    private Set<Post> posts = new HashSet<Post>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_posts",
-            joinColumns = { @JoinColumn(name = "userId")},
-            inverseJoinColumns = { @JoinColumn(name = "postId")}
-            )
-    private Set<Post> likedPosts = new HashSet<Post>();
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "user_posts",
+//            joinColumns = { @JoinColumn(name = "userId")},
+//            inverseJoinColumns = { @JoinColumn(name = "postId")}
+//            )
+//    private Set<Post> likedPosts = new HashSet<Post>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
