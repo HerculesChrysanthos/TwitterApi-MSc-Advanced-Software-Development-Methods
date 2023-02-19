@@ -30,11 +30,11 @@ public abstract class Post {
     private Set<User> likes = new HashSet<User>();
 
     // if you delete a post, you also delete and the reply
-    @OneToMany(mappedBy = "reply", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parentPost", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Reply> replies = new HashSet<Reply>();
 
     // if you delete a post, you don't delete the retweet
-    @OneToMany(mappedBy = "retweet", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToMany(mappedBy = "originalPost", fetch = FetchType.LAZY, cascade = CascadeType.ALL) //{CascadeType.PERSIST, CascadeType.MERGE })
     private Set<Retweet> retweets = new HashSet<Retweet>();
 
     public Post(){
@@ -56,31 +56,21 @@ public abstract class Post {
     public void setUser(User user) {
         this.user = user;
     }
-//
-//    public Set<User> getLikes() {
-//        return likes;
-//    }
-//
-//    public void setLikes(Set<User> likes) {
-//        this.likes = likes;
-//    }
-//
-//    public Set<Reply> getReplies() {
-//        return replies;
-//    }
-//
-//    public void setReplies(Set<Reply> replies) {
-//        this.replies = replies;
-//    }
-//
-//    public Set<Retweet> getRetweets() {
-//        return retweets;
-//    }
-//
-//    public void setRetweets(Set<Retweet> retweets) {
-//        this.retweets = retweets;
-//    }
 
+    public Set<User> getLikes() {
+        return likes;
+    }
+    public Set<Reply> getReplies() {
+        return replies;
+    }
+
+    public void addReply(Reply newReply) {
+        this.replies.add(newReply);
+    }
+
+    public void addRetweet(Retweet newRetweet) {
+        this.retweets.add(newRetweet);
+    }
 
     @Override
     public String toString() {

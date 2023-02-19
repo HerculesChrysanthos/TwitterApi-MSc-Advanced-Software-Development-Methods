@@ -12,14 +12,14 @@ public class Reply extends Post {
     // if you delete a reply, you don't delete the post but only you update its set of replies
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "postId")
-    private Post reply;
+    private Post parentPost;
 
     public Reply() { }
 
-    public Reply(User user, TweetBody content, Post post) {
+    public Reply(User user, Post parentPost, TweetBody content) {
         super(user);
+        this.parentPost = parentPost;
         this.content = content;
-        this.reply = post;
     }
 
     public TweetBody getContent() {
@@ -30,11 +30,11 @@ public class Reply extends Post {
         this.content = content;
     }
 
-    public Post getReply() {
-        return reply;
+    public Post getParentPost() {
+        return parentPost;
     }
 
-    public void setReply(Post reply) {
-        this.reply = reply;
+    public void setParentPost(Post parentPost) {
+        this.parentPost = parentPost;
     }
 }

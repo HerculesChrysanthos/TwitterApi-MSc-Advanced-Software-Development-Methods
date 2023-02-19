@@ -54,6 +54,15 @@ public class Initializer  {
         user2.setFollowing(user4);
         user2.setFollowing(user5);
 
+        Reply reply1 = new Reply(user1, tweet1, new TweetBody("This is a reply to tweet #1"));
+        tweet1.addReply(reply1);
+
+        Reply reply2 = new Reply(user4, reply1, new TweetBody("This is a reply to reply #1"));
+        reply1.addReply(reply2);
+
+        Retweet retweet1 = new Retweet(user3, tweet3);
+        tweet3.addRetweet(retweet1);
+
         em.persist(user0);
         em.persist(user1);
         em.persist(user2);
@@ -68,6 +77,11 @@ public class Initializer  {
         em.persist(tweet4);
         em.persist(tweet5);
         em.persist(tweet6);
+
+        em.persist(reply1);
+        em.persist(reply2);
+
+        em.persist(retweet1);
 
         tx.commit();
         em.close();
