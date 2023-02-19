@@ -15,23 +15,19 @@ import com.twitter.persistence.Initializer;
 import com.twitter.persistence.JPAUtil;
 
 public class JPAQueriesTest {
-    private EntityManager em;
 
     @BeforeEach
     public void setUp() {
         Initializer dataHelper = new Initializer();
         dataHelper.prepareData();
-
-        em = JPAUtil.getCurrentEntityManager();
     }
 
     @AfterEach
-    public void tearDown() {
-        em.close();
-    }
+    public void tearDown() { }
 
     @Test
     public void listTweets() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select tweet from Tweet tweet");
         List<Tweet> results = query.getResultList();
 
