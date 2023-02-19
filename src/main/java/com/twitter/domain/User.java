@@ -2,6 +2,7 @@ package com.twitter.domain;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -24,8 +25,8 @@ public class User {
     @Embedded
     private DateOfBirth dateOfBirth;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
-    private Set<Post> posts = new HashSet<Post>();
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+//    private Set<Post> posts = new HashSet<Post>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -101,11 +102,10 @@ public class User {
 //    }
 //
 
-
     public Set<User> getFollowing() {
         return following;
     }
-//
+
     public void setFollowing(User followingUser) {
         this.following.add(followingUser);
     }
@@ -121,4 +121,26 @@ public class User {
                 ", dateOfBirth=" + dateOfBirth +
                 '}';
     }
+
+    public boolean followUser(User user) {
+        if (this.following.contains(user) || this.equals(user)) {
+            return false;
+        }
+        this.setFollowing(user);
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return username.equals(user.username) && email.equals(user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, email);
+    }
 }
+
