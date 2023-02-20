@@ -66,8 +66,8 @@ public class Initializer  {
 
         reply1.addLike(user3);
 
-//        Retweet retweet1 = new Retweet(user3, tweet3);
-//        tweet3.addRetweet(retweet1);
+        Retweet retweet1 = new Retweet(user3, tweet3);
+        tweet3.addRetweet(retweet1);
 
         em.persist(user0);
         em.persist(user1);

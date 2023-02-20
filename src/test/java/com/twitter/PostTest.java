@@ -85,7 +85,8 @@ public class PostTest {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet ");
         List<Post> tweets = query.getResultList();
-        Assertions.assertEquals( 1, tweets.get(0).getReplies().size());
+
+        Assertions.assertEquals( 1, tweets.size());
     }
     @Test
     public void userLikesTweet() {
