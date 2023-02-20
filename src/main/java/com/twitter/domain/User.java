@@ -36,7 +36,7 @@ public class User {
 //            )
 //    private Set<Post> likedPosts = new HashSet<Post>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "following_users",
             joinColumns = { @JoinColumn(name = "following")},
@@ -108,18 +108,6 @@ public class User {
 
     public void setFollowing(User followingUser) {
         this.following.add(followingUser);
-    }
-
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email=" + email +
-                ", dateOfBirth=" + dateOfBirth +
-                '}';
     }
 
     public boolean followUser(User user) {
