@@ -78,6 +78,10 @@ public abstract class Post {
         this.retweets.add(newRetweet);
     }
 
+    public Set<Retweet> getRetweets() {
+        return retweets;
+    }
+
     public boolean addLike(User user) {
         if (likes.contains(user)) {
             return false;
