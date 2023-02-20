@@ -13,6 +13,7 @@ public class Initializer  {
         tx.begin();
 
         em.createNativeQuery("delete from following_users").executeUpdate();
+        em.createNativeQuery("delete from user_posts").executeUpdate();
         em.createNativeQuery("delete from posts").executeUpdate();
         em.createNativeQuery("delete from users").executeUpdate();
 
