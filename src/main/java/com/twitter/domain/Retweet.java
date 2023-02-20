@@ -12,9 +12,9 @@ public class Retweet extends Post{
 
     public Retweet() { }
 
-    public Retweet(User user, Post originalPostpost) {
+    public Retweet(User user, Post originalPost) {
         super(user);
-        this.originalPost = originalPostpost;
+        this.originalPost = originalPost;
     }
 
     public Post getRetweet() {
