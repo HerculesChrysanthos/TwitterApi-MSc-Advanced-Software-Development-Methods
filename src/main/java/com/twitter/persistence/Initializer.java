@@ -2,7 +2,6 @@ package com.twitter.persistence;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
 
 import com.twitter.domain.*;
 
@@ -13,6 +12,7 @@ public class Initializer  {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
+        em.createNativeQuery("delete from following_users").executeUpdate();
         em.createNativeQuery("delete from posts").executeUpdate();
         em.createNativeQuery("delete from users").executeUpdate();
 
