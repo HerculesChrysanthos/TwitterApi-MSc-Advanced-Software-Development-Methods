@@ -10,7 +10,7 @@ public class Reply extends Post {
     private TweetBody content;
 
     // if you delete a reply, you don't delete the post but only you update its set of replies
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "postId")
     private Post parentPost;
 

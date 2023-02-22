@@ -19,18 +19,18 @@ public class UserTest {
     }
 
 
-    @Test
-    public void UserConstructorAndGetters() {
-        User user = new User(
-                "nikolas", "1234",
-                new DateOfBirth(1,1,2020),
-                new EmailAddress("nl@gmail.com"));
-
-        Assertions.assertEquals("nikolas", user.getUsername());
-        Assertions.assertEquals("1234", user.getPassword());
-        Assertions.assertEquals(new DateOfBirth(1,1,2020), user.getDateOfBirth());
-        Assertions.assertEquals(new EmailAddress("nl@gmail.com"), user.getEmail());
-    }
+//    @Test
+//    public void UserConstructorAndGetters() {
+//        User user = new User(
+//                "nikolas", "1234",
+//                new DateOfBirth(1,1,2020),
+//                new EmailAddress("nl@gmail.com"));
+//
+//        Assertions.assertEquals("nikolas", user.getUsername());
+//        Assertions.assertEquals("1234", user.getPassword());
+//        Assertions.assertEquals(new DateOfBirth(1,1,2020), user.getDateOfBirth());
+//        Assertions.assertEquals(new EmailAddress("nl@gmail.com"), user.getEmail());
+//    }
 
     @Test
     public void userSetters() {

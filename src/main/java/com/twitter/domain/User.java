@@ -25,17 +25,7 @@ public class User {
     @Embedded
     private DateOfBirth dateOfBirth;
 
-//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
-//    private Set<Post> posts = new HashSet<Post>();
-
-//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "user_posts",
-//            joinColumns = { @JoinColumn(name = "userId")},
-//            inverseJoinColumns = { @JoinColumn(name = "postId")}
-//            )
-//    private Set<Post> likedPosts = new HashSet<Post>();
-
+    // if you delete a following user, you don't delete and the user
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "following_users",
@@ -84,23 +74,6 @@ public class User {
     public void setDateOfBirth(DateOfBirth dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-
-//    public Set<Post> getPosts() {
-//        return posts;
-//    }
-//
-//    public void setPosts(Set<Post> posts) {
-//        this.posts = posts;
-//    }
-//
-//    public Set<Post> getLikedPosts() {
-//        return likedPosts;
-//    }
-//
-//    public void setLikedPosts(Set<Post> likedPosts) {
-//        this.likedPosts = likedPosts;
-//    }
-//
 
     public Set<User> getFollowing() {
         return following;

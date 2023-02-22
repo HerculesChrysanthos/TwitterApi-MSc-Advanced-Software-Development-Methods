@@ -40,17 +40,4 @@ public class TweetBody {
             return true;
         }
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TweetBody tweetBody1 = (TweetBody) o;
-        return tweetBody.equals(tweetBody1.tweetBody);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(tweetBody);
-    }
 }

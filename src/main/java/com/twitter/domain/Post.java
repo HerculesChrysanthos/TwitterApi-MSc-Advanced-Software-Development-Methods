@@ -26,8 +26,8 @@ public abstract class Post {
     @JoinColumn(name = "userId")
     private User user;
 
-//    @ManyToMany(mappedBy = "likedPosts", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    // if you delete a like, you don't delete the user
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "user_posts",
             joinColumns = { @JoinColumn(name = "postId")},
@@ -35,12 +35,12 @@ public abstract class Post {
             )
     private Set<User> likes = new HashSet<User>();
 
-    // if you delete a post, you also delete and the reply
+    //  if you delete a post, you also delete and the reply
     @OneToMany(mappedBy = "parentPost", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Reply> replies = new HashSet<Reply>();
 
-    // if you delete a post, you don't delete the retweet
-    @OneToMany(mappedBy = "originalPost", fetch = FetchType.LAZY, cascade = CascadeType.ALL) //{CascadeType.PERSIST, CascadeType.MERGE })
+    //  if you delete a post, you don't delete the retweet
+    @OneToMany(mappedBy = "originalPost", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Retweet> retweets = new HashSet<Retweet>();
 
     public Post(){
@@ -96,13 +96,5 @@ public abstract class Post {
         }
         likes.remove(user);
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Post{" +
-                "dateTime=" + dateTime +
-                ", user=" + user +
-                '}';
     }
 }

@@ -69,6 +69,9 @@ public class Initializer  {
         Retweet retweet1 = new Retweet(user3, tweet3);
         tweet3.addRetweet(retweet1);
 
+        Reply reply3 = new Reply(user5, retweet1, new TweetBody("This is a reply to retweet #1"));
+        retweet1.addReply(reply3);
+
         em.persist(user0);
         em.persist(user1);
         em.persist(user2);
@@ -86,8 +89,9 @@ public class Initializer  {
 
         em.persist(reply1);
         em.persist(reply2);
+        em.persist(reply2);
 
-//        em.persist(retweet1);
+        em.persist(retweet1);
 
         tx.commit();
         em.close();

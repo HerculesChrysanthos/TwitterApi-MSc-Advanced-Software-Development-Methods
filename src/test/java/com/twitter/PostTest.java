@@ -43,7 +43,7 @@ public class PostTest {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Reply");
         List<Post> replies = query.getResultList();
-        Assertions.assertEquals( 2, replies.size());
+        Assertions.assertEquals( 3, replies.size());
         Assertions.assertEquals( 1, replies.get(0).getReplies().size());
 
         Assertions.assertEquals("This is a reply to reply #1", replies.get(0).getReplies().iterator().next().getContent().getTweetBody());
@@ -58,21 +58,24 @@ public class PostTest {
         Assertions.assertTrue(true);
     }
 
-    //TODO
     @Test
     public void addReplyToRetweet() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
-        Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
-        List<Post> posts = query.getResultList();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet");
+        List<Post> retweets = query.getResultList();
+        Assertions.assertEquals( 1, retweets.size());
+        Assertions.assertEquals( 1, retweets.get(0).getReplies().size());
+
+        Assertions.assertEquals("This is a reply to retweet #1", retweets.get(0).getReplies().iterator().next().getContent().getTweetBody());
     }
-    //TODO
+    // TODO
     @Test
     public void addRetweetToRetweet() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
         List<Post> posts = query.getResultList();
     }
-    //TODO
+    // TODO
     @Test
     public void addRetweetToReply() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
@@ -114,7 +117,7 @@ public class PostTest {
         Assertions.assertFalse(replies.get(0).getLikes().contains(users.get(6)));
     }
 
-    //TODO
+    // TODO
     public void userLikesRetweets() {
 
     }
@@ -152,7 +155,7 @@ public class PostTest {
         Assertions.assertEquals( 0, replies.get(0).getLikes().size());
     }
 
-    //TODO
+    // TODO
     public void userRemovesLikeRetweets() {
 
     }
