@@ -55,9 +55,11 @@ public class Initializer  {
         user2.setFollowing(user4);
         user2.setFollowing(user5);
 
+        // Reply to Tweet
         Reply reply1 = new Reply(user1, tweet1, new TweetBody("This is a reply to tweet #1"));
         tweet1.addReply(reply1);
 
+        // Reply to Reply
         Reply reply2 = new Reply(user4, reply1, new TweetBody("This is a reply to reply #1"));
         reply1.addReply(reply2);
 
@@ -66,11 +68,24 @@ public class Initializer  {
 
         reply1.addLike(user3);
 
-        Retweet retweet1 = new Retweet(user3, tweet3);
-        tweet3.addRetweet(retweet1);
+        // Retweet to Tweet
+        Retweet retweet1 = new Retweet(user5);
+        tweet1.addRetweet(retweet1);
 
-        Reply reply3 = new Reply(user5, retweet1, new TweetBody("This is a reply to retweet #1"));
+        // Reply to Retweet
+        Reply reply3 = new Reply(user6, retweet1, new TweetBody("This is a reply to retweet #1"));
         retweet1.addReply(reply3);
+
+        // Retweet to Reply
+        Retweet retweet2 = new Retweet(user4);
+        reply1.addRetweet(retweet2);
+
+        // Retweet to Retweet
+        Retweet retweet3 = new Retweet(user6);
+        retweet2.addRetweet(retweet3);
+
+        // Like a Retweet
+        retweet1.addLike(user4);
 
         em.persist(user0);
         em.persist(user1);
@@ -92,6 +107,8 @@ public class Initializer  {
         em.persist(reply2);
 
         em.persist(retweet1);
+        em.persist(retweet2);
+        em.persist(retweet3);
 
         tx.commit();
         em.close();

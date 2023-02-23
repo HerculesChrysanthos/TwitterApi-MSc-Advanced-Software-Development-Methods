@@ -4,10 +4,7 @@ import com.twitter.domain.Post;
 import com.twitter.domain.User;
 import com.twitter.persistence.Initializer;
 import com.twitter.persistence.JPAUtil;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -43,21 +40,26 @@ public class PostTest {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Reply");
         List<Post> replies = query.getResultList();
-        Assertions.assertEquals( 3, replies.size());
+        Assertions.assertEquals( 2, replies.size());
         Assertions.assertEquals( 1, replies.get(0).getReplies().size());
 
         Assertions.assertEquals("This is a reply to reply #1", replies.get(0).getReplies().iterator().next().getContent().getTweetBody());
     }
 
-    //TODO
+    /**
+     * Done
+     */
     @Test
     public void addRetweetToTweet() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
-        List<Post> posts = query.getResultList();
-        Assertions.assertTrue(true);
+        List<Post> tweets = query.getResultList();
+        Assertions.assertEquals( 1, tweets.get(0).getRetweets().size());
     }
 
+    /**
+     * Done
+     */
     @Test
     public void addReplyToRetweet() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
@@ -68,21 +70,34 @@ public class PostTest {
 
         Assertions.assertEquals("This is a reply to retweet #1", retweets.get(0).getReplies().iterator().next().getContent().getTweetBody());
     }
-    // TODO
-    @Test
-    public void addRetweetToRetweet() {
-        EntityManager em = JPAUtil.getCurrentEntityManager();
-        Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
-        List<Post> posts = query.getResultList();
-    }
-    // TODO
+
+    /**
+     * Done
+     */
     @Test
     public void addRetweetToReply() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
-        Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
-        List<Post> posts = query.getResultList();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Reply");
+        List<Post> replies = query.getResultList();
+
+        Assertions.assertEquals( 1, replies.get(0).getRetweets().size());
     }
 
+    /**
+     * Done
+     */
+    @Test
+    public void addRetweetToRetweet() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet");
+        List<Post> retweets = query.getResultList();
+        Assertions.assertEquals( 3, retweets.size());
+        Assertions.assertEquals( 1, retweets.get(0).getRetweets().size());
+    }
+
+    /**
+     * Done
+     */
     @Test
     public void createRetweet() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
@@ -91,6 +106,10 @@ public class PostTest {
 
         Assertions.assertEquals( 1, tweets.size());
     }
+
+    /**
+     * Done
+     */
     @Test
     public void userLikesTweet() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
@@ -104,10 +123,14 @@ public class PostTest {
         Assertions.assertTrue(tweets.get(0).getLikes().contains(users.get(6)));
         Assertions.assertFalse(tweets.get(0).getLikes().contains(users.get(2)));
     }
+
+    /**
+     * Done
+     */
     @Test
     public void userLikesReply() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
-        Query query = em.createQuery("select post from Post post where TYPE(post) = Reply ");
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Reply");
         List<Post> replies = query.getResultList();
         Assertions.assertEquals( 1, replies.get(0).getLikes().size());
 
@@ -117,11 +140,25 @@ public class PostTest {
         Assertions.assertFalse(replies.get(0).getLikes().contains(users.get(6)));
     }
 
-    // TODO
+    /**
+     * Done
+     */
+    @Test
     public void userLikesRetweets() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet");
+        List<Post> retweets = query.getResultList();
+        Assertions.assertEquals( 1, retweets.get(2).getLikes().size());
 
+        Query query2 = em.createQuery("select user from User user");
+        List<User> users = query2.getResultList();
+        Assertions.assertTrue(retweets.get(2).getLikes().contains(users.get(4)));
+        Assertions.assertFalse(retweets.get(2).getLikes().contains(users.get(6)));
     }
 
+    /**
+     * Done
+     */
     @Test
     public void userRemovesLikeTweet() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
@@ -138,6 +175,10 @@ public class PostTest {
         Assertions.assertFalse(tweets.get(0).getLikes().contains(users.get(1)));
         Assertions.assertEquals( 1, tweets.get(0).getLikes().size());
     }
+
+    /**
+     * Done
+     */
     @Test
     public void userRemovesLikeReply() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
@@ -155,8 +196,23 @@ public class PostTest {
         Assertions.assertEquals( 0, replies.get(0).getLikes().size());
     }
 
-    // TODO
+    /**
+     * Done
+     */
+    @Test
     public void userRemovesLikeRetweets() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet");
+        List<Post> retweets = query.getResultList();
+        Assertions.assertEquals( 1, retweets.get(2).getLikes().size());
 
+        Query query2 = em.createQuery("select user from User user");
+        List<User> users = query2.getResultList();
+        Assertions.assertTrue(retweets.get(2).getLikes().contains(users.get(4)));
+
+        retweets.get(2).removeLike(users.get(4));
+
+        Assertions.assertFalse(retweets.get(2).getLikes().contains(users.get(3)));
+        Assertions.assertEquals( 0, retweets.get(2).getLikes().size());
     }
 }
