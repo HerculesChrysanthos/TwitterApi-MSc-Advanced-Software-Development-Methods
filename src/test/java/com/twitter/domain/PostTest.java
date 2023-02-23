@@ -24,7 +24,7 @@ public class PostTest {
      * Done
      */
     @Test
-    public void addReplyToTweet() {
+    public void testAddReplyToTweet() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
         List<Post> tweets = query.getResultList();
@@ -36,7 +36,7 @@ public class PostTest {
      * Done
      */
     @Test
-    public void addReplyToReply() {
+    public void testAddReplyToReply() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Reply");
         List<Post> replies = query.getResultList();
@@ -50,7 +50,7 @@ public class PostTest {
      * Done
      */
     @Test
-    public void addRetweetToTweet() {
+    public void testAddRetweetToTweet() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
         List<Post> tweets = query.getResultList();
@@ -61,7 +61,7 @@ public class PostTest {
      * Done
      */
     @Test
-    public void addReplyToRetweet() {
+    public void testAddReplyToRetweet() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet");
         List<Post> retweets = query.getResultList();
@@ -75,7 +75,7 @@ public class PostTest {
      * Done
      */
     @Test
-    public void addRetweetToReply() {
+    public void testAddRetweetToReply() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Reply");
         List<Post> replies = query.getResultList();
@@ -87,7 +87,7 @@ public class PostTest {
      * Done
      */
     @Test
-    public void addRetweetToRetweet() {
+    public void testAddRetweetToRetweet() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet");
         List<Post> retweets = query.getResultList();
@@ -99,7 +99,7 @@ public class PostTest {
      * Done
      */
     @Test
-    public void createRetweet() {
+    public void testCreateRetweet() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet ");
         List<Post> tweets = query.getResultList();
@@ -111,7 +111,7 @@ public class PostTest {
      * Done
      */
     @Test
-    public void userLikesTweet() {
+    public void testUserLikesTweet() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet ");
         List<Post> tweets = query.getResultList();
@@ -128,7 +128,7 @@ public class PostTest {
      * Done
      */
     @Test
-    public void userLikesReply() {
+    public void testUserLikesReply() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Reply");
         List<Post> replies = query.getResultList();
@@ -144,7 +144,7 @@ public class PostTest {
      * Done
      */
     @Test
-    public void userLikesRetweets() {
+    public void testUserLikesRetweets() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet");
         List<Post> retweets = query.getResultList();
@@ -160,7 +160,7 @@ public class PostTest {
      * Done
      */
     @Test
-    public void userRemovesLikeTweet() {
+    public void testUserRemovesLikeTweet() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet ");
         List<Post> tweets = query.getResultList();
@@ -180,7 +180,7 @@ public class PostTest {
      * Done
      */
     @Test
-    public void userRemovesLikeReply() {
+    public void testUserRemovesLikeReply() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Reply ");
         List<Post> replies = query.getResultList();
@@ -200,7 +200,7 @@ public class PostTest {
      * Done
      */
     @Test
-    public void userRemovesLikeRetweets() {
+    public void testUserRemovesLikeRetweets() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet");
         List<Post> retweets = query.getResultList();
