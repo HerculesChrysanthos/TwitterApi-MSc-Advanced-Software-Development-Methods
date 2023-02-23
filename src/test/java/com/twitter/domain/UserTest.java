@@ -18,22 +18,21 @@ public class UserTest {
         dataHelper.prepareData();
     }
 
+    @Test
+    public void testUserConstructorAndGetters() {
+        User user = new User(
+                "nikolas", "1234",
+                new DateOfBirth(1,1,2020),
+                new EmailAddress("nl@gmail.com"));
 
-//    @Test
-//    public void UserConstructorAndGetters() {
-//        User user = new User(
-//                "nikolas", "1234",
-//                new DateOfBirth(1,1,2020),
-//                new EmailAddress("nl@gmail.com"));
-//
-//        Assertions.assertEquals("nikolas", user.getUsername());
-//        Assertions.assertEquals("1234", user.getPassword());
-//        Assertions.assertEquals(new DateOfBirth(1,1,2020), user.getDateOfBirth());
-//        Assertions.assertEquals(new EmailAddress("nl@gmail.com"), user.getEmail());
-//    }
+        Assertions.assertEquals("nikolas", user.getUsername());
+        Assertions.assertEquals("1234", user.getPassword());
+        Assertions.assertEquals(new DateOfBirth(1,1,2020), user.getDateOfBirth());
+        Assertions.assertEquals(new EmailAddress("nl@gmail.com"), user.getEmail());
+    }
 
     @Test
-    public void userSetters() {
+    public void testUserSetters() {
         User user = new User();
 
         user.setUsername("nikolas");
@@ -48,7 +47,7 @@ public class UserTest {
     }
 
     @Test
-    public void getFollowingUsers() {
+    public void testGetFollowingUsers() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select user from User user");
         List<User> users = query.getResultList();
@@ -71,7 +70,7 @@ public class UserTest {
     }
 
     @Test
-    public void UserCanNotFollowAFollowingUser() {
+    public void testUserCanNotFollowAFollowingUser() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select user from User user");
         List<User> users = query.getResultList();
@@ -79,7 +78,7 @@ public class UserTest {
         Assertions.assertFalse(users.get(1).followUser(users.get(2)));
     }
     @Test
-    public void userCanFollowANonFollowingUser() {
+    public void testUserCanFollowANonFollowingUser() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select user from User user");
         List<User> users = query.getResultList();
@@ -88,7 +87,7 @@ public class UserTest {
     }
 
     @Test
-    public void userCanNotFollowHimself() {
+    public void testUserCanNotFollowHimself() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select user from User user");
         List<User> users = query.getResultList();
