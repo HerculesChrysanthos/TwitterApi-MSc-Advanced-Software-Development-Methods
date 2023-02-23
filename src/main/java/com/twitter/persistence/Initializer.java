@@ -14,6 +14,7 @@ public class Initializer  {
 
         em.createNativeQuery("delete from following_users").executeUpdate();
         em.createNativeQuery("delete from user_posts").executeUpdate();
+        em.createNativeQuery("delete from posts_posts").executeUpdate();
         em.createNativeQuery("delete from posts").executeUpdate();
         em.createNativeQuery("delete from users").executeUpdate();
 
@@ -91,9 +92,9 @@ public class Initializer  {
         em.persist(user1);
         em.persist(user2);
         em.persist(user3);
-        em.persist(user4);
+ //       em.persist(user4);
         em.persist(user5);
-        em.persist(user6);
+//        em.persist(user6);
 
         em.persist(tweet1);
         em.persist(tweet2);
@@ -104,11 +105,11 @@ public class Initializer  {
 
         em.persist(reply1);
         em.persist(reply2);
-        em.persist(reply2);
+//        em.persist(reply3);
 
         em.persist(retweet1);
         em.persist(retweet2);
-        em.persist(retweet3);
+//        em.persist(retweet3);
 
         tx.commit();
         em.close();
