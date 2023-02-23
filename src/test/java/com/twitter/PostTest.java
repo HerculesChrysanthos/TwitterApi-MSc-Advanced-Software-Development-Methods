@@ -40,7 +40,7 @@ public class PostTest {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Reply");
         List<Post> replies = query.getResultList();
-        Assertions.assertEquals( 2, replies.size());
+        Assertions.assertEquals( 3, replies.size());
         Assertions.assertEquals( 1, replies.get(0).getReplies().size());
 
         Assertions.assertEquals("This is a reply to reply #1", replies.get(0).getReplies().iterator().next().getContent().getTweetBody());
@@ -65,10 +65,10 @@ public class PostTest {
         EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet");
         List<Post> retweets = query.getResultList();
-        Assertions.assertEquals( 1, retweets.size());
-        Assertions.assertEquals( 1, retweets.get(0).getReplies().size());
+        Assertions.assertEquals( 3, retweets.size());
+        Assertions.assertEquals( 1, retweets.get(2).getReplies().size());
 
-        Assertions.assertEquals("This is a reply to retweet #1", retweets.get(0).getReplies().iterator().next().getContent().getTweetBody());
+        Assertions.assertEquals("This is a reply to retweet #1", retweets.get(2).getReplies().iterator().next().getContent().getTweetBody());
     }
 
     /**
@@ -104,7 +104,7 @@ public class PostTest {
         Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet ");
         List<Post> tweets = query.getResultList();
 
-        Assertions.assertEquals( 1, tweets.size());
+        Assertions.assertEquals( 3, tweets.size());
     }
 
     /**
