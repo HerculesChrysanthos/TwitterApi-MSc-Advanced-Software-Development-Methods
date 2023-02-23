@@ -1,4 +1,4 @@
-package com.twitter;
+package com.twitter.domain;
 
 import com.twitter.domain.Post;
 import com.twitter.domain.User;
