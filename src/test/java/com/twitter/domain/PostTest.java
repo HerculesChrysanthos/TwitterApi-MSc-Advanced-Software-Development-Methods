@@ -246,19 +246,39 @@ public class PostTest {
     }
 
     /**
-     * Done
+     * Done with JUnit tests
      */
     @Test
     public void testUserLikesReply() {
-        EntityManager em = JPAUtil.getCurrentEntityManager();
-        Query query = em.createQuery("select post from Post post where TYPE(post) = Reply");
-        List<Post> replies = query.getResultList();
-        Assertions.assertEquals( 1, replies.get(0).getLikes().size());
+//        EntityManager em = JPAUtil.getCurrentEntityManager();
+//        Query query = em.createQuery("select post from Post post where TYPE(post) = Reply");
+//        List<Post> replies = query.getResultList();
+//        Assertions.assertEquals( 1, replies.get(0).getLikes().size());
+//
+//        Query query2 = em.createQuery("select user from User user");
+//        List<User> users = query2.getResultList();
+//        Assertions.assertTrue(replies.get(0).getLikes().contains(users.get(3)));
+//        Assertions.assertFalse(replies.get(0).getLikes().contains(users.get(6)));
+        Tweet tweet1 = new Tweet();
+        tweet1.setTweetBody(new TweetBody("This is tweet #1"));
 
-        Query query2 = em.createQuery("select user from User user");
-        List<User> users = query2.getResultList();
-        Assertions.assertTrue(replies.get(0).getLikes().contains(users.get(3)));
-        Assertions.assertFalse(replies.get(0).getLikes().contains(users.get(6)));
+        User user1 = new User("user1", "1", new DateOfBirth(1,1,2001), new EmailAddress("email1@gmail.com"));
+        User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
+        User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
+
+        tweet1.setUser(user1);
+
+        tweet1.addLike(user1);
+        tweet1.addLike(user2);
+
+        Reply reply1 = new Reply(user1, tweet1, new TweetBody("This is a reply to tweet #1"));
+        tweet1.addReply(reply1);
+
+        reply1.addLike(user3);
+
+        Assertions.assertEquals(1, reply1.getLikes().size());
+        Assertions.assertTrue(reply1.getLikes().contains(user3));
+        Assertions.assertFalse(reply1.getLikes().contains(user2));
     }
 
     /**
