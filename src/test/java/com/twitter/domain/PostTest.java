@@ -21,15 +21,26 @@ public class PostTest {
     public void tearDown() { }
 
     /**
-     * Done
+     * Done with JUnit tests
      */
     @Test
     public void testAddReplyToTweet() {
-        EntityManager em = JPAUtil.getCurrentEntityManager();
-        Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
-        List<Post> tweets = query.getResultList();
-        Assertions.assertEquals( 1, tweets.get(0).getReplies().size());
-        Assertions.assertEquals("This is a reply to tweet #1", tweets.get(0).getReplies().iterator().next().getContent().getTweetBody());
+//        EntityManager em = JPAUtil.getCurrentEntityManager();
+//        Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
+//        List<Post> tweets = query.getResultList();
+//        Assertions.assertEquals( 1, tweets.get(0).getReplies().size());
+//        Assertions.assertEquals("This is a reply to tweet #1", tweets.get(0).getReplies().iterator().next().getContent().getTweetBody());
+        Tweet tweet1 = new Tweet();
+        tweet1.setTweetBody(new TweetBody("This is tweet #1"));
+
+        User user1 = new User("user1", "0", new DateOfBirth(1,1,2001), new EmailAddress("email1@gmail.com"));
+        tweet1.setUser(user1);
+
+        Reply reply1 = new Reply(user1, tweet1, new TweetBody("This is a reply to tweet #1"));
+        tweet1.addReply(reply1);
+
+        Assertions.assertEquals( 1, tweet1.getReplies().size());
+        Assertions.assertEquals("This is a reply to tweet #1", tweet1.getReplies().iterator().next().getContent().getTweetBody());
     }
 
     /**
