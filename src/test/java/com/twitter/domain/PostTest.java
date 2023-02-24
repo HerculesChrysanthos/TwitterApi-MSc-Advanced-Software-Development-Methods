@@ -282,19 +282,40 @@ public class PostTest {
     }
 
     /**
-     * Done
+     * Done with JUnit tests
      */
     @Test
     public void testUserLikesRetweets() {
-        EntityManager em = JPAUtil.getCurrentEntityManager();
-        Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet");
-        List<Post> retweets = query.getResultList();
-        Assertions.assertEquals( 1, retweets.get(2).getLikes().size());
+//        EntityManager em = JPAUtil.getCurrentEntityManager();
+//        Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet");
+//        List<Post> retweets = query.getResultList();
+//        Assertions.assertEquals( 1, retweets.get(2).getLikes().size());
+//
+//        Query query2 = em.createQuery("select user from User user");
+//        List<User> users = query2.getResultList();
+//        Assertions.assertTrue(retweets.get(2).getLikes().contains(users.get(4)));
+//        Assertions.assertFalse(retweets.get(2).getLikes().contains(users.get(6)));
+        Tweet tweet1 = new Tweet();
+        tweet1.setTweetBody(new TweetBody("This is tweet #1"));
 
-        Query query2 = em.createQuery("select user from User user");
-        List<User> users = query2.getResultList();
-        Assertions.assertTrue(retweets.get(2).getLikes().contains(users.get(4)));
-        Assertions.assertFalse(retweets.get(2).getLikes().contains(users.get(6)));
+        User user1 = new User("user1", "1", new DateOfBirth(1,1,2001), new EmailAddress("email1@gmail.com"));
+        User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
+        User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
+
+        tweet1.setUser(user1);
+
+        tweet1.addLike(user1);
+        tweet1.addLike(user2);
+
+        Retweet retweet1 = new Retweet(user3);
+        tweet1.addRetweet(retweet1);
+
+        retweet1.addLike(user3);
+
+        Assertions.assertEquals(1, retweet1.getLikes().size());
+        Assertions.assertTrue(retweet1.getLikes().contains(user3));
+        Assertions.assertFalse(retweet1.getLikes().contains(user2));
+
     }
 
     /**
