@@ -549,10 +549,10 @@ public class PostTest {
         tweet1.addRetweet(retweet1);
 
         tweet1.setUser(user1);
-        retweet1.addLike(user3);
-        retweet1.removeLike(user3);
+        retweet1.addLike(user2);
+        retweet1.removeLike(user2);
 
-        Assertions.assertFalse(tweet1.removeLike(user3));
+        Assertions.assertFalse(tweet1.removeLike(user2));
     }
 
 }
