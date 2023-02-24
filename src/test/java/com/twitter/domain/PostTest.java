@@ -245,6 +245,17 @@ public class PostTest {
         Assertions.assertTrue(tweet1.getLikes().contains(user3));
     }
 
+    @Test
+    public void testUserCanNotLikeAlreadyLikedTweet() {
+        User user1 = new User("user1", "1", new DateOfBirth(1,1,2001), new EmailAddress("email1@gmail.com"));
+        User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
+        Tweet tweet1 = new Tweet(new TweetBody("This is tweet #1"));
+        tweet1.setUser(user1);
+        tweet1.addLike(user2);
+
+        Assertions.assertFalse(tweet1.addLike(user2));
+    }
+
     /**
      * Done with JUnit tests
      */
@@ -279,6 +290,23 @@ public class PostTest {
         Assertions.assertEquals(1, reply1.getLikes().size());
         Assertions.assertTrue(reply1.getLikes().contains(user3));
         Assertions.assertFalse(reply1.getLikes().contains(user2));
+    }
+
+    @Test
+    public void testUserCanNotLikeAlreadyLikedReply() {
+        User user1 = new User("user1", "1", new DateOfBirth(1,1,2001), new EmailAddress("email1@gmail.com"));
+        User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
+        User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
+
+        Tweet tweet1 = new Tweet(new TweetBody("This is tweet #1"));
+        tweet1.setUser(user1);
+
+        Reply reply1 = new Reply(user2, tweet1, new TweetBody("This is a reply to tweet #1"));
+        tweet1.addReply(reply1);
+
+        reply1.addLike(user3);
+
+        Assertions.assertFalse(reply1.addLike(user3));
     }
 
     /**
@@ -316,6 +344,23 @@ public class PostTest {
         Assertions.assertTrue(retweet1.getLikes().contains(user3));
         Assertions.assertFalse(retweet1.getLikes().contains(user2));
 
+    }
+
+    @Test
+    public void testUserCanNotLikeAlreadyLikedRetweet() {
+        User user1 = new User("user1", "1", new DateOfBirth(1,1,2001), new EmailAddress("email1@gmail.com"));
+        User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
+        User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
+
+        Tweet tweet1 = new Tweet(new TweetBody("This is tweet #1"));
+        tweet1.setUser(user1);
+
+        Retweet retweet1 = new Retweet(user2);
+        tweet1.addRetweet(retweet1);
+
+        retweet1.addLike(user3);
+
+        Assertions.assertFalse(retweet1.addLike(user3));
     }
 
     /**
@@ -460,4 +505,6 @@ public class PostTest {
         Assertions.assertFalse(retweet1.getLikes().contains(user2));
         Assertions.assertFalse(retweet1.getLikes().contains(user3));
     }
+
+
 }
