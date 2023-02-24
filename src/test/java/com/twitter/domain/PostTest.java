@@ -44,17 +44,33 @@ public class PostTest {
     }
 
     /**
-     * Done
+     * Done with JUnit tests
      */
     @Test
     public void testAddReplyToReply() {
-        EntityManager em = JPAUtil.getCurrentEntityManager();
-        Query query = em.createQuery("select post from Post post where TYPE(post) = Reply");
-        List<Post> replies = query.getResultList();
-        Assertions.assertEquals( 3, replies.size());
-        Assertions.assertEquals( 1, replies.get(0).getReplies().size());
+//        EntityManager em = JPAUtil.getCurrentEntityManager();
+//        Query query = em.createQuery("select post from Post post where TYPE(post) = Reply");
+//        List<Post> replies = query.getResultList();
+//        Assertions.assertEquals( 3, replies.size());
+//        Assertions.assertEquals( 1, replies.get(0).getReplies().size());
+//
+//        Assertions.assertEquals("This is a reply to reply #1", replies.get(0).getReplies().iterator().next().getContent().getTweetBody());
+        Tweet tweet1 = new Tweet();
+        tweet1.setTweetBody(new TweetBody("This is tweet #1"));
 
-        Assertions.assertEquals("This is a reply to reply #1", replies.get(0).getReplies().iterator().next().getContent().getTweetBody());
+        User user1 = new User("user1", "0", new DateOfBirth(1,1,2001), new EmailAddress("email1@gmail.com"));
+        tweet1.setUser(user1);
+
+        Reply reply1 = new Reply(user1, tweet1, new TweetBody("This is a reply to tweet #1"));
+        tweet1.addReply(reply1);
+
+        Reply reply2 = new Reply(user1, reply1, new TweetBody("This is a reply to reply #1"));
+        reply1.addReply(reply2);
+
+        Assertions.assertEquals( 1, tweet1.getReplies().size());
+        Assertions.assertEquals( 1, reply1.getReplies().size());
+        Assertions.assertEquals("This is a reply to reply #1", reply1.getReplies().iterator().next().getContent().getTweetBody());
+
     }
 
     /**
