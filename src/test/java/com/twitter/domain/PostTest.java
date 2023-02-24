@@ -4,10 +4,13 @@ import com.twitter.domain.Post;
 import com.twitter.domain.User;
 import com.twitter.persistence.Initializer;
 import com.twitter.persistence.JPAUtil;
+import com.twitter.util.SystemDate;
+import com.twitter.util.SystemDateStub;
 import org.junit.jupiter.api.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.time.LocalDate;
 import java.util.List;
 
 public class PostTest {
@@ -555,4 +558,16 @@ public class PostTest {
         Assertions.assertFalse(tweet1.removeLike(user2));
     }
 
+    @Test
+    public void testTweetGetDateTime() {
+        LocalDate now = LocalDate.of(2023, 2, 24);
+        SystemDateStub.setStub(now);
+
+        User user1 = new User("user1", "1", new DateOfBirth(1,1,2001), new EmailAddress("email1@gmail.com"));
+        Tweet tweet1 = new Tweet(new TweetBody("This is tweet #1"));
+        tweet1.setUser(user1);
+
+        Assertions.assertEquals(SystemDate.now(), tweet1.getDateTime());
+        SystemDateStub.reset();
+    }
 }
