@@ -319,24 +319,49 @@ public class PostTest {
     }
 
     /**
-     * Done
+     * Done with JUnit tests
      */
     @Test
     public void testUserRemovesLikeTweet() {
-        EntityManager em = JPAUtil.getCurrentEntityManager();
-        Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet ");
-        List<Post> tweets = query.getResultList();
-        Assertions.assertEquals( 2, tweets.get(0).getLikes().size());
+//        EntityManager em = JPAUtil.getCurrentEntityManager();
+//        Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet ");
+//        List<Post> tweets = query.getResultList();
+//        Assertions.assertEquals( 2, tweets.get(0).getLikes().size());
+//
+//        Query query2 = em.createQuery("select user from User user");
+//        List<User> users = query2.getResultList();
+//        Assertions.assertTrue(tweets.get(0).getLikes().contains(users.get(1)));
+//
+//        tweets.get(0).removeLike(users.get(1));
+//
+//        Assertions.assertFalse(tweets.get(0).getLikes().contains(users.get(1)));
+//        Assertions.assertEquals( 1, tweets.get(0).getLikes().size());
 
-        Query query2 = em.createQuery("select user from User user");
-        List<User> users = query2.getResultList();
-        Assertions.assertTrue(tweets.get(0).getLikes().contains(users.get(1)));
+        Tweet tweet1 = new Tweet();
+        tweet1.setTweetBody(new TweetBody("This is tweet #1"));
 
-        tweets.get(0).removeLike(users.get(1));
+        User user1 = new User("user1", "1", new DateOfBirth(1,1,2001), new EmailAddress("email1@gmail.com"));
+        User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
+        User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
 
-        Assertions.assertFalse(tweets.get(0).getLikes().contains(users.get(1)));
-        Assertions.assertEquals( 1, tweets.get(0).getLikes().size());
+        tweet1.setUser(user1);
+
+        tweet1.addLike(user1);
+        tweet1.addLike(user2);
+        tweet1.addLike(user3);
+
+        Assertions.assertEquals(3, tweet1.getLikes().size());
+
+        tweet1.removeLike(user1);
+
+        Assertions.assertEquals(2, tweet1.getLikes().size());
+
+
+        Assertions.assertFalse(tweet1.getLikes().contains(user1));
+        Assertions.assertTrue(tweet1.getLikes().contains(user2));
+        Assertions.assertTrue(tweet1.getLikes().contains(user3));
     }
+
 
     /**
      * Done
