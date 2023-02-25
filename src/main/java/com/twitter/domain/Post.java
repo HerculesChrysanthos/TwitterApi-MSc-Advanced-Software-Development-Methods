@@ -21,7 +21,7 @@ public abstract class Post {
     private Integer id;
 
     @Column(name = "createdAt")
-    private LocalDateTime dateTime;
+    private LocalDateTime dateTime = SystemDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
@@ -48,7 +48,6 @@ public abstract class Post {
 
     public Post(User user) {
         this.user = user;
-        this.dateTime = SystemDateTime.now();
     }
 
     public LocalDateTime getDateTime() {

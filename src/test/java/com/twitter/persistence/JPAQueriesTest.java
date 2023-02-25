@@ -3,9 +3,11 @@ package com.twitter.persistence;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import com.twitter.domain.Post;
+import com.twitter.domain.Reply;
 import com.twitter.domain.Tweet;
 import com.twitter.domain.User;
 import org.junit.jupiter.api.*;
@@ -96,4 +98,28 @@ public class JPAQueriesTest {
         Assertions.assertEquals("This is a reply to retweet #1", retweets.get(2).getReplies().iterator().next().getContent().getTweetContent());
     }
 
+    @Test
+    public void testDeleteTweetAndItsReplies() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
+        List<Post> tweets = query.getResultList();
+        Assertions.assertEquals( 3, tweets.size());
+
+        query = em.createQuery("select post from Post post where TYPE(post) = Reply");
+        List<Post> replies = query.getResultList();
+        Assertions.assertEquals(3, replies.size());
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        em.remove(tweets.get(0));
+        tx.commit();
+
+        query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
+        tweets = query.getResultList();
+        Assertions.assertEquals( 2, tweets.size());
+
+        query = em.createQuery("select post from Post post where TYPE(post) = Reply");
+        replies = query.getResultList();
+        Assertions.assertEquals( 1, replies.size());
     }
+}
