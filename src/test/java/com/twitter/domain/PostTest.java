@@ -1,10 +1,9 @@
 package com.twitter.domain;
 
-import com.twitter.util.SystemDate;
-import com.twitter.util.SystemDateStub;
+import com.twitter.util.SystemDateTime;
+import com.twitter.util.SystemDateTimeStub;
 import org.junit.jupiter.api.*;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class PostTest {
     Tweet tweet1;
@@ -30,7 +29,7 @@ public class PostTest {
         tweet1.addReply(reply1);
 
         Assertions.assertEquals( 1, tweet1.getReplies().size());
-        Assertions.assertEquals("This is a reply to tweet #1", tweet1.getReplies().iterator().next().getContent().getTweetBody());
+        Assertions.assertEquals("This is a reply to tweet #1", tweet1.getReplies().iterator().next().getContent().getTweetContent());
     }
 
     /**
@@ -47,7 +46,7 @@ public class PostTest {
 
         Assertions.assertEquals( 1, tweet1.getReplies().size());
         Assertions.assertEquals( 1, reply1.getReplies().size());
-        Assertions.assertEquals("This is a reply to reply #1", reply1.getReplies().iterator().next().getContent().getTweetBody());
+        Assertions.assertEquals("This is a reply to reply #1", reply1.getReplies().iterator().next().getContent().getTweetContent());
     }
 
     /**
@@ -79,7 +78,7 @@ public class PostTest {
 
         Assertions.assertEquals( 1, tweet1.getRetweets().size());
         Assertions.assertEquals( 1, retweet1.getReplies().size());
-        Assertions.assertEquals("This is a reply to retweet #1", retweet1.getReplies().iterator().next().getContent().getTweetBody());
+        Assertions.assertEquals("This is a reply to retweet #1", retweet1.getReplies().iterator().next().getContent().getTweetContent());
     }
 
 
@@ -353,14 +352,15 @@ public class PostTest {
 
     @Test
     public void testTweetGetDateTime() {
-        LocalDate now = LocalDate.of(2023, 2, 25);
-        SystemDateStub.setStub(now);
+        LocalDateTime now = LocalDateTime.of(2023, 2, 25, 2, 40, 50);
+        SystemDateTimeStub.setStub(now);
 
         User user4 = new User("user4", "1", new DateOfBirth(1,1,2004), new EmailAddress("email4@gmail.com"));
         Tweet tweet1 = new Tweet(new TweetBody("This is tweet #1"));
+        tweet1.setDateTime(LocalDateTime.of(2023, 2, 25, 2, 40, 50));
         tweet1.setUser(user4);
 
-        Assertions.assertEquals(SystemDate.now(), tweet1.getDateTime());
-        SystemDateStub.reset();
+        Assertions.assertEquals(SystemDateTime.now(), tweet1.getDateTime());
+        SystemDateTimeStub.reset();
     }
 }
