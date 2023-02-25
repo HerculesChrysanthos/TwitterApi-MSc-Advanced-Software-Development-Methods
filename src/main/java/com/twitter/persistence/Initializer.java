@@ -25,7 +25,7 @@ public class Initializer  {
     public void prepareData() {
         eraseData();
 
-        EntityManager em = JPAUtil.getCurrentEntityManager();
+        EntityManager em = JPAUtil.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
