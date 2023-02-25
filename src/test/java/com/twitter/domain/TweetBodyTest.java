@@ -7,59 +7,59 @@ public class TweetBodyTest {
 
     @Test
     public void testDefaultConstructor() {
-        TweetBody tweetBody = new TweetBody();
-        Assertions.assertNull(tweetBody.getTweetBody());
+        TweetBody tweetContent = new TweetBody();
+        Assertions.assertNull(tweetContent.getTweetContent());
     }
 
     @Test
     public void testConstructorWithValidTweetBody() {
         String validTweetBody = "Hello, world!";
-        TweetBody tweetBody = new TweetBody(validTweetBody);
+        TweetBody tweetContent = new TweetBody(validTweetBody);
 
-        Assertions.assertEquals(validTweetBody, tweetBody.getTweetBody());
+        Assertions.assertEquals(validTweetBody, tweetContent.getTweetContent());
     }
 
     @Test
     public void testIsValidWithValidTweetBody() {
         String validTweetBody = "Hello, world!";
-        TweetBody tweetBody = new TweetBody();
+        TweetBody tweetContent = new TweetBody();
 
-        Assertions.assertTrue(tweetBody.isValid(validTweetBody));
+        Assertions.assertTrue(tweetContent.isValid(validTweetBody));
     }
 
     @Test
     public void testConstructorWithInvalidTweetBody() {
         String invalidTweetBody = "This tweet body is too long for the max length allowed";
-        TweetBody tweetBody = new TweetBody(invalidTweetBody);
+        TweetBody tweetContent = new TweetBody(invalidTweetBody);
 
-        Assertions.assertNull(tweetBody.getTweetBody());
+        Assertions.assertNull(tweetContent.getTweetContent());
     }
 
     @Test
     public void testEquals() {
-        String tweetBodyText = "Hello, world!";
-        TweetBody tweetBody1 = new TweetBody(tweetBodyText);
-        TweetBody tweetBody2 = new TweetBody(tweetBodyText);
-        TweetBody tweetBody3 = new TweetBody("Another tweet body");
+        String tweetContentText = "Hello, world!";
+        TweetBody tweetContent1 = new TweetBody(tweetContentText);
+        TweetBody tweetContent2 = new TweetBody(tweetContentText);
+        TweetBody tweetContent3 = new TweetBody("Another tweet body");
 
-        Assertions.assertEquals(tweetBody1, tweetBody2);
-        Assertions.assertNotEquals(tweetBody1, tweetBody3);
+        Assertions.assertEquals(tweetContent1, tweetContent2);
+        Assertions.assertNotEquals(tweetContent1, tweetContent3);
     }
 
     @Test
     public void testHashCode() {
-        String tweetBodyText = "Hello, world!";
-        TweetBody tweetBody1 = new TweetBody(tweetBodyText);
-        TweetBody tweetBody2 = new TweetBody(tweetBodyText);
+        String tweetContentText = "Hello, world!";
+        TweetBody tweetContent1 = new TweetBody(tweetContentText);
+        TweetBody tweetContent2 = new TweetBody(tweetContentText);
 
-        Assertions.assertEquals(tweetBody1.hashCode(), tweetBody2.hashCode());
+        Assertions.assertEquals(tweetContent1.hashCode(), tweetContent2.hashCode());
     }
 
     @Test
     public void testSetAndGetTweetBody(){
-        TweetBody tweetBody = new TweetBody();
-        tweetBody.setTweetBody("This is a tweet body");
+        TweetBody tweetContent = new TweetBody();
+        tweetContent.setTweetContent("This is a tweet body");
 
-        Assertions.assertEquals("This is a tweet body", tweetBody.getTweetBody());
+        Assertions.assertEquals("This is a tweet body", tweetContent.getTweetContent());
     }
 }

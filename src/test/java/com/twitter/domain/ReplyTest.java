@@ -14,11 +14,11 @@ public class ReplyTest {
 
     @Test
     public void testSetAndGetContent(){
-        TweetBody tweetBody = new TweetBody("This is a tweet");
+        TweetBody tweetContent = new TweetBody("This is a tweet");
         Reply reply = new Reply();
-        reply.setContent(tweetBody);
+        reply.setContent(tweetContent);
 
-        Assertions.assertEquals("This is a tweet", reply.getContent().getTweetBody());
+        Assertions.assertEquals("This is a tweet", reply.getContent().getTweetContent());
     }
 
     @Test

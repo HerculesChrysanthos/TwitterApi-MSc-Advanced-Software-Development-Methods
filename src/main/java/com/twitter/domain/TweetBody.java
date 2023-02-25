@@ -10,8 +10,8 @@ import java.util.Objects;
 @Embeddable
 public class TweetBody {
     @NotNull
-    @Column(name = "tweetBody", length = 50)
-    private String tweetBody;
+    @Column(name = "tweetContent", length = 50)
+    private String tweetContent;
 
     @NotNull
     @Column(name = "maxNumOfChars")
@@ -19,22 +19,22 @@ public class TweetBody {
 
     public TweetBody() { }
 
-    public TweetBody(String tweetBody) {
-        if (isValid(tweetBody)) {
-            this.tweetBody = tweetBody;
+    public TweetBody(String tweetContent) {
+        if (isValid(tweetContent)) {
+            this.tweetContent = tweetContent;
         }
     }
 
-    public String getTweetBody() {
-        return tweetBody;
+    public String getTweetContent() {
+        return tweetContent;
     }
 
-    public void setTweetBody(String tweetBody) {
-        this.tweetBody = tweetBody;
+    public void setTweetContent(String tweetContent) {
+        this.tweetContent = tweetContent;
     }
 
-    public boolean isValid(String tweetBody) {
-        if (tweetBody.length() > maxNumOfChars) {
+    public boolean isValid(String tweetContent) {
+        if (tweetContent.length() > maxNumOfChars) {
             return false;
         } else {
             return true;
@@ -45,12 +45,12 @@ public class TweetBody {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TweetBody tweetBody1 = (TweetBody) o;
-        return tweetBody.equals(tweetBody1.tweetBody);
+        TweetBody tweetContent1 = (TweetBody) o;
+        return tweetContent.equals(tweetContent1.tweetContent);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tweetBody);
+        return Objects.hash(tweetContent);
     }
 }

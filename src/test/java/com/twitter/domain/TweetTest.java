@@ -7,10 +7,10 @@ public class TweetTest {
 
     @Test
     public void testSetAndGetTweetBody(){
-        TweetBody tweetBody = new TweetBody("This is a tweet body");
+        TweetBody tweetContent = new TweetBody("This is a tweet body");
         Tweet tweet = new Tweet();
-        tweet.setTweetBody(tweetBody);
+        tweet.setTweetBody(tweetContent);
 
-        Assertions.assertEquals(tweetBody, tweet.getTweetBody());
+        Assertions.assertEquals(tweetContent, tweet.getTweetBody());
     }
 }

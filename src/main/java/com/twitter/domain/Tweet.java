@@ -19,7 +19,7 @@ public class Tweet extends Post {
         return content;
     }
 
-    public void setTweetBody(TweetBody tweetBody) {
-        this.content = tweetBody;
+    public void setTweetBody(TweetBody tweetContent) {
+        this.content = tweetContent;
     }
 }
