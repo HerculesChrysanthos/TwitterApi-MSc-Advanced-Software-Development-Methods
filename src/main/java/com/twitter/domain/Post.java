@@ -1,9 +1,10 @@
 package com.twitter.domain;
 
-import com.twitter.util.SystemDate;
+import com.twitter.util.SystemDateTime;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +21,7 @@ public abstract class Post {
     private Integer id;
 
     @Column(name = "createdAt")
-    private LocalDate dateTime = SystemDate.now();
+    private LocalDateTime dateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
@@ -47,10 +48,15 @@ public abstract class Post {
 
     public Post(User user) {
         this.user = user;
+        this.dateTime = SystemDateTime.now();
     }
 
-    public LocalDate getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public User getUser() {
