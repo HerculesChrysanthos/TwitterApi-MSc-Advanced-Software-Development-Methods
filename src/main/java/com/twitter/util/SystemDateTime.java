@@ -1,29 +1,29 @@
 package com.twitter.util;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public class SystemDate {
+public class SystemDateTime {
 
     /**
      * Απαγορεύουμε τη δημιουργία αντικείμενων.
      */
-    protected SystemDate() { }
+    protected SystemDateTime() { }
 
-    private static LocalDate stub;
+    private static LocalDateTime stub;
 
 
     /**
      * Θέτει μία συγκεκριμένη ημερομηνία ως την ημερομηνία του συστήματος.
-     * Η ημερομηνία αυτή επιστρέφεται από την {@link SystemDate#now()}.
+     * Η ημερομηνία αυτή επιστρέφεται από την {@link SystemDateTime#now()}.
      * Εάν αντί για προκαθορισμένης ημερομηνίας τεθεί
      * {@code null} τότε επιστρέφεται
      * η πραγματική ημερομηνία του συστήματος
-     * @param stubDate Η ημερομηνία η οποία θα επιστρέφεται
+     * @param stubDateTime Η ημερομηνία η οποία θα επιστρέφεται
      * ως ημερομηνία του συστήματος ή {@code null} για
      * να επιστρέφει την πραγματική ημερομηνία
      */
-    protected static void setStub(LocalDate stubDate) {
-        stub = stubDate;
+    protected static void setStub(LocalDateTime stubDateTime) {
+        stub = stubDateTime;
     }
 
     /**
@@ -36,10 +36,10 @@ public class SystemDate {
     /**
      * Επιστρέφει την ημερομηνία του συστήματος ή μία
      * προκαθορισμένη ημερομηνία που έχει
-     * τεθεί από την {@link SystemDate#setStub}.
+     * τεθεί από την {@link SystemDateTime#setStub}.
      * @return Η ημερομηνία του συστήματος ή μία προκαθορισμένη ημερομηνία
      */
-    public static LocalDate now() {
-        return stub == null ? LocalDate.now() : stub;
+    public static LocalDateTime now() {
+        return stub == null ? LocalDateTime.now() : stub;
     }
 }
