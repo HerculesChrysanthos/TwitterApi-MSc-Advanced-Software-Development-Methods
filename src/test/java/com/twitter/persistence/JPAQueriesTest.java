@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import com.twitter.domain.Post;
 import com.twitter.domain.Tweet;
 import com.twitter.domain.User;
 import org.junit.jupiter.api.*;
@@ -62,4 +63,37 @@ public class JPAQueriesTest {
 
         Assertions.assertFalse(users.get(0).followUser(users.get(1)));
     }
-}
+
+    @Test
+    public void testAddReplyToTweet() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
+        List<Post> tweets = query.getResultList();
+
+        Assertions.assertEquals( 1, tweets.get(0).getReplies().size());
+        Assertions.assertEquals("This is a reply to tweet #1", tweets.get(0).getReplies().iterator().next().getContent().getTweetBody());
+    }
+
+    @Test
+    public void testAddReplyToReply() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Reply");
+        List<Post> replies = query.getResultList();
+
+        Assertions.assertEquals( 3, replies.size());
+        Assertions.assertEquals( 1, replies.get(0).getReplies().size());
+        Assertions.assertEquals("This is a reply to reply #1", replies.get(0).getReplies().iterator().next().getContent().getTweetBody());
+    }
+
+    @Test
+    public void testAddReplyToRetweet() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet");
+        List<Post> retweets = query.getResultList();
+        Assertions.assertEquals(3, retweets.size());
+        Assertions.assertEquals(1, retweets.get(2).getReplies().size());
+
+        Assertions.assertEquals("This is a reply to retweet #1", retweets.get(2).getReplies().iterator().next().getContent().getTweetBody());
+    }
+
+    }
