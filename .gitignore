@@ -9,4 +9,5 @@
 /.settings
 test.mv.db
 test.trace.db
-/.mvn/
+/.apt_generated/
+/.apt_generated_tests/
