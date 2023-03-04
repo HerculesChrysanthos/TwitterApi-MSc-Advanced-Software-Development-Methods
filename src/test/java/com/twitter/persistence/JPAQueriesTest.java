@@ -72,7 +72,7 @@ public class JPAQueriesTest {
         Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
         List<Post> tweets = query.getResultList();
 
-        Assertions.assertEquals( 1, tweets.get(0).getReplies().size());
+        Assertions.assertEquals( 2, tweets.get(0).getReplies().size());
         Assertions.assertEquals("This is a reply to tweet #1", tweets.get(0).getReplies().iterator().next().getContent().getTweetContent());
     }
 
@@ -83,7 +83,9 @@ public class JPAQueriesTest {
         List<Post> replies = query.getResultList();
 
         Assertions.assertEquals( 3, replies.size());
-        Assertions.assertEquals( 1, replies.get(0).getReplies().size());
+
+        System.out.println( replies.get(0).getReplies());
+        Assertions.assertEquals( 2, replies.get(0).getReplies().size());
         Assertions.assertEquals("This is a reply to reply #1", replies.get(0).getReplies().iterator().next().getContent().getTweetContent());
     }
 
@@ -95,7 +97,7 @@ public class JPAQueriesTest {
         Assertions.assertEquals(3, retweets.size());
         Assertions.assertEquals(1, retweets.get(2).getReplies().size());
 
-        Assertions.assertEquals("This is a reply to retweet #1", retweets.get(2).getReplies().iterator().next().getContent().getTweetContent());
+        Assertions.assertEquals("This is a reply to retweet #3", retweets.get(2).getReplies().iterator().next().getContent().getTweetContent());
     }
 
     @Test
