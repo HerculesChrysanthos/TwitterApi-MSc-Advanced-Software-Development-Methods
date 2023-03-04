@@ -56,7 +56,7 @@ public class PostTest {
     public void testAddRetweetToTweet() {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
 
-        Retweet retweet1 = new Retweet(user2);
+        Retweet retweet1 = new Retweet(user2, tweet1);
         tweet1.addRetweet(retweet1);
 
         Assertions.assertEquals( 1, tweet1.getRetweets().size());
@@ -70,7 +70,7 @@ public class PostTest {
     public void testAddReplyToRetweet() {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
 
-        Retweet retweet1 = new Retweet(user2);
+        Retweet retweet1 = new Retweet(user2, tweet1);
         tweet1.addRetweet(retweet1);
 
         Reply reply1 = new Reply(user1, retweet1, new TweetBody("This is a reply to retweet #1"));
@@ -92,7 +92,7 @@ public class PostTest {
         Reply reply1 = new Reply(user1, tweet1, new TweetBody("This is a reply to tweet #1"));
         tweet1.addReply(reply1);
 
-        Retweet retweet1 = new Retweet(user2);
+        Retweet retweet1 = new Retweet(user2, reply1);
         reply1.addRetweet(retweet1);
         Assertions.assertEquals( 1, reply1.getRetweets().size());
 
@@ -106,10 +106,10 @@ public class PostTest {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
         User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
 
-        Retweet retweet1 = new Retweet(user2);
+        Retweet retweet1 = new Retweet(user2, tweet1);
         tweet1.addRetweet(retweet1);
 
-        Retweet retweet2 = new Retweet(user3);
+        Retweet retweet2 = new Retweet(user3, retweet1);
         retweet1.addRetweet(retweet2);
 
         Assertions.assertEquals( 1, tweet1.getRetweets().size());
@@ -124,10 +124,10 @@ public class PostTest {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
         User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
 
-        Retweet retweet1 = new Retweet(user2);
+        Retweet retweet1 = new Retweet(user2, tweet1);
         tweet1.addRetweet(retweet1);
 
-        Retweet retweet2 = new Retweet(user3);
+        Retweet retweet2 = new Retweet(user3, tweet1);
         tweet1.addRetweet(retweet2);
 
         Assertions.assertEquals( 2, tweet1.getRetweets().size());
@@ -205,7 +205,7 @@ public class PostTest {
         tweet1.addLike(user1);
         tweet1.addLike(user2);
 
-        Retweet retweet1 = new Retweet(user3);
+        Retweet retweet1 = new Retweet(user3, tweet1);
         tweet1.addRetweet(retweet1);
 
         retweet1.addLike(user3);
@@ -221,7 +221,7 @@ public class PostTest {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
         User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
 
-        Retweet retweet1 = new Retweet(user2);
+        Retweet retweet1 = new Retweet(user2, tweet1);
         tweet1.addRetweet(retweet1);
 
         retweet1.addLike(user3);
@@ -319,7 +319,7 @@ public class PostTest {
         tweet1.addLike(user2);
         tweet1.addLike(user3);
 
-        Retweet retweet1 = new Retweet(user3);
+        Retweet retweet1 = new Retweet(user3, tweet1);
         tweet1.addRetweet(retweet1);
 
         retweet1.addLike(user1);
@@ -341,7 +341,7 @@ public class PostTest {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
         User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
 
-        Retweet retweet1 = new Retweet(user3);
+        Retweet retweet1 = new Retweet(user3, tweet1);
         tweet1.addRetweet(retweet1);
 
         retweet1.addLike(user2);
