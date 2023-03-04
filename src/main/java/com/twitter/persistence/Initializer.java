@@ -53,16 +53,17 @@ public class Initializer  {
         reply1.addReply(reply2);
 
         // Retweet to Tweet
-        Retweet retweet1 = new Retweet(user3);
+        Retweet retweet1 = new Retweet(user3, tweet1);
         tweet1.addRetweet(retweet1);
 
         // Retweet to Reply
-        Retweet retweet2 = new Retweet(user3);
+        Retweet retweet2 = new Retweet(user3, reply1);
         reply1.addRetweet(retweet2);
 
-        Retweet retweet3 = new Retweet(user3);
+        // Reply to Retweet
+        Retweet retweet3 = new Retweet(user3, tweet3);
 
-        Reply reply3 = new Reply(user3, retweet3, new TweetBody("This is a reply to retweet #1"));
+        Reply reply3 = new Reply(user3, retweet3, new TweetBody("This is a reply to retweet #3"));
         retweet3.addReply(reply3);
 
         em.persist(user1);
