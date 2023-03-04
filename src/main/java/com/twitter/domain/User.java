@@ -1,6 +1,9 @@
 package com.twitter.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -16,21 +19,28 @@ public class User {
     @Column(name = "password", length = 30, nullable = false)
     private String password;
 
-    @Column(name = "email", length = 30, nullable = false, unique = true)
-    private String email;
+    @Embedded
+    private EmailAddress email;
 
-    @Column(name = "followersCount")
-    private Integer followersCount;
+    @Embedded
+    private DateOfBirth dateOfBirth;
 
-    @Column(name = "followingCount")
-    private Integer followingCount;
+    // if you delete a following user, you don't delete and the user
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "following_users",
+            joinColumns = { @JoinColumn(name = "following")},
+            inverseJoinColumns = { @JoinColumn(name = "userId")}
+    )
+    private Set<User> following = new HashSet<User>();
 
     public User() { }
 
-    public User (String username, String password, String email) {
+    public User(String username, String password, DateOfBirth dateOfBirth, EmailAddress email) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getUsername() {
@@ -49,27 +59,49 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
+    public EmailAddress getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(EmailAddress email) {
         this.email = email;
     }
 
-    public Integer getFollowersCount() {
-        return followersCount;
+    public DateOfBirth getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setFollowersCount(Integer followersCount) {
-        this.followersCount = followersCount;
+    public void setDateOfBirth(DateOfBirth dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
-    public Integer getFollowingCount() {
-        return followingCount;
+    public Set<User> getFollowing() {
+        return following;
     }
 
-    public void setFollowingCount(Integer followingCount) {
-        this.followingCount = followingCount;
+    public void setFollowing(User followingUser) {
+        this.following.add(followingUser);
+    }
+
+    public boolean followUser(User user) {
+        if (this.following.contains(user) || this.equals(user)) {
+            return false;
+        }
+        this.setFollowing(user);
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return username.equals(user.username) && email.equals(user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, email);
     }
 }
+

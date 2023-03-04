@@ -1,49 +1,129 @@
 package com.twitter.persistence;
- 
+
 import java.util.List;
- 
+
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
+import com.twitter.domain.Post;
+import com.twitter.domain.Reply;
 import com.twitter.domain.Tweet;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-
-import com.twitter.persistence.Initializer;
-import com.twitter.persistence.JPAUtil;
+import com.twitter.domain.User;
+import org.junit.jupiter.api.*;
 
 public class JPAQueriesTest {
-    private EntityManager em;
 
     @BeforeEach
     public void setUp() {
         Initializer dataHelper = new Initializer();
         dataHelper.prepareData();
-
-        em = JPAUtil.getCurrentEntityManager();
     }
 
     @AfterEach
-    public void tearDown() {
-        em.close();
-    }
+    public void tearDown() { }
 
     @Test
     public void listTweets() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
         Query query = em.createQuery("select tweet from Tweet tweet");
         List<Tweet> results = query.getResultList();
 
-        Assertions.assertEquals(1,results.size());
+        Assertions.assertEquals(3,results.size());
+    }
 
-        Tweet tweet = results.get(0);
+    @Test
+    public void listUsers() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select user from User user");
+        List<User> results = query.getResultList();
 
-        Assertions.assertEquals(tweet.getLikeCount(), 0);
-        Assertions.assertEquals(tweet.getRetweetCount(), 0);
-        Assertions.assertEquals(tweet.getTweetBody(), "My first tweet");
-        Assertions.assertEquals(tweet.getUser().getUsername(), "nikolaslepidas");
-        Assertions.assertEquals(tweet.getUser().getPassword(), "1234");
-        Assertions.assertEquals(tweet.getUser().getEmail(), "nl@gmail.com");
+        Assertions.assertEquals(3,results.size());
+    }
+
+    @Test
+    public void testGetFollowingUsers() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select user from User user");
+        List<User> users = query.getResultList();
+
+        Assertions.assertEquals(1, users.get(0).getFollowing().size());
+
+        Assertions.assertTrue(users.get(0).getFollowing().contains(users.get(1)));
+        Assertions.assertTrue(users.get(1).getFollowing().contains(users.get(2)));
+
+        Assertions.assertEquals(0, users.get(2).getFollowing().size());
+
+        Assertions.assertFalse(users.get(0).getFollowing().contains(users.get(2)));
+    }
+
+    @Test
+    public void testUserCanNotFollowAFollowingUser() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select user from User user");
+        List<User> users = query.getResultList();
+
+        Assertions.assertFalse(users.get(0).followUser(users.get(1)));
+    }
+
+    @Test
+    public void testAddReplyToTweet() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
+        List<Post> tweets = query.getResultList();
+
+        Query queryReplies = em.createQuery("select post from Post post where TYPE(post) = Reply");
+        List<Post> replies = queryReplies.getResultList();
+
+        Assertions.assertEquals( 2, tweets.get(0).getReplies().size());
+
+        Assertions.assertTrue(tweets.get(0).getReplies().contains(replies.get(0)));
+    }
+
+    @Test
+    public void testAddReplyToReply() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Reply");
+        List<Post> replies = query.getResultList();
+
+        Assertions.assertEquals( 3, replies.size());
+        Assertions.assertEquals( 2, replies.get(0).getReplies().size());
+        Assertions.assertTrue(replies.get(0).getReplies().contains(replies.get(1)));
+    }
+
+    @Test
+    public void testAddReplyToRetweet() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Retweet");
+        List<Post> retweets = query.getResultList();
+        Assertions.assertEquals(3, retweets.size());
+        Assertions.assertEquals(1, retweets.get(2).getReplies().size());
+
+        Assertions.assertEquals("This is a reply to retweet #3", retweets.get(2).getReplies().iterator().next().getContent().getTweetContent());
+    }
+
+    @Test
+    public void testDeleteTweetAndItsReplies() {
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Query query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
+        List<Post> tweets = query.getResultList();
+        Assertions.assertEquals( 3, tweets.size());
+
+        query = em.createQuery("select post from Post post where TYPE(post) = Reply");
+        List<Post> replies = query.getResultList();
+        Assertions.assertEquals(3, replies.size());
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        em.remove(tweets.get(0));
+        tx.commit();
+
+        query = em.createQuery("select post from Post post where TYPE(post) = Tweet");
+        tweets = query.getResultList();
+        Assertions.assertEquals( 2, tweets.size());
+
+        query = em.createQuery("select post from Post post where TYPE(post) = Reply");
+        replies = query.getResultList();
+        Assertions.assertEquals( 1, replies.size());
     }
 }
