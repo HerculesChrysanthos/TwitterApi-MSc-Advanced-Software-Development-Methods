@@ -8,7 +8,7 @@ public class RetweetTest {
     @Test
     public void testDefaultConstructor() {
         Retweet retweet = new Retweet();
-        Assertions.assertNull(retweet.getParentPost());
+        Assertions.assertNull(retweet.getOriginalPost());
         Assertions.assertNull(retweet.getUser());
     }
 
@@ -16,7 +16,7 @@ public class RetweetTest {
     public void testSetAndGetParentPost(){
         Tweet tweet = new Tweet(new TweetBody("This is a tweet"));
         Retweet retweet = new Retweet();
-        retweet.setParentPost(tweet);
-        Assertions.assertEquals(tweet, retweet.getParentPost());
+        retweet.setOriginalPost(tweet);
+        Assertions.assertEquals(tweet, retweet.getOriginalPost());
     }
 }

@@ -9,20 +9,20 @@ public class Retweet extends Post{
     // if you delete a retweet, you don't delete the post but only you update its set of replies
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "postId")
-    private Post parentPost;
+    private Post originalPost;
 
     public Retweet() { }
 
-    public Retweet(User user, Post parentPost) {
+    public Retweet(User user, Post originalPost) {
         super(user);
-        this.parentPost = parentPost;
+        this.originalPost = originalPost;
     }
 
-    public Post getParentPost() {
-        return parentPost;
+    public Post getOriginalPost() {
+        return originalPost;
     }
 
-    public void setParentPost(Post parentPost) {
-        this.parentPost = parentPost;
+    public void setOriginalPost(Post originalPost) {
+        this.originalPost = originalPost;
     }
 }
