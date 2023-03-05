@@ -14,7 +14,7 @@ public class Reply extends Post {
     @JoinColumn(name = "postId")
     private Post parentPost;
 
-    public Reply() { }
+    protected Reply() { }
 
     public Reply(User user, Post parentPost, TweetBody content) {
         super(user);

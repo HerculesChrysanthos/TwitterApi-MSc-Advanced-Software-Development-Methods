@@ -25,8 +25,7 @@ public class PostTest {
      */
     @Test
     public void testAddReplyToTweet() {
-        Reply reply1 = new Reply(user1, tweet1, new TweetBody("This is a reply to tweet #1"));
-        tweet1.addReply(reply1);
+        tweet1.addReply(user1, new TweetBody("This is a reply to tweet #1"));
 
         Assertions.assertEquals( 1, tweet1.getReplies().size());
         Assertions.assertEquals("This is a reply to tweet #1", tweet1.getReplies().iterator().next().getContent().getTweetContent());
@@ -37,16 +36,13 @@ public class PostTest {
      */
     @Test
     public void testAddReplyToReply() {
-        Reply reply1 = new Reply(user1, tweet1, new TweetBody("This is a reply to tweet #1"));
-        tweet1.addReply(reply1);
+        tweet1.addReply(user1, new TweetBody("This is a reply to tweet #1"));
 
-        Reply reply2 = new Reply(user1, reply1, new TweetBody("This is a reply to reply #1"));
-
-        reply1.addReply(reply2);
+        tweet1.getReplies().iterator().next().addReply(user1, new TweetBody("This is a reply to reply #1"));
 
         Assertions.assertEquals( 1, tweet1.getReplies().size());
-        Assertions.assertEquals( 1, reply1.getReplies().size());
-        Assertions.assertEquals("This is a reply to reply #1", reply1.getReplies().iterator().next().getContent().getTweetContent());
+        Assertions.assertEquals( 1, tweet1.getReplies().iterator().next().getReplies().size());
+        Assertions.assertEquals("This is a reply to reply #1", tweet1.getReplies().iterator().next().getReplies().iterator().next().getContent().getTweetContent());
     }
 
     /**
@@ -56,11 +52,9 @@ public class PostTest {
     public void testAddRetweetToTweet() {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
 
-        Retweet retweet1 = new Retweet(user2, tweet1);
-        tweet1.addRetweet(retweet1);
+        tweet1.addRetweet(user2);
 
         Assertions.assertEquals( 1, tweet1.getRetweets().size());
-
     }
 
     /**
@@ -70,15 +64,13 @@ public class PostTest {
     public void testAddReplyToRetweet() {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
 
-        Retweet retweet1 = new Retweet(user2, tweet1);
-        tweet1.addRetweet(retweet1);
+        tweet1.addRetweet(user2);
 
-        Reply reply1 = new Reply(user1, retweet1, new TweetBody("This is a reply to retweet #1"));
-        retweet1.addReply(reply1);
+        tweet1.getRetweets().iterator().next().addReply(user1, new TweetBody("This is a reply to retweet #1"));
 
         Assertions.assertEquals( 1, tweet1.getRetweets().size());
-        Assertions.assertEquals( 1, retweet1.getReplies().size());
-        Assertions.assertEquals("This is a reply to retweet #1", retweet1.getReplies().iterator().next().getContent().getTweetContent());
+        Assertions.assertEquals( 1, tweet1.getRetweets().iterator().next().getReplies().size());
+        Assertions.assertEquals("This is a reply to retweet #1", tweet1.getRetweets().iterator().next().getReplies().iterator().next().getContent().getTweetContent());
     }
 
 
@@ -89,12 +81,10 @@ public class PostTest {
     public void testAddRetweetToReply() {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
 
-        Reply reply1 = new Reply(user1, tweet1, new TweetBody("This is a reply to tweet #1"));
-        tweet1.addReply(reply1);
+        tweet1.addReply(user1, new TweetBody("This is a reply to tweet #1"));
 
-        Retweet retweet1 = new Retweet(user2, reply1);
-        reply1.addRetweet(retweet1);
-        Assertions.assertEquals( 1, reply1.getRetweets().size());
+        tweet1.getReplies().iterator().next().addRetweet(user2);
+        Assertions.assertEquals( 1, tweet1.getReplies().iterator().next().getRetweets().size());
 
     }
 
@@ -106,14 +96,12 @@ public class PostTest {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
         User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
 
-        Retweet retweet1 = new Retweet(user2, tweet1);
-        tweet1.addRetweet(retweet1);
+        tweet1.addRetweet(user2);
 
-        Retweet retweet2 = new Retweet(user3, retweet1);
-        retweet1.addRetweet(retweet2);
+        tweet1.getRetweets().iterator().next().addRetweet(user3);
 
         Assertions.assertEquals( 1, tweet1.getRetweets().size());
-        Assertions.assertEquals( 1, retweet1.getRetweets().size());
+        Assertions.assertEquals( 1, tweet1.getRetweets().iterator().next().getRetweets().size());
     }
 
     /**
@@ -124,11 +112,8 @@ public class PostTest {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
         User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
 
-        Retweet retweet1 = new Retweet(user2, tweet1);
-        tweet1.addRetweet(retweet1);
-
-        Retweet retweet2 = new Retweet(user3, tweet1);
-        tweet1.addRetweet(retweet2);
+        tweet1.addRetweet(user2);
+        tweet1.addRetweet(user3);
 
         Assertions.assertEquals( 2, tweet1.getRetweets().size());
     }
@@ -171,14 +156,13 @@ public class PostTest {
         tweet1.addLike(user1);
         tweet1.addLike(user2);
 
-        Reply reply1 = new Reply(user1, tweet1, new TweetBody("This is a reply to tweet #1"));
-        tweet1.addReply(reply1);
+        tweet1.addReply(user1, new TweetBody("This is a reply to tweet #1"));
 
-        reply1.addLike(user3);
+        tweet1.getReplies().iterator().next().addLike(user3);
 
-        Assertions.assertEquals(1, reply1.getLikes().size());
-        Assertions.assertTrue(reply1.getLikes().contains(user3));
-        Assertions.assertFalse(reply1.getLikes().contains(user2));
+        Assertions.assertEquals(1, tweet1.getReplies().iterator().next().getLikes().size());
+        Assertions.assertTrue(tweet1.getReplies().iterator().next().getLikes().contains(user3));
+        Assertions.assertFalse(tweet1.getReplies().iterator().next().getLikes().contains(user2));
     }
 
     @Test
@@ -187,7 +171,7 @@ public class PostTest {
         User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
 
         Reply reply1 = new Reply(user2, tweet1, new TweetBody("This is a reply to tweet #1"));
-        tweet1.addReply(reply1);
+        tweet1.addReply(user2, new TweetBody("This is a reply to tweet #1"));
 
         reply1.addLike(user3);
 
@@ -205,14 +189,13 @@ public class PostTest {
         tweet1.addLike(user1);
         tweet1.addLike(user2);
 
-        Retweet retweet1 = new Retweet(user3, tweet1);
-        tweet1.addRetweet(retweet1);
+        tweet1.addRetweet(user3);
 
-        retweet1.addLike(user3);
+        tweet1.getRetweets().iterator().next().addLike(user3);
 
-        Assertions.assertEquals(1, retweet1.getLikes().size());
-        Assertions.assertTrue(retweet1.getLikes().contains(user3));
-        Assertions.assertFalse(retweet1.getLikes().contains(user2));
+        Assertions.assertEquals(1, tweet1.getRetweets().iterator().next().getLikes().size());
+        Assertions.assertTrue(tweet1.getRetweets().iterator().next().getLikes().contains(user3));
+        Assertions.assertFalse(tweet1.getRetweets().iterator().next().getLikes().contains(user2));
 
     }
 
@@ -221,12 +204,11 @@ public class PostTest {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
         User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
 
-        Retweet retweet1 = new Retweet(user2, tweet1);
-        tweet1.addRetweet(retweet1);
+        tweet1.addRetweet(user2);
 
-        retweet1.addLike(user3);
+        tweet1.getRetweets().iterator().next().addLike(user3);
 
-        Assertions.assertFalse(retweet1.addLike(user3));
+        Assertions.assertFalse(tweet1.getRetweets().iterator().next().addLike(user3));
     }
 
     /**
@@ -253,7 +235,7 @@ public class PostTest {
     }
 
     @Test
-    public void testUserCanNotRemoveAlreadyRemovedLikeFromTweet(){
+    public void testUserCanNotRemoveAlreadyRemovedLikeFromTweet() {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
 
         tweet1.addLike(user2);
@@ -275,36 +257,34 @@ public class PostTest {
         tweet1.addLike(user2);
         tweet1.addLike(user3);
 
-        Reply reply1 = new Reply(user1, tweet1, new TweetBody("This is a reply to tweet #1"));
-        tweet1.addReply(reply1);
+        tweet1.addReply(user1, new TweetBody("This is a reply to tweet #1"));
 
-        reply1.addLike(user2);
-        reply1.addLike(user3);
+        tweet1.getReplies().iterator().next().addLike(user2);
+        tweet1.getReplies().iterator().next().addLike(user3);
 
-        Assertions.assertEquals(2, reply1.getLikes().size());
+        Assertions.assertEquals(2, tweet1.getReplies().iterator().next().getLikes().size());
 
-        reply1.removeLike(user2);
+        tweet1.getReplies().iterator().next().removeLike(user2);
 
-        Assertions.assertEquals(1, reply1.getLikes().size());
+        Assertions.assertEquals(1, tweet1.getReplies().iterator().next().getLikes().size());
 
-        Assertions.assertFalse(reply1.getLikes().contains(user1));
-        Assertions.assertFalse(reply1.getLikes().contains(user2));
-        Assertions.assertTrue(reply1.getLikes().contains(user3));
+        Assertions.assertFalse(tweet1.getReplies().iterator().next().getLikes().contains(user1));
+        Assertions.assertFalse(tweet1.getReplies().iterator().next().getLikes().contains(user2));
+        Assertions.assertTrue(tweet1.getReplies().iterator().next().getLikes().contains(user3));
     }
 
     @Test
-    public void testUserCanNotRemoveAlreadyRemovedLikeFromReply(){
+    public void testUserCanNotRemoveAlreadyRemovedLikeFromReply() {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
         User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
 
-        Reply reply1 = new Reply(user2, tweet1, new TweetBody("This is a reply to tweet #1"));
-        tweet1.addReply(reply1);
+        tweet1.addReply(user2, new TweetBody("This is a reply to tweet #1"));
 
         tweet1.setUser(user1);
-        reply1.addLike(user3);
-        reply1.removeLike(user3);
+        tweet1.getReplies().iterator().next().addLike(user3);
+        tweet1.getReplies().iterator().next().removeLike(user3);
 
-        Assertions.assertFalse(reply1.removeLike(user3));
+        Assertions.assertFalse(tweet1.getReplies().iterator().next().removeLike(user3));
     }
 
     /**
@@ -319,33 +299,31 @@ public class PostTest {
         tweet1.addLike(user2);
         tweet1.addLike(user3);
 
-        Retweet retweet1 = new Retweet(user3, tweet1);
-        tweet1.addRetweet(retweet1);
+        tweet1.addRetweet(user3);
 
-        retweet1.addLike(user1);
-        retweet1.addLike(user2);
+        tweet1.getRetweets().iterator().next().addLike(user1);
+        tweet1.getRetweets().iterator().next().addLike(user2);
 
-        Assertions.assertEquals(2, retweet1.getLikes().size());
+        Assertions.assertEquals(2, tweet1.getRetweets().iterator().next().getLikes().size());
 
-        retweet1.removeLike(user2);
+        tweet1.getRetweets().iterator().next().removeLike(user2);
 
-        Assertions.assertEquals(1, retweet1.getLikes().size());
+        Assertions.assertEquals(1, tweet1.getRetweets().iterator().next().getLikes().size());
 
-        Assertions.assertTrue(retweet1.getLikes().contains(user1));
-        Assertions.assertFalse(retweet1.getLikes().contains(user2));
-        Assertions.assertFalse(retweet1.getLikes().contains(user3));
+        Assertions.assertTrue(tweet1.getRetweets().iterator().next().getLikes().contains(user1));
+        Assertions.assertFalse(tweet1.getRetweets().iterator().next().getLikes().contains(user2));
+        Assertions.assertFalse(tweet1.getRetweets().iterator().next().getLikes().contains(user3));
     }
 
     @Test
-    public void testUserCanNotRemoveAlreadyRemovedLikeFromRetweet(){
+    public void testUserCanNotRemoveAlreadyRemovedLikeFromRetweet() {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
         User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
 
-        Retweet retweet1 = new Retweet(user3, tweet1);
-        tweet1.addRetweet(retweet1);
+        tweet1.addRetweet(user3);
 
-        retweet1.addLike(user2);
-        retweet1.removeLike(user2);
+        tweet1.getRetweets().iterator().next().addLike(user2);
+        tweet1.getRetweets().iterator().next().removeLike(user2);
 
         Assertions.assertFalse(tweet1.removeLike(user2));
     }
