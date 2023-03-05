@@ -73,11 +73,13 @@ public abstract class Post {
         return replies;
     }
 
-    public void addReply(Reply newReply) {
+    public void addReply(User user, TweetBody content) {
+        Reply newReply = new Reply(user, this, content);
         this.replies.add(newReply);
     }
 
-    public void addRetweet(Retweet newRetweet) {
+    public void addRetweet(User user) {
+        Retweet newRetweet = new Retweet(user, this);
         this.retweets.add(newRetweet);
     }
 

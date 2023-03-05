@@ -45,26 +45,21 @@ public class Initializer  {
         user2.setFollowing(user3);
 
         // Reply to Tweet
-        Reply reply1 = new Reply(user1, tweet1, new TweetBody("This is a reply to tweet #1"));
-        tweet1.addReply(reply1);
+        tweet1.addReply(user1, new TweetBody("This is a reply to tweet #1"));
 
         // Reply to Reply
-        Reply reply2 = new Reply(user3, reply1, new TweetBody("This is a reply to reply #1"));
-        reply1.addReply(reply2);
+        tweet1.getReplies().iterator().next().addReply(user3, new TweetBody("This is a reply to reply #1"));
 
         // Retweet to Tweet
-        Retweet retweet1 = new Retweet(user3, tweet1);
-        tweet1.addRetweet(retweet1);
+        tweet1.addRetweet(user3);
 
         // Retweet to Reply
-        Retweet retweet2 = new Retweet(user3, reply1);
-        reply1.addRetweet(retweet2);
+        tweet2.addReply(user1, new TweetBody("This is a reply to tweet #2"));
+        tweet2.getReplies().iterator().next().addRetweet(user3);
 
         // Reply to Retweet
-        Retweet retweet3 = new Retweet(user3, tweet3);
-
-        Reply reply3 = new Reply(user3, retweet3, new TweetBody("This is a reply to retweet #3"));
-        retweet3.addReply(reply3);
+        tweet3.addRetweet(user2);
+        tweet3.getRetweets().iterator().next().addReply(user1, new TweetBody("This is a reply to retweet #3"));
 
         em.persist(user1);
         em.persist(user2);
@@ -73,8 +68,6 @@ public class Initializer  {
         em.persist(tweet1);
         em.persist(tweet2);
         em.persist(tweet3);
-
-        em.persist(reply3);
 
         tx.commit();
         em.close();

@@ -86,8 +86,8 @@ public class JPAQueriesTest {
         Query query = em.createQuery("select post from Post post where TYPE(post) = Reply");
         List<Post> replies = query.getResultList();
 
-        Assertions.assertEquals( 3, replies.size());
-        Assertions.assertEquals( 2, replies.get(0).getReplies().size());
+        Assertions.assertEquals( 4, replies.size());
+        Assertions.assertEquals( 1, replies.get(0).getReplies().size());
         Assertions.assertTrue(replies.get(0).getReplies().contains(replies.get(1)));
     }
 
@@ -111,7 +111,7 @@ public class JPAQueriesTest {
 
         query = em.createQuery("select post from Post post where TYPE(post) = Reply");
         List<Post> replies = query.getResultList();
-        Assertions.assertEquals(3, replies.size());
+        Assertions.assertEquals(4, replies.size());
 
         EntityTransaction tx = em.getTransaction();
         tx.begin();
@@ -124,6 +124,6 @@ public class JPAQueriesTest {
 
         query = em.createQuery("select post from Post post where TYPE(post) = Reply");
         replies = query.getResultList();
-        Assertions.assertEquals( 1, replies.size());
+        Assertions.assertEquals( 2, replies.size());
     }
 }
