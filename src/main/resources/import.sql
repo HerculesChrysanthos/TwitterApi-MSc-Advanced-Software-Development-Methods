@@ -1,9 +1,16 @@
--- delete from following_users;
--- delete from user_posts;
--- delete from posts_posts;
--- delete from posts;
--- delete from users;
+delete from following_users;
+delete from user_posts;
+delete from posts_posts;
+delete from posts;
+delete from users;
 
-insert into Users (id, username, password, dateOfBirth, email) values (1, "user1", "1", null, null));
--- insert into Users (username, password, dateOfBirth, email) values ("user2","2",1,7,2002, "email2@gmail.com"));
--- insert into Users (username, password, dateOfBirth, email) values ("user3","3",1,7,2003, "email3@gmail.com"));
+insert into Users (id, username, password, the_day, the_month, the_year, email) values (1, 'user1', 'password1', 1, 1, 1980, 'user1@email.com');
+insert into Users (id, username, password, the_day, the_month, the_year, email) values (2, 'user2', 'password2', 1, 1, 1980, 'user2@email.com');
+insert into Users (id, username, password, the_day, the_month, the_year, email) values (3, 'user3', 'password3', 1, 1, 1980, 'user3@email.com');
+
+insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (1, 'TWEET', '2023-03-10T13:03:10.7278844', 50, 'This is tweet #1', 1, null);
+insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (2, 'TWEET', '2023-03-10T14:03:10.7278844', 50, 'This is tweet #2', 2, null);
+insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (3, 'TWEET', '2023-03-10T14:03:10.7278844', 50, 'This is tweet #3', 2, null);
+
+-- insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (3, 'REPLY', '2023-03-10T14:03:10.7278844', 50, 'This is reply to tweet #1', 2, 1);
+-- 2023-03-10T13:03:10.7278844
