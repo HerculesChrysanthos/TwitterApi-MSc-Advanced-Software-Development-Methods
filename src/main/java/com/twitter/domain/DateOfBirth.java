@@ -7,13 +7,13 @@ import java.util.Objects;
 @Embeddable
 public class DateOfBirth {
 
-    @Column(name = "day")
+    @Column(name = "the_day")
     private Integer day;
 
-    @Column(name = "month")
+    @Column(name = "the_month")
     private Integer month;
 
-    @Column(name = "year")
+    @Column(name = "the_year")
     private Integer year;
 
     public DateOfBirth(){
