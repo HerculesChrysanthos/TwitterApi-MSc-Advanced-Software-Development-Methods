@@ -43,6 +43,14 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -88,6 +96,16 @@ public class User {
             return false;
         }
         this.setFollowing(user);
+        return true;
+    }
+
+    public void removeFollowing(User followingUser) { this.following.remove(followingUser); }
+
+    public boolean unfollowUser(User user) {
+        if (!this.following.contains(user) || this.equals(user)) {
+            return false;
+        }
+        this.removeFollowing(user);
         return true;
     }
 
