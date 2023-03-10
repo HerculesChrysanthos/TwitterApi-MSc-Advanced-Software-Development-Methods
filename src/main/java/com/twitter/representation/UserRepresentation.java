@@ -4,8 +4,9 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection
 public class UserRepresentation {
+    public Integer id;
     public String username;
-//    public String email;
-//    public BorrowerCategoryRepresentation category;
-
+    public String password;
+    public EmailAddressRepresentation email;
+    public DateOfBirthRepresentation dateOfBirth;
 }
