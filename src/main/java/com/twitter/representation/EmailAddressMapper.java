@@ -10,4 +10,5 @@ public abstract class EmailAddressMapper {
 
     public abstract EmailAddressRepresentation toRepresentation(EmailAddress emailAddress);
 
+    public abstract  EmailAddress toModel(EmailAddressRepresentation emailAddressRepresentation);
 }
