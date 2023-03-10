@@ -50,6 +50,10 @@ public abstract class Post {
         this.user = user;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     public LocalDateTime getDateTime() {
         return dateTime;
     }
