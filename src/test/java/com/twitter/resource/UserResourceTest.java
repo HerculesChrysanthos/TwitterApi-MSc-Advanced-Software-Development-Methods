@@ -23,16 +23,16 @@ public class UserResourceTest extends IntegrationBase {
                 .statusCode(200)
                 .extract().as(new TypeRef<List<UserRepresentation>>() {});
 
-        Assertions.assertEquals(3, users.size());
+        Assertions.assertEquals(Fixture.Users.COUNT, users.size());
     }
 
     @Test
     @TestTransaction
     public void find() {
-        UserRepresentation userRepresentation = when().get(Fixture.API_ROOT + TwitterUri.USERS + "/" + Fixture.Users.NIKOLAS_ID)
+        UserRepresentation userRepresentation = when().get(Fixture.API_ROOT + TwitterUri.USERS + "/" + Fixture.Users.USER1_ID)
                 .then()
                 .statusCode(200)
                 .extract().as(UserRepresentation.class);
-        Assertions.assertEquals(Fixture.Users.NIKOLAS_ID, userRepresentation.id);
+        Assertions.assertEquals(Fixture.Users.USER1_ID, userRepresentation.id);
     }
 }
