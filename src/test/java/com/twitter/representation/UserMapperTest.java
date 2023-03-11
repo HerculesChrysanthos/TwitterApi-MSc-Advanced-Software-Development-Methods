@@ -41,7 +41,7 @@ public class UserMapperTest {
 
     @Test
     public void testToRepresentationList() {
-        List<User> users = new ArrayList<>();
+        List<User> users = new ArrayList<User>();
         User user1 = new User();
         user1.setId(1);
         user1.setUsername("user1");
