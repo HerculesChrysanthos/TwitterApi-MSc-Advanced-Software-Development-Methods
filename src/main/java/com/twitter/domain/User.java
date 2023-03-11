@@ -19,7 +19,10 @@ public class User {
     @Column(name = "password", length = 30, nullable = false)
     private String password;
 
-    @Embedded
+    @org.hibernate.annotations.Type(
+            type="com.twitter.persistence.EmailCustomType"
+    )
+    @Column(name = "email", length = 50)
     private EmailAddress email;
 
     @Embedded
