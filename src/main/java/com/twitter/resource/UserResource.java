@@ -1,5 +1,7 @@
 package com.twitter.resource;
 
+import com.twitter.TwitterException;
+import com.twitter.domain.EmailAddress;
 import com.twitter.domain.User;
 import com.twitter.persistence.UserRepository;
 import com.twitter.representation.UserMapper;
@@ -58,16 +60,33 @@ public class UserResource {
     @Transactional
     public Response create(UserRepresentation userRepresentation) {
         String username = userRepresentation.username;
-        User existingUser = userRepository.findByUsername(username);
+        String email = userRepresentation.email;
 
-        if(existingUser != null) {
+        User existingUsername = userRepository.findByUsername(username);
+        User existingEmail = userRepository.findByEmail(email);
+
+        if(existingUsername != null) {
             return Response.status(Response.Status.CONFLICT).entity("User with username '" + username + "' already exists.").build();
         }
 
-        User user = userMapper.toModel(userRepresentation);
-        userRepository.persist(user);
-        URI uri = UriBuilder.fromResource(UserResource.class).path(String.valueOf(user.getId())).build();
-        return Response.created(uri).entity(userMapper.toRepresentation(user)).build();
+        if(existingEmail != null) {
+            return Response.status(Response.Status.CONFLICT).entity("User with email '" + email + "' already exists.").build();
+        }
+
+        try{
+            User user = userMapper.toModel(userRepresentation);
+
+            if(user.getEmail().getEmail() == null){
+                throw new TwitterException("Invalid email");
+            }
+
+            userRepository.persist(user);
+            URI uri = UriBuilder.fromResource(UserResource.class).path(String.valueOf(user.getId())).build();
+            return Response.created(uri).entity(userMapper.toRepresentation(user)).build();
+        } catch(TwitterException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+
     }
 
 
