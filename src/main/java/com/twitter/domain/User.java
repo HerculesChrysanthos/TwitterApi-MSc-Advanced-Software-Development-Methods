@@ -87,7 +87,7 @@ public class User {
         return following;
     }
 
-    public void setFollowing(User followingUser) {
+    private void setFollowing(User followingUser) {
         this.following.add(followingUser);
     }
 
@@ -99,7 +99,7 @@ public class User {
         return true;
     }
 
-    public void removeFollowing(User followingUser) { this.following.remove(followingUser); }
+    private void removeFollowing(User followingUser) { this.following.remove(followingUser); }
 
     public boolean unfollowUser(User user) {
         if (!this.following.contains(user) || this.equals(user)) {
