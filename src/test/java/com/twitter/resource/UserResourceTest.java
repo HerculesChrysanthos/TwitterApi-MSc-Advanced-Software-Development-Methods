@@ -5,13 +5,26 @@ import com.twitter.IntegrationBase;
 import com.twitter.representation.UserRepresentation;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.common.mapper.TypeRef;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import java.util.List;
 
 import static io.restassured.RestAssured.when;
 
 @QuarkusTest
 public class UserResourceTest extends IntegrationBase {
+
+    @Test
+    @TestTransaction
+    public void listAllUsers() {
+        List<UserRepresentation> users = when().get(Fixture.API_ROOT + TwitterUri.USERS)
+                .then()
+                .statusCode(200)
+                .extract().as(new TypeRef<List<UserRepresentation>>() {});
+
+        Assertions.assertEquals(3, users.size());
+    }
 
     @Test
     @TestTransaction
