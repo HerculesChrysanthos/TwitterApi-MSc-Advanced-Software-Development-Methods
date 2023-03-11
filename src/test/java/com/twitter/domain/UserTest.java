@@ -90,4 +90,12 @@ public class UserTest {
         user1.unfollowUser(user3);
         Assertions.assertEquals(0, user1.getFollowing().size());
     }
+
+    @Test
+    public void testUserCanNotUnfollowNonFollowingUser() {
+        User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
+
+        Assertions.assertFalse(user1.unfollowUser(user3));
+        Assertions.assertEquals(0, user1.getFollowing().size());
+    }
 }
