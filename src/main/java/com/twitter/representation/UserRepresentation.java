@@ -1,5 +1,6 @@
 package com.twitter.representation;
 
+import com.twitter.domain.EmailAddress;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection
