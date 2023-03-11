@@ -57,11 +57,17 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
     public Response create(UserRepresentation userRepresentation) {
+        String username = userRepresentation.username;
+        User existingUser = userRepository.findByUsername(username);
+
+        if(existingUser != null) {
+            return Response.status(Response.Status.CONFLICT).entity("User with username '" + username + "' already exists.").build();
+        }
+
         User user = userMapper.toModel(userRepresentation);
         userRepository.persist(user);
         URI uri = UriBuilder.fromResource(UserResource.class).path(String.valueOf(user.getId())).build();
         return Response.created(uri).entity(userMapper.toRepresentation(user)).build();
-//        return Response.ok().build();
     }
 
 
