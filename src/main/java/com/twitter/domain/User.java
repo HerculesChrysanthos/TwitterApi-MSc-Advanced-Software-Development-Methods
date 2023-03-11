@@ -22,7 +22,7 @@ public class User {
     @org.hibernate.annotations.Type(
             type="com.twitter.persistence.EmailCustomType"
     )
-    @Column(name = "email", length = 50)
+    @Column(name = "email", length = 50, nullable = false, unique = true)
     private EmailAddress email;
 
     @Embedded
