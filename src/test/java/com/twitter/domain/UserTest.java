@@ -80,4 +80,14 @@ public class UserTest {
     public void testUserCanNotFollowHimself() {
         Assertions.assertFalse(user1.followUser(user1));
     }
+
+    @Test
+    public void testUserCanUnfollowFollowingUser() {
+        User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
+        user1.setFollowing(user3);
+        Assertions.assertEquals(1, user1.getFollowing().size());
+
+        user1.unfollowUser(user3);
+        Assertions.assertEquals(0, user1.getFollowing().size());
+    }
 }
