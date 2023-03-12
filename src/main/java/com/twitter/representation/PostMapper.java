@@ -26,4 +26,8 @@ public abstract class PostMapper {
     @Mapping(target = "dateTime", ignore = true)
     @Mapping(target = "tweetBody", source = "content")
     public abstract Tweet toTweetModel(TweetRepresentation tweetRepresentation);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "dateTime", ignore = true)
+    public abstract Reply toReplyModel(ReplyRepresentation replyRepresentation);
 }

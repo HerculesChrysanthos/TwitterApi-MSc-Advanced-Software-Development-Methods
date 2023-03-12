@@ -4,6 +4,7 @@ import com.twitter.TwitterException;
 import com.twitter.domain.*;
 import com.twitter.persistence.PostRepository;
 import com.twitter.representation.PostMapper;
+import com.twitter.representation.ReplyRepresentation;
 import com.twitter.representation.TweetRepresentation;
 
 import javax.enterprise.context.RequestScoped;
@@ -81,4 +82,15 @@ public class PostResource {
         }
     }
 
+    @POST
+    @Path("{postId:[0-9]*}/reply")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response createReply(
+            @PathParam("postId") Integer postId,
+            ReplyRepresentation replyRepresentation
+    ) {
+        Reply reply = postMapper.toReplyModel()
+    }
 }
