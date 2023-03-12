@@ -1,8 +1,10 @@
 package com.twitter.resource;
 
+import com.twitter.TwitterException;
 import com.twitter.domain.*;
 import com.twitter.persistence.PostRepository;
 import com.twitter.representation.PostMapper;
+import com.twitter.representation.TweetRepresentation;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -11,6 +13,9 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+
+import java.net.URI;
 
 import static com.twitter.resource.TwitterUri.POSTS;
 
@@ -53,6 +58,27 @@ public class PostResource {
         }
 
         return Response.ok().build();
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response createTweet(TweetRepresentation tweetRepresentation) {
+        try {
+            Tweet tweet = postMapper.toTweetModel(tweetRepresentation);
+
+            if (tweet.getTweetBody().getTweetContent() == null) {
+                throw new TwitterException("Max supported chars: 50");
+            }
+
+            postRepository.persist(tweet);
+
+            URI uri = UriBuilder.fromResource(PostResource.class).path(String.valueOf(tweet.getId())).build();
+            return Response.created(uri).entity(postMapper.toTweetRepresentation(tweet)).build();
+        } catch (TwitterException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
     }
 
 }
