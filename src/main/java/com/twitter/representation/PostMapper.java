@@ -9,17 +9,31 @@ import java.util.List;
 
 @Mapper(componentModel = "cdi",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        uses = TweetBodyMapper.class)
+        uses = {TweetBodyMapper.class, UserMapper.class})
 public abstract class PostMapper {
 
     @Mapping(target = "content", source = "tweetBody")
+    @Mapping(target = "user.id", source = "user.id")
+    @Mapping(target = "user.username", ignore = true)
+    @Mapping(target = "user.password", ignore = true)
+    @Mapping(target = "user.email", ignore = true)
+    @Mapping(target = "user.dateOfBirth", ignore = true)
     public abstract TweetRepresentation toTweetRepresentation(Tweet tweet);
 
     @Mapping(target = "parentPost", source = "parentPost")
+    @Mapping(target = "user.id", source = "user.id")
+    @Mapping(target = "user.username", ignore = true)
+    @Mapping(target = "user.password", ignore = true)
+    @Mapping(target = "user.email", ignore = true)
+    @Mapping(target = "user.dateOfBirth", ignore = true)
     public abstract ReplyRepresentation toReplyRepresentation(Reply reply);
-//    public abstract List<PostRepresentation> toRepresentationList(List<Post> posts);
 
     @Mapping(target = "parentPost", source = "originalPost")
+    @Mapping(target = "user.id", source = "user.id")
+    @Mapping(target = "user.username", ignore = true)
+    @Mapping(target = "user.password", ignore = true)
+    @Mapping(target = "user.email", ignore = true)
+    @Mapping(target = "user.dateOfBirth", ignore = true)
     public abstract RetweetRepresentation toRetweetRepresentation(Retweet retweet);
 
     @Mapping(target = "id", ignore = true)
