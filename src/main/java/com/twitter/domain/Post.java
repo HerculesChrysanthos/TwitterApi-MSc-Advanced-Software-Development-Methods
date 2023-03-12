@@ -41,7 +41,7 @@ public abstract class Post {
     private Set<Reply> replies = new HashSet<Reply>();
 
     //  if you delete a post, you don't delete the retweet
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "originalPost", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Retweet> retweets = new HashSet<Retweet>();
 
     public Post(){ }
