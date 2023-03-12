@@ -8,7 +8,9 @@ insert into Users (id, username, password, the_day, the_month, the_year, email) 
 insert into Users (id, username, password, the_day, the_month, the_year, email) values (1001, 'user2', 'password2', 1, 1, 1980, 'user2@email.com');
 insert into Users (id, username, password, the_day, the_month, the_year, email) values (1002, 'user3', 'password3', 1, 1, 1980, 'user3@email.com');
 
---insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (1, 'TWEET', '2023-03-10T13:03:10.7278844', 50, 'This is tweet #1', 1, null);
+insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (1000, 'TWEET', '2023-03-10T13:03:10.7278844', 50, 'This is tweet #1000', 1000, null);
+insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (2000, 'REPLY', '2023-03-10T13:03:10.7278844', 50, 'This is reply #2000 to tweet #1000.', 1000, 1000);
+insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (3000, 'RETWEET', '2023-03-10T13:03:10.7278844', 50, 'This is retweet #3000 to tweet #1000.', 1000, 1000);
 --insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (2, 'TWEET', '2023-03-10T14:03:10.7278844', 50, 'This is tweet #2', 2, null);
 --insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (3, 'TWEET', '2023-03-10T14:03:10.7278844', 50, 'This is tweet #3', 2, null);
 
