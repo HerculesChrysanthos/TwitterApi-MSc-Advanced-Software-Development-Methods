@@ -6,4 +6,6 @@ public class RetweetRepresentation {
     public Integer id;
     public LocalDateTime dateTime;
     public PostRepresentation parentPost;
+
+    public UserRepresentation user;
 }

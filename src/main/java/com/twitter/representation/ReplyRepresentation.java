@@ -2,6 +2,7 @@ package com.twitter.representation;
 
 import com.twitter.domain.Post;
 import com.twitter.domain.TweetBody;
+import com.twitter.domain.User;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 import java.time.LocalDateTime;
@@ -12,4 +13,6 @@ public class ReplyRepresentation {
     public LocalDateTime dateTime;
     public TweetBodyRepresentation content;
     public PostRepresentation parentPost;
+
+    public UserRepresentation user;
 }
