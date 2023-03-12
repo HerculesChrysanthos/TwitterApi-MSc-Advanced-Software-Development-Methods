@@ -96,10 +96,16 @@ public class UserResource {
     public Response follow(@PathParam("userId1")Integer userId1, @PathParam("userId2")Integer userId2) {
         User user1 = userRepository.findById(userId1);
         User user2 = userRepository.findById(userId2);
+
+        if (user1 == null || user2 == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
         if (user1.followUser(user2)) {
             return Response.ok().build();
         }
-        return Response.serverError().build();
+
+        return Response.status(Response.Status.CONFLICT).entity("User '"+ user1.getUsername() + "' already follows '"+ user2.getUsername()+"'.").build();
     }
 
     @POST
@@ -108,10 +114,16 @@ public class UserResource {
     public Response unfollow(@PathParam("userId1")Integer userId1, @PathParam("userId2")Integer userId2) {
         User user1 = userRepository.findById(userId1);
         User user2 = userRepository.findById(userId2);
+
+        if (user1 == null || user2 == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
         if (user1.unfollowUser(user2)) {
             return Response.ok().build();
         }
-        return Response.serverError().build();
+
+        return Response.status(Response.Status.CONFLICT).entity("User '"+ user1.getUsername() + "' is not following '"+ user2.getUsername()+"'.").build();
     }
 
     @GET
@@ -124,7 +136,7 @@ public class UserResource {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         Set<User> following = user.getFollowing();
-        return Response.ok().entity(userMapper.toRepresentationSet(following)).build();
+        return Response.ok().entity(userMapper.toFollowingRepresentationSet(following)).build();
     }
 
 }
