@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 public class ReplyRepresentation {
     public Integer id;
     public LocalDateTime dateTime;
-    public TweetBody content;
-
-//    public Post parentPost;
+    public TweetBodyRepresentation content;
+    public PostRepresentation parentPost;
 }

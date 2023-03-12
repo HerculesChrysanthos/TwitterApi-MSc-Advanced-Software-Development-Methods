@@ -2,8 +2,7 @@ package com.twitter.resource;
 
 import com.twitter.domain.*;
 import com.twitter.persistence.PostRepository;
-import com.twitter.representation.TweetMapper;
-//import com.twitter.representation.ReplyMapper;
+import com.twitter.representation.PostMapper;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -24,9 +23,7 @@ public class PostResource {
     PostRepository postRepository;
 
     @Inject
-    TweetMapper tweetMapper;
-//    ReplyMapper replyMapper;
-//    TweetMapper tweetMapper;
+    PostMapper postMapper;
 
     @GET
     @Path("{postId:[0-9]*}")
@@ -43,13 +40,13 @@ public class PostResource {
         switch (discriminatorValue.value()) {
             case "TWEET":
                 Tweet tweet = (Tweet) post;
-                return Response.ok().entity(tweetMapper.toRepresentation(tweet)).build();
+                return Response.ok().entity(postMapper.toTweetRepresentation(tweet)).build();
             case "REPLY":
                 Reply reply = (Reply) post;
-//                return Response.ok().entity(replyMapper.toReplyRepresentation(reply)).build();
+                return Response.ok().entity(postMapper.toReplyRepresentation(reply)).build();
             case "RETWEET":
-//                Retweet retweet = (Retweet) post;
-//                return Response.ok().entity(postMapper.toRet)
+                Retweet retweet = (Retweet) post;
+            return Response.ok().entity(postMapper.toRetweetRepresentation(retweet)).build();
                 default:
                 // handle other cases
                 break;
