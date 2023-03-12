@@ -26,4 +26,11 @@ public abstract class UserMapper {
     public abstract List<UserRepresentation> toRepresentationList(List<User> users);
 
     public abstract List<UserFollowingRepresentation> toFollowingRepresentationSet(Set<User> users);
+
+    @Mapping(target = "username", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "email", ignore = true)
+    @Mapping(target = "dateOfBirth", ignore = true)
+    @Mapping(target = "following", ignore = true)
+    public abstract User toSimpleModel(UserRepresentation representation);
 }

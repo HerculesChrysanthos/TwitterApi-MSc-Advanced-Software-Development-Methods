@@ -3,9 +3,8 @@ package com.twitter.resource;
 import com.twitter.TwitterException;
 import com.twitter.domain.*;
 import com.twitter.persistence.PostRepository;
-import com.twitter.representation.PostMapper;
-import com.twitter.representation.ReplyRepresentation;
-import com.twitter.representation.TweetRepresentation;
+import com.twitter.persistence.UserRepository;
+import com.twitter.representation.*;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -29,7 +28,13 @@ public class PostResource {
     PostRepository postRepository;
 
     @Inject
+    UserRepository userRepository;
+
+    @Inject
     PostMapper postMapper;
+
+    @Inject
+    UserMapper userMapper;
 
     @GET
     @Path("{postId:[0-9]*}")
@@ -91,6 +96,77 @@ public class PostResource {
             @PathParam("postId") Integer postId,
             ReplyRepresentation replyRepresentation
     ) {
-        Reply reply = postMapper.toReplyModel()
+        Post post = postRepository.findById(postId);
+
+        if (post == null){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        Reply reply = postMapper.toReplyModel(replyRepresentation);
+        reply.setParentPost(post);
+        postRepository.persist(reply);
+
+        URI uri = UriBuilder.fromResource(PostResource.class).path(String.valueOf(reply.getId())).build();
+        return Response.created(uri).entity(postMapper.toReplyRepresentation(reply)).build();
+    }
+
+    @POST
+    @Path("{postId:[0-9]*}/retweet")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response createRetweet(
+            @PathParam("postId") Integer postId,
+            RetweetRepresentation retweetRepresentation
+    ) {
+        Post post = postRepository.findById(postId);
+
+        if (post == null){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        Retweet retweet = postMapper.toRetweetModel(retweetRepresentation);
+        retweet.setOriginalPost(post);
+        postRepository.persist(retweet);
+
+        URI uri = UriBuilder.fromResource(PostResource.class).path(String.valueOf(retweet.getId())).build();
+        return Response.created(uri).entity(postMapper.toRetweetRepresentation(retweet)).build();
+    }
+
+    @PUT
+    @Path("{postId:[0-9]*}/like")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response like(@PathParam("postId")Integer postId, UserRepresentation userRepresentation) {
+
+        Post post = postRepository.findById(postId);
+
+        if (post == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        User user = userMapper.toSimpleModel(userRepresentation);
+        if(userRepository.findById(userMapper.toSimpleModel(userRepresentation)) {
+
+        }
+
+        DiscriminatorValue discriminatorValue = post.getClass().getAnnotation(DiscriminatorValue.class);
+        switch (discriminatorValue.value()) {
+            case "TWEET":
+                Tweet tweet = (Tweet) post;
+                tweet.addLike()
+                return Response.ok().entity(postMapper.toTweetRepresentation(tweet)).build();
+            case "REPLY":
+                Reply reply = (Reply) post;
+                return Response.ok().entity(postMapper.toReplyRepresentation(reply)).build();
+            case "RETWEET":
+                Retweet retweet = (Retweet) post;
+                return Response.ok().entity(postMapper.toRetweetRepresentation(retweet)).build();
+            default:
+                // handle other cases
+                break;
+        }
+
+        return Response.ok().build();
     }
 }

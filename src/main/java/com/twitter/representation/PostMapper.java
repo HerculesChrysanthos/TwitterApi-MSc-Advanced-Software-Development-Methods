@@ -39,9 +39,30 @@ public abstract class PostMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "dateTime", ignore = true)
     @Mapping(target = "tweetBody", source = "content")
+    @Mapping(target = "user.id", source = "user.id")
+    @Mapping(target = "user.username", ignore = true)
+    @Mapping(target = "user.password", ignore = true)
+    @Mapping(target = "user.email", ignore = true)
+    @Mapping(target = "user.dateOfBirth", ignore = true)
     public abstract Tweet toTweetModel(TweetRepresentation tweetRepresentation);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "dateTime", ignore = true)
+    @Mapping(target = "parentPost", ignore = true)
+    @Mapping(target = "user.id", source = "user.id")
+    @Mapping(target = "user.username", ignore = true)
+    @Mapping(target = "user.password", ignore = true)
+    @Mapping(target = "user.email", ignore = true)
+    @Mapping(target = "user.dateOfBirth", ignore = true)
     public abstract Reply toReplyModel(ReplyRepresentation replyRepresentation);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "dateTime", ignore = true)
+    @Mapping(target = "originalPost", ignore = true)
+    @Mapping(target = "user.id", source = "user.id")
+    @Mapping(target = "user.username", ignore = true)
+    @Mapping(target = "user.password", ignore = true)
+    @Mapping(target = "user.email", ignore = true)
+    @Mapping(target = "user.dateOfBirth", ignore = true)
+    public abstract Retweet toRetweetModel(RetweetRepresentation retweetRepresentation);
 }
