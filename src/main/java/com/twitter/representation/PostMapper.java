@@ -21,4 +21,9 @@ public abstract class PostMapper {
 
     @Mapping(target = "parentPost", source = "originalPost")
     public abstract RetweetRepresentation toRetweetRepresentation(Retweet retweet);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "dateTime", ignore = true)
+    @Mapping(target = "tweetBody", source = "content")
+    public abstract Tweet toTweetModel(TweetRepresentation tweetRepresentation);
 }
