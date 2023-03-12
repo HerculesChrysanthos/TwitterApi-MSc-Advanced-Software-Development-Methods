@@ -24,5 +24,6 @@ public abstract class UserMapper {
     public abstract EmailAddress toEmailAddress(String email);
 
     public abstract List<UserRepresentation> toRepresentationList(List<User> users);
-    public abstract List<UserRepresentation> toRepresentationSet(Set<User> users);
+
+    public abstract List<UserFollowingRepresentation> toFollowingRepresentationSet(Set<User> users);
 }
