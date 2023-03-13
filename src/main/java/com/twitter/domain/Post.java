@@ -30,7 +30,7 @@ public abstract class Post {
     // if you delete a like, you don't delete the user
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "user_posts",
+            name = "likes",
             joinColumns = { @JoinColumn(name = "postId")},
             inverseJoinColumns = { @JoinColumn(name = "userId")}
             )

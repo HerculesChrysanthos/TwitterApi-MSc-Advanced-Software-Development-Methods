@@ -1,5 +1,5 @@
 delete from following_users;
-delete from user_posts;
+delete from likes;
 delete from posts_posts;
 delete from posts;
 delete from users;
@@ -11,8 +11,7 @@ insert into Users (id, username, password, the_day, the_month, the_year, email) 
 insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (1000, 'TWEET', '2023-03-10T13:03:10.7278844', 50, 'This is tweet #1000', 1000, null);
 insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (2000, 'REPLY', '2023-03-10T13:03:10.7278844', 50, 'This is reply #2000 to tweet #1000.', 1000, 1000);
 insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (3000, 'RETWEET', '2023-03-10T13:03:10.7278844', 50, 'This is retweet #3000 to tweet #1000.', 1000, 1000);
---insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (2, 'TWEET', '2023-03-10T14:03:10.7278844', 50, 'This is tweet #2', 2, null);
---insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (3, 'TWEET', '2023-03-10T14:03:10.7278844', 50, 'This is tweet #3', 2, null);
 
--- insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, postId) values (3, 'REPLY', '2023-03-10T14:03:10.7278844', 50, 'This is reply to tweet #1', 2, 1);
--- 2023-03-10T13:03:10.7278844
+insert into Likes (postId, userId) values (1000, 1001); -- user with id 1001 likes post 1000
+insert into Likes (postId, userId) values (2000, 1001);
+insert into Likes (postId, userId) values (3000, 1001);
