@@ -133,6 +133,35 @@ public class PostResource {
         return Response.created(uri).entity(postMapper.toRetweetRepresentation(retweet)).build();
     }
 
+    @GET
+    @Path("{postId:[0-9]*}/likes")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response postLikes(@PathParam("postId")Integer postId) {
+        Post post = postRepository.findById(postId);
+
+        if (post == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        DiscriminatorValue discriminatorValue = post.getClass().getAnnotation(DiscriminatorValue.class);
+        switch (discriminatorValue.value()) {
+            case "TWEET":
+                Tweet tweet = (Tweet) post;
+                return Response.ok().entity(postMapper.toTweetLikesRepresentation(tweet)).build();
+            case "REPLY":
+                Reply reply = (Reply) post;
+                return Response.ok().entity(postMapper.toReplyLikesRepresentation(reply)).build();
+            case "RETWEET":
+                Retweet retweet = (Retweet) post;
+                return Response.ok().entity(postMapper.toRetweetLikesRepresentation(retweet)).build();
+            default:
+                // handle other cases
+                break;
+        }
+        return Response.ok().build();
+    }
+
     @PUT
     @Path("{postId:[0-9]*}/likes")
     @Produces(MediaType.APPLICATION_JSON)

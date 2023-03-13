@@ -68,4 +68,22 @@ public abstract class PostMapper {
     @Mapping(target = "user.email", ignore = true)
     @Mapping(target = "user.dateOfBirth", ignore = true)
     public abstract Retweet toRetweetModel(RetweetRepresentation retweetRepresentation);
+
+    @Mapping(target = "dateTime", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    public abstract TweetRepresentation toTweetLikesRepresentation(Tweet tweet);
+
+    @Mapping(target = "dateTime", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "content", ignore = true)
+    @Mapping(target = "parentPost", ignore = true)
+    public abstract ReplyRepresentation toReplyLikesRepresentation(Reply reply);
+
+    @Mapping(target = "dateTime", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "parentPost", ignore = true)
+    public abstract RetweetRepresentation toRetweetLikesRepresentation(Retweet retweet);
 }
