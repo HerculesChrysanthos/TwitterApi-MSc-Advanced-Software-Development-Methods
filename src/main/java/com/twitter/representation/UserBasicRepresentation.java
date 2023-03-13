@@ -1,6 +1,6 @@
 package com.twitter.representation;
 
-public class UserFollowingRepresentation {
+public class UserBasicRepresentation {
     public Integer id;
     public String username;
 }
