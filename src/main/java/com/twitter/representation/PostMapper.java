@@ -14,6 +14,7 @@ public abstract class PostMapper {
 
     @Mapping(target = "content", source = "tweetBody")
     @Mapping(target = "user.id", source = "user.id")
+    @Mapping(target = "likes", source = "likes")
     @Mapping(target = "user.username", ignore = true)
     @Mapping(target = "user.password", ignore = true)
     @Mapping(target = "user.email", ignore = true)
@@ -22,6 +23,7 @@ public abstract class PostMapper {
 
     @Mapping(target = "parentPost", source = "parentPost")
     @Mapping(target = "user.id", source = "user.id")
+    @Mapping(target = "likes", source = "likes")
     @Mapping(target = "user.username", ignore = true)
     @Mapping(target = "user.password", ignore = true)
     @Mapping(target = "user.email", ignore = true)
@@ -30,6 +32,7 @@ public abstract class PostMapper {
 
     @Mapping(target = "parentPost", source = "originalPost")
     @Mapping(target = "user.id", source = "user.id")
+    @Mapping(target = "likes", source = "likes")
     @Mapping(target = "user.username", ignore = true)
     @Mapping(target = "user.password", ignore = true)
     @Mapping(target = "user.email", ignore = true)
