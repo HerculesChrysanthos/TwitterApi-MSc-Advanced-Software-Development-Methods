@@ -138,35 +138,16 @@ public class PostResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response like(@PathParam("postId")Integer postId, UserRepresentation userRepresentation) {
-
+    public Response like(@HeaderParam("userId")Integer userId, @PathParam("postId")Integer postId) {
+        User user = userRepository.findById(userId);
         Post post = postRepository.findById(postId);
 
-        if (post == null) {
+        if (user == null || post == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        User user = userMapper.toSimpleModel(userRepresentation);
-        if(userRepository.findById(userMapper.toSimpleModel(userRepresentation)) {
 
-        }
+        post.addLike(user);
 
-        DiscriminatorValue discriminatorValue = post.getClass().getAnnotation(DiscriminatorValue.class);
-        switch (discriminatorValue.value()) {
-            case "TWEET":
-                Tweet tweet = (Tweet) post;
-                tweet.addLike()
-                return Response.ok().entity(postMapper.toTweetRepresentation(tweet)).build();
-            case "REPLY":
-                Reply reply = (Reply) post;
-                return Response.ok().entity(postMapper.toReplyRepresentation(reply)).build();
-            case "RETWEET":
-                Retweet retweet = (Retweet) post;
-                return Response.ok().entity(postMapper.toRetweetRepresentation(retweet)).build();
-            default:
-                // handle other cases
-                break;
-        }
-
-        return Response.ok().build();
+        return Response.noContent().build();
     }
 }
