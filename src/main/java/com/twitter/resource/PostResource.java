@@ -134,7 +134,7 @@ public class PostResource {
     }
 
     @PUT
-    @Path("{postId:[0-9]*}/like")
+    @Path("{postId:[0-9]*}/likes")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
@@ -147,6 +147,26 @@ public class PostResource {
         }
 
         post.addLike(user);
+
+        return Response.noContent().build();
+    }
+
+    @DELETE
+    @Path("{postId:[0-9]*}/likes")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response unlike(@HeaderParam("userId")Integer userId, @PathParam("postId")Integer postId) {
+        User user = userRepository.findById(userId);
+        Post post = postRepository.findById(postId);
+
+        if (user == null || post == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        if(!post.removeLike(user)){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
 
         return Response.noContent().build();
     }
