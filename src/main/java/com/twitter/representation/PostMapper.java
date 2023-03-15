@@ -14,7 +14,6 @@ public abstract class PostMapper {
 
     @Mapping(target = "content", source = "tweetBody")
     @Mapping(target = "user.id", source = "user.id")
-    @Mapping(target = "likes", source = "likes")
     @Mapping(target = "user.username", ignore = true)
     @Mapping(target = "user.password", ignore = true)
     @Mapping(target = "user.email", ignore = true)
@@ -23,16 +22,14 @@ public abstract class PostMapper {
 
     @Mapping(target = "parentPost", source = "parentPost")
     @Mapping(target = "user.id", source = "user.id")
-    @Mapping(target = "likes", source = "likes")
     @Mapping(target = "user.username", ignore = true)
     @Mapping(target = "user.password", ignore = true)
     @Mapping(target = "user.email", ignore = true)
     @Mapping(target = "user.dateOfBirth", ignore = true)
     public abstract ReplyRepresentation toReplyRepresentation(Reply reply);
 
-    @Mapping(target = "parentPost", source = "originalPost")
+    @Mapping(target = "originalPost", source = "originalPost")
     @Mapping(target = "user.id", source = "user.id")
-    @Mapping(target = "likes", source = "likes")
     @Mapping(target = "user.username", ignore = true)
     @Mapping(target = "user.password", ignore = true)
     @Mapping(target = "user.email", ignore = true)
@@ -84,6 +81,6 @@ public abstract class PostMapper {
     @Mapping(target = "dateTime", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
-    @Mapping(target = "parentPost", ignore = true)
+    @Mapping(target = "originalPost", ignore = true)
     public abstract RetweetRepresentation toRetweetLikesRepresentation(Retweet retweet);
 }
