@@ -13,4 +13,6 @@ public class ReplyRepresentation {
     public PostRepresentation parentPost;
     public Set<UserBasicRepresentation> likes;
     public UserRepresentation user;
+    public Set<PostRepresentation> replies;
+    public Set<PostRepresentation> retweets;
 }

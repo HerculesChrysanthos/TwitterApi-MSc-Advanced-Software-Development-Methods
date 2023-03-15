@@ -9,4 +9,6 @@ public class RetweetRepresentation {
     public PostRepresentation originalPost;
     public Set<UserBasicRepresentation> likes;
     public UserRepresentation user;
+    public Set<PostRepresentation> replies;
+    public Set<PostRepresentation> retweets;
 }
