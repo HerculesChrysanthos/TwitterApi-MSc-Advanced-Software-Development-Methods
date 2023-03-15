@@ -33,9 +33,6 @@ public class PostResource {
     @Inject
     PostMapper postMapper;
 
-    @Inject
-    UserMapper userMapper;
-
     @GET
     @Path("{postId:[0-9]*}")
     @Produces(MediaType.APPLICATION_JSON)
