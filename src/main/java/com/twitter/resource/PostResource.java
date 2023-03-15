@@ -199,4 +199,20 @@ public class PostResource {
 
         return Response.noContent().build();
     }
+
+    @DELETE
+    @Path("{postId:[0-9]*}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response deletePost(@PathParam("postId")Integer postId) {
+        Post post = postRepository.findById(postId);
+
+        if (post == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        postRepository.deleteById(postId);
+
+        return Response.ok().build();
+    }
 }
