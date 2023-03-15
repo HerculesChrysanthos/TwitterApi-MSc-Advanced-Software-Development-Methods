@@ -6,7 +6,7 @@ import java.util.Set;
 public class RetweetRepresentation {
     public Integer id;
     public LocalDateTime dateTime;
-    public PostRepresentation parentPost;
+    public PostRepresentation originalPost;
     public Set<UserBasicRepresentation> likes;
     public UserRepresentation user;
 }
