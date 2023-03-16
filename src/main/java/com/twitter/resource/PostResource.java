@@ -43,27 +43,21 @@ public class PostResource {
     public Response findPost(@PathParam("postId")Integer postId) {
         Post post = postRepository.findById(postId);
 
-        if (post == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+        if(post != null) {
+            DiscriminatorValue discriminatorValue = post.getClass().getAnnotation(DiscriminatorValue.class);
+            switch (discriminatorValue.value()) {
+                case "TWEET":
+                    Tweet tweet = (Tweet) post;
+                    return Response.ok().entity(postMapper.toTweetRepresentation(tweet)).build();
+                case "REPLY":
+                    Reply reply = (Reply) post;
+                    return Response.ok().entity(postMapper.toReplyRepresentation(reply)).build();
+                case "RETWEET":
+                    Retweet retweet = (Retweet) post;
+                    return Response.ok().entity(postMapper.toRetweetRepresentation(retweet)).build();
+            }
         }
-
-        DiscriminatorValue discriminatorValue = post.getClass().getAnnotation(DiscriminatorValue.class);
-        switch (discriminatorValue.value()) {
-            case "TWEET":
-                Tweet tweet = (Tweet) post;
-                return Response.ok().entity(postMapper.toTweetRepresentation(tweet)).build();
-            case "REPLY":
-                Reply reply = (Reply) post;
-                return Response.ok().entity(postMapper.toReplyRepresentation(reply)).build();
-            case "RETWEET":
-                Retweet retweet = (Retweet) post;
-            return Response.ok().entity(postMapper.toRetweetRepresentation(retweet)).build();
-            default:
-                return Response
-                        .status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity(new ErrorResponse("Error on matching given post's type."))
-                        .build();
-        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @POST
@@ -163,27 +157,21 @@ public class PostResource {
     public Response postLikes(@PathParam("postId")Integer postId) {
         Post post = postRepository.findById(postId);
 
-        if (post == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
+        if(post != null) {
+            DiscriminatorValue discriminatorValue = post.getClass().getAnnotation(DiscriminatorValue.class);
+            switch (discriminatorValue.value()) {
+                case "TWEET":
+                    Tweet tweet = (Tweet) post;
+                    return Response.ok().entity(postMapper.toTweetLikesRepresentation(tweet)).build();
+                case "REPLY":
+                    Reply reply = (Reply) post;
+                    return Response.ok().entity(postMapper.toReplyLikesRepresentation(reply)).build();
+                case "RETWEET":
+                    Retweet retweet = (Retweet) post;
+                    return Response.ok().entity(postMapper.toRetweetLikesRepresentation(retweet)).build();
+            }
         }
-
-        DiscriminatorValue discriminatorValue = post.getClass().getAnnotation(DiscriminatorValue.class);
-        switch (discriminatorValue.value()) {
-            case "TWEET":
-                Tweet tweet = (Tweet) post;
-                return Response.ok().entity(postMapper.toTweetLikesRepresentation(tweet)).build();
-            case "REPLY":
-                Reply reply = (Reply) post;
-                return Response.ok().entity(postMapper.toReplyLikesRepresentation(reply)).build();
-            case "RETWEET":
-                Retweet retweet = (Retweet) post;
-                return Response.ok().entity(postMapper.toRetweetLikesRepresentation(retweet)).build();
-            default:
-                return Response
-                        .status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity(new ErrorResponse("Error on matching given post's type."))
-                        .build();
-        }
+        return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
     }
 
     @PUT
