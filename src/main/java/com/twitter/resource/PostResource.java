@@ -46,7 +46,7 @@ public class PostResource {
 
         DiscriminatorValue discriminatorValue = post.getClass().getAnnotation(DiscriminatorValue.class);
         switch (discriminatorValue.value()) {
-            case "TWEET":
+            case "TWEE1T":
                 Tweet tweet = (Tweet) post;
                 return Response.ok().entity(postMapper.toTweetRepresentation(tweet)).build();
             case "REPLY":
@@ -55,12 +55,12 @@ public class PostResource {
             case "RETWEET":
                 Retweet retweet = (Retweet) post;
             return Response.ok().entity(postMapper.toRetweetRepresentation(retweet)).build();
-                default:
-                // handle other cases
-                break;
+            default:
+                return Response
+                        .status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity(new ErrorResponse("Error on matching given post's type."))
+                        .build();
         }
-
-        return Response.ok().build();
     }
 
     @POST
@@ -80,7 +80,7 @@ public class PostResource {
             URI uri = UriBuilder.fromResource(PostResource.class).path(String.valueOf(tweet.getId())).build();
             return Response.created(uri).entity(postMapper.toTweetRepresentation(tweet)).build();
         } catch (TwitterException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse(e.getMessage())).build();
         }
     }
 
@@ -96,7 +96,7 @@ public class PostResource {
         Post post = postRepository.findById(postId);
 
         if (post == null){
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
         }
 
         Reply reply = postMapper.toReplyModel(replyRepresentation);
@@ -119,7 +119,7 @@ public class PostResource {
         Post post = postRepository.findById(postId);
 
         if (post == null){
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
         }
 
         Retweet retweet = postMapper.toRetweetModel(retweetRepresentation);
@@ -138,7 +138,7 @@ public class PostResource {
         Post post = postRepository.findById(postId);
 
         if (post == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
         }
 
         DiscriminatorValue discriminatorValue = post.getClass().getAnnotation(DiscriminatorValue.class);
@@ -153,10 +153,11 @@ public class PostResource {
                 Retweet retweet = (Retweet) post;
                 return Response.ok().entity(postMapper.toRetweetLikesRepresentation(retweet)).build();
             default:
-                // handle other cases
-                break;
+                return Response
+                        .status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity(new ErrorResponse("Error on matching given post's type."))
+                        .build();
         }
-        return Response.ok().build();
     }
 
     @PUT
