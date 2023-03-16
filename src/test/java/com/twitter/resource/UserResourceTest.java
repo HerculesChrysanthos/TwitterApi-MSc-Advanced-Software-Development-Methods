@@ -24,7 +24,7 @@ public class UserResourceTest extends IntegrationBase {
 
     @Test
     @TestTransaction
-    public void listAllUsers() {
+    public void testListAllUsers() {
         List<UserRepresentation> users = when().get(Fixture.API_ROOT + TwitterUri.USERS)
                 .then()
                 .statusCode(200)
@@ -35,7 +35,7 @@ public class UserResourceTest extends IntegrationBase {
 
     @Test
     @TestTransaction
-    public void find() {
+    public void testFind() {
         UserRepresentation userRepresentation = when().get(Fixture.API_ROOT + TwitterUri.USERS + "/" + Fixture.Users.USER1_ID)
                 .then()
                 .statusCode(200)
@@ -45,7 +45,7 @@ public class UserResourceTest extends IntegrationBase {
 
     @Test
     @TestTransaction
-    public void findNonExistingUser() {
+    public void testFindNonExistingUser() {
         ErrorResponse errorResponse = when().get(Fixture.API_ROOT + TwitterUri.USERS + "/" + Fixture.Users.USER4_ID)
                 .then()
                 .statusCode(404)
@@ -55,7 +55,7 @@ public class UserResourceTest extends IntegrationBase {
 
     @Test
     @TestTransaction
-    public void createUser() {
+    public void testCreateUser() {
         UserRepresentation user = new UserRepresentation();
         user.username = "newUser";
         user.password = "password";
@@ -84,7 +84,7 @@ public class UserResourceTest extends IntegrationBase {
 
     @Test
     @TestTransaction
-    public void canNotCreateUserWithExistingUsername() {
+    public void testCanNotCreateUserWithExistingUsername() {
         UserRepresentation user = new UserRepresentation();
         user.username = "user1";
         user.password = "password";
@@ -108,7 +108,7 @@ public class UserResourceTest extends IntegrationBase {
 
     @Test
     @TestTransaction
-    public void canNotCreateUserWithExistingEmail() {
+    public void testCanNotCreateUserWithExistingEmail() {
         UserRepresentation user = new UserRepresentation();
         user.username = "newUser";
         user.password = "password";
@@ -132,7 +132,7 @@ public class UserResourceTest extends IntegrationBase {
 
     @Test
     @TestTransaction
-    public void canNotCreateUserWithInvalidEmail() {
+    public void testCanNotCreateUserWithInvalidEmail() {
         UserRepresentation user = new UserRepresentation();
         user.username = "newUser";
         user.password = "password";
@@ -156,7 +156,7 @@ public class UserResourceTest extends IntegrationBase {
 
     @Test
     @TestTransaction
-    public void successfullyFollow() {
+    public void testSuccessfullyFollow() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .when()
@@ -167,7 +167,7 @@ public class UserResourceTest extends IntegrationBase {
 
     @Test
     @TestTransaction
-    public void followUserNotFound() {
+    public void testFollowUserNotFound() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .when()
@@ -178,7 +178,7 @@ public class UserResourceTest extends IntegrationBase {
 
     @Test
     @TestTransaction
-    public void alreadyFollowing() {
+    public void testAlreadyFollowing() {
         ErrorResponse errorResponse =  given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .when()
