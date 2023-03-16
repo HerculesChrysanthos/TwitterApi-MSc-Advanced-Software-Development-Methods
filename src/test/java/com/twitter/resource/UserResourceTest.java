@@ -189,4 +189,40 @@ public class UserResourceTest extends IntegrationBase {
 
         Assertions.assertEquals("User 'user1' already follows 'user3'.", errorResponse.getMessage());
     }
+
+    @Test
+    @TestTransaction
+    public void testSuccessfullyUnfollow() {
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .post(Fixture.API_ROOT + TwitterUri.USERS + "/" + Fixture.Users.USER1_ID + "/unfollow/" + Fixture.Users.USER3_ID)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode());
+    }
+
+    @Test
+    @TestTransaction
+    public void testUnfollowUserNotFound() {
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .post(Fixture.API_ROOT + TwitterUri.USERS + "/" + Fixture.Users.USER2_ID + "/unfollow/" + Fixture.Users.USER4_ID)
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+    }
+
+    @Test
+    @TestTransaction
+    public void testCanNotUnfollowNonFollowingUser() {
+        ErrorResponse errorResponse =  given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .post(Fixture.API_ROOT + TwitterUri.USERS + "/" + Fixture.Users.USER1_ID + "/unfollow/" + Fixture.Users.USER2_ID)
+                .then()
+                .statusCode(Response.Status.CONFLICT.getStatusCode())
+                .extract().as(ErrorResponse.class);
+
+        Assertions.assertEquals("User 'user1' is not following 'user2'.", errorResponse.getMessage());
+    }
 }
