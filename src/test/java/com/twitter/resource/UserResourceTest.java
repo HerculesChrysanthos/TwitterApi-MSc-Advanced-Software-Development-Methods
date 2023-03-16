@@ -2,6 +2,7 @@ package com.twitter.resource;
 
 import com.twitter.Fixture;
 import com.twitter.IntegrationBase;
+import com.twitter.representation.DateOfBirthRepresentation;
 import com.twitter.representation.ErrorResponse;
 import com.twitter.representation.UserRepresentation;
 import io.quarkus.test.TestTransaction;
@@ -9,8 +10,12 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.common.mapper.TypeRef;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
+import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 
 @QuarkusTest
@@ -45,5 +50,34 @@ public class UserResourceTest extends IntegrationBase {
                 .statusCode(404)
                 .extract().as(ErrorResponse.class);
         Assertions.assertNotNull(errorResponse);
+    }
+
+    @Test
+    @TestTransaction
+    public void createUser() {
+        UserRepresentation user = new UserRepresentation();
+        user.username = "newUser";
+        user.password = "password";
+        user.email = "newuser@example.com";
+        user.dateOfBirth = new DateOfBirthRepresentation();
+        user.dateOfBirth.day = 1;
+        user.dateOfBirth.month = 1;
+        user.dateOfBirth.year = 2000;
+
+        UserRepresentation userRepresentation = given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(user)
+                .when()
+                .post(Fixture.API_ROOT + TwitterUri.USERS)
+                .then()
+                .statusCode(Response.Status.CREATED.getStatusCode())
+                .extract().as(UserRepresentation.class);
+
+        Assertions.assertNotNull(userRepresentation.id);
+        Assertions.assertEquals(user.username, userRepresentation.username);
+        Assertions.assertEquals(user.email, userRepresentation.email);
+        Assertions.assertEquals(user.dateOfBirth.day, userRepresentation.dateOfBirth.day);
+        Assertions.assertEquals(user.dateOfBirth.month, userRepresentation.dateOfBirth.month);
+        Assertions.assertEquals(user.dateOfBirth.year, userRepresentation.dateOfBirth.year);
     }
 }
