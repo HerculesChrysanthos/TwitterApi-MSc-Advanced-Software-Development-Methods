@@ -2,6 +2,7 @@ package com.twitter.resource;
 
 import com.twitter.Fixture;
 import com.twitter.IntegrationBase;
+import com.twitter.representation.ErrorResponse;
 import com.twitter.representation.UserRepresentation;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
@@ -34,5 +35,15 @@ public class UserResourceTest extends IntegrationBase {
                 .statusCode(200)
                 .extract().as(UserRepresentation.class);
         Assertions.assertEquals(Fixture.Users.USER1_ID, userRepresentation.id);
+    }
+
+    @Test
+    @TestTransaction
+    public void findNonExistingUser() {
+        ErrorResponse errorResponse = when().get(Fixture.API_ROOT + TwitterUri.USERS + "/" + Fixture.Users.USER4_ID)
+                .then()
+                .statusCode(404)
+                .extract().as(ErrorResponse.class);
+        Assertions.assertNotNull(errorResponse);
     }
 }
