@@ -10,4 +10,6 @@ public class UserRepresentation {
     public String password;
     public String email;
     public DateOfBirthRepresentation dateOfBirth;
+
+    public UserRepresentation() { }
 }

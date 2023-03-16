@@ -14,4 +14,6 @@ public class TweetRepresentation {
     public UserRepresentation user;
     public Set<PostRepresentation> replies;
     public Set<PostRepresentation> retweets;
+
+    public TweetRepresentation() { }
 }
