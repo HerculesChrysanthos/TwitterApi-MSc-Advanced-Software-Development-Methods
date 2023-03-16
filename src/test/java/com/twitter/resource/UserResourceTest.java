@@ -2,6 +2,7 @@ package com.twitter.resource;
 
 import com.twitter.Fixture;
 import com.twitter.IntegrationBase;
+import com.twitter.domain.User;
 import com.twitter.representation.DateOfBirthRepresentation;
 import com.twitter.representation.ErrorResponse;
 import com.twitter.representation.UserRepresentation;
@@ -151,5 +152,41 @@ public class UserResourceTest extends IntegrationBase {
                 .extract().as(ErrorResponse.class);
 
         Assertions.assertEquals("Invalid email", errorResponse.getMessage());
+    }
+
+    @Test
+    @TestTransaction
+    public void successfullyFollow() {
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .post(Fixture.API_ROOT + TwitterUri.USERS + "/" + Fixture.Users.USER1_ID + "/follow/" + Fixture.Users.USER2_ID)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode());
+    }
+
+    @Test
+    @TestTransaction
+    public void followUserNotFound() {
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .post(Fixture.API_ROOT + TwitterUri.USERS + "/" + Fixture.Users.USER2_ID + "/follow/" + Fixture.Users.USER4_ID)
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+    }
+
+    @Test
+    @TestTransaction
+    public void alreadyFollowing() {
+        ErrorResponse errorResponse =  given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .post(Fixture.API_ROOT + TwitterUri.USERS + "/" + Fixture.Users.USER1_ID + "/follow/" + Fixture.Users.USER3_ID)
+                .then()
+                .statusCode(Response.Status.CONFLICT.getStatusCode())
+                .extract().as(ErrorResponse.class);
+
+        Assertions.assertEquals("User 'user1' already follows 'user3'.", errorResponse.getMessage());
     }
 }

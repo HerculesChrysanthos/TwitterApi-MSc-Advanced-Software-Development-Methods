@@ -14,3 +14,5 @@ insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId,
 insert into Likes (postId, userId) values (1000, 1001); -- user with id 1001 likes post 1000
 insert into Likes (postId, userId) values (2000, 1001);
 insert into Likes (postId, userId) values (3000, 1001);
+
+insert into Following_Users(following, userId) values (1000, 1002);
