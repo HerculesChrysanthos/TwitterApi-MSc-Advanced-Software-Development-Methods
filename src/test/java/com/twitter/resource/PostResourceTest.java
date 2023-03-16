@@ -53,4 +53,14 @@ public class PostResourceTest  extends IntegrationBase {
 
         Assertions.assertEquals(Fixture.Posts.POST3_ID, replyRepresentation.id);
     }
+
+    @Test
+    @TestTransaction
+    public void testGetPostByIdPostNotFound() {
+        when()
+                .get(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST4_ID)
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+
+    }
 }
