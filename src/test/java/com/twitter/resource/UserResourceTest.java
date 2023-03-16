@@ -5,6 +5,7 @@ import com.twitter.IntegrationBase;
 import com.twitter.domain.User;
 import com.twitter.representation.DateOfBirthRepresentation;
 import com.twitter.representation.ErrorResponse;
+import com.twitter.representation.UserBasicRepresentation;
 import com.twitter.representation.UserRepresentation;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
@@ -224,5 +226,31 @@ public class UserResourceTest extends IntegrationBase {
                 .extract().as(ErrorResponse.class);
 
         Assertions.assertEquals("User 'user1' is not following 'user2'.", errorResponse.getMessage());
+    }
+
+    @Test
+    @TestTransaction
+    public void testGetUserFollowing() {
+        Set<UserBasicRepresentation> following = given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .get(Fixture.API_ROOT + TwitterUri.USERS + "/" + Fixture.Users.USER1_ID + "/following")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .extract().as(new TypeRef<Set<UserBasicRepresentation>>() {});
+
+        Assertions.assertEquals(1, following.size());
+    }
+
+    @Test
+    @TestTransaction
+    public void testGetUserFollowingUserNotFound() {
+       given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .get(Fixture.API_ROOT + TwitterUri.USERS + "/" + Fixture.Users.USER4_ID + "/following")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+
     }
 }
