@@ -80,4 +80,28 @@ public class UserResourceTest extends IntegrationBase {
         Assertions.assertEquals(user.dateOfBirth.month, userRepresentation.dateOfBirth.month);
         Assertions.assertEquals(user.dateOfBirth.year, userRepresentation.dateOfBirth.year);
     }
+
+    @Test
+    @TestTransaction
+    public void canNotCreateUserWithExistingUsername() {
+        UserRepresentation user = new UserRepresentation();
+        user.username = "user1";
+        user.password = "password";
+        user.email = "newuser@example.com";
+        user.dateOfBirth = new DateOfBirthRepresentation();
+        user.dateOfBirth.day = 1;
+        user.dateOfBirth.month = 1;
+        user.dateOfBirth.year = 2000;
+
+        ErrorResponse errorResponse = given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(user)
+                .when()
+                .post(Fixture.API_ROOT + TwitterUri.USERS)
+                .then()
+                .statusCode(Response.Status.CONFLICT.getStatusCode())
+                .extract().as(ErrorResponse.class);
+
+        Assertions.assertEquals("User with username 'user1' already exists.", errorResponse.getMessage());
+    }
 }
