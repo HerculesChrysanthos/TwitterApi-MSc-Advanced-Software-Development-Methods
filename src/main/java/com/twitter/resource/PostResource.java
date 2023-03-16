@@ -33,6 +33,9 @@ public class PostResource {
     @Inject
     PostMapper postMapper;
 
+    @Inject
+    UserMapper userMapper;
+
     @GET
     @Path("{postId:[0-9]*}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -46,7 +49,7 @@ public class PostResource {
 
         DiscriminatorValue discriminatorValue = post.getClass().getAnnotation(DiscriminatorValue.class);
         switch (discriminatorValue.value()) {
-            case "TWEE1T":
+            case "TWEET":
                 Tweet tweet = (Tweet) post;
                 return Response.ok().entity(postMapper.toTweetRepresentation(tweet)).build();
             case "REPLY":
@@ -67,8 +70,15 @@ public class PostResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response createTweet(TweetRepresentation tweetRepresentation) {
+    public Response createTweet(@HeaderParam("userId")Integer userId, TweetRepresentation tweetRepresentation) {
         try {
+            User user = userRepository.findById(userId);
+            if(user == null) {
+                return  Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
+            }
+
+            tweetRepresentation.user = userMapper.toRepresentation(user);
+
             Tweet tweet = postMapper.toTweetModel(tweetRepresentation);
 
             if (tweet.getTweetBody().getTweetContent() == null) {
@@ -90,9 +100,17 @@ public class PostResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
     public Response createReply(
+            @HeaderParam("userId")Integer userId,
             @PathParam("postId") Integer postId,
             ReplyRepresentation replyRepresentation
     ) {
+        User user = userRepository.findById(userId);
+        if(user == null) {
+            return  Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
+        }
+
+        replyRepresentation.user = userMapper.toRepresentation(user);
+
         Post post = postRepository.findById(postId);
 
         if (post == null){
@@ -113,9 +131,17 @@ public class PostResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
     public Response createRetweet(
+            @HeaderParam("userId")Integer userId,
             @PathParam("postId") Integer postId,
             RetweetRepresentation retweetRepresentation
     ) {
+        User user = userRepository.findById(userId);
+        if(user == null) {
+            return  Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
+        }
+
+        retweetRepresentation.user = userMapper.toRepresentation(user);
+
         Post post = postRepository.findById(postId);
 
         if (post == null){
