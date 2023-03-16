@@ -227,12 +227,26 @@ public class PostResource {
     @DELETE
     @Path("{postId:[0-9]*}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response deletePost(@PathParam("postId")Integer postId) {
+    public Response deletePost(@HeaderParam("userId")Integer userId, @PathParam("postId")Integer postId) {
+        if(userId == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity(new ErrorResponse("Provide userId.")).build();
+        }
+
+        User user = userRepository.findById(userId);
+        if(user == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse("User not found.")).build();
+        }
+
         Post post = postRepository.findById(postId);
 
         if (post == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse("Post not found.")).build();
+        }
+
+        if(!post.getUser().getId().equals(user.getId())) {
+            return Response.status(Response.Status.FORBIDDEN).entity(new ErrorResponse("")).build();
         }
 
         postRepository.deleteById(postId);
