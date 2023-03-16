@@ -1,9 +1,9 @@
 package com.twitter.resource;
 
 import com.twitter.TwitterException;
-import com.twitter.domain.EmailAddress;
 import com.twitter.domain.User;
 import com.twitter.persistence.UserRepository;
+import com.twitter.representation.ErrorResponse;
 import com.twitter.representation.UserMapper;
 import com.twitter.representation.UserRepresentation;
 
@@ -48,7 +48,7 @@ public class UserResource {
     public Response find(@PathParam("userId")Integer userId) {
         User user = userRepository.findById(userId);
         if (user == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
         }
 
         return Response.ok().entity(userMapper.toRepresentation(user)).build();
@@ -66,11 +66,17 @@ public class UserResource {
         User existingEmail = userRepository.findByEmail(email);
 
         if(existingUsername != null) {
-            return Response.status(Response.Status.CONFLICT).entity("User with username '" + username + "' already exists.").build();
+            return Response
+                    .status(Response.Status.CONFLICT)
+                    .entity(new ErrorResponse("User with username '" + username + "' already exists."))
+                    .build();
         }
 
         if(existingEmail != null) {
-            return Response.status(Response.Status.CONFLICT).entity("User with email '" + email + "' already exists.").build();
+            return Response
+                    .status(Response.Status.CONFLICT)
+                    .entity(new ErrorResponse("User with email '" + email + "' already exists."))
+                    .build();
         }
 
         try{
@@ -84,7 +90,7 @@ public class UserResource {
             URI uri = UriBuilder.fromResource(UserResource.class).path(String.valueOf(user.getId())).build();
             return Response.created(uri).entity(userMapper.toRepresentation(user)).build();
         } catch(TwitterException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse(e.getMessage())).build();
         }
 
     }
@@ -98,14 +104,17 @@ public class UserResource {
         User user2 = userRepository.findById(userId2);
 
         if (user1 == null || user2 == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
         }
 
         if (user1.followUser(user2)) {
             return Response.ok().build();
         }
 
-        return Response.status(Response.Status.CONFLICT).entity("User '"+ user1.getUsername() + "' already follows '"+ user2.getUsername()+"'.").build();
+        return Response
+                .status(Response.Status.CONFLICT)
+                .entity(new ErrorResponse("User '"+ user1.getUsername() + "' already follows '"+ user2.getUsername()+"'."))
+                .build();
     }
 
     @POST
@@ -116,14 +125,17 @@ public class UserResource {
         User user2 = userRepository.findById(userId2);
 
         if (user1 == null || user2 == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
         }
 
         if (user1.unfollowUser(user2)) {
             return Response.ok().build();
         }
 
-        return Response.status(Response.Status.CONFLICT).entity("User '"+ user1.getUsername() + "' is not following '"+ user2.getUsername()+"'.").build();
+        return Response
+                .status(Response.Status.CONFLICT)
+                .entity(new ErrorResponse("User '"+ user1.getUsername() + "' is not following '"+ user2.getUsername()+"'."))
+                .build();
     }
 
     @GET
@@ -133,7 +145,7 @@ public class UserResource {
     public Response following(@PathParam("userId")Integer userId) {
         User user = userRepository.findById(userId);
         if (user == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
         }
         Set<User> following = user.getFollowing();
         return Response.ok().entity(userMapper.toFollowingRepresentationSet(following)).build();
