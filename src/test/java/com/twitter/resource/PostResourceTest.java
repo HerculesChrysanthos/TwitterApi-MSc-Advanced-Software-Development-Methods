@@ -207,4 +207,52 @@ public class PostResourceTest  extends IntegrationBase {
 
         Assertions.assertEquals("Max supported chars: 50", errorResponse.getMessage());
     }
+
+    @Test
+    @TestTransaction
+    public void testCreateRetweet() {
+        RetweetRepresentation retweet = new RetweetRepresentation();
+
+        RetweetRepresentation retweetRepresentation = given()
+                .header("userId", Fixture.Users.USER1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(retweet)
+                .post(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID + "/retweet")
+                .then()
+                .statusCode(Response.Status.CREATED.getStatusCode())
+                .extract().as(RetweetRepresentation.class);
+
+
+        Assertions.assertNotNull(retweetRepresentation.id);
+        Assertions.assertEquals(1000, retweetRepresentation.user.id);
+        Assertions.assertEquals(Fixture.Posts.POST1_ID, retweetRepresentation.originalPost.id);
+    }
+
+    @Test
+    @TestTransaction
+    public void testCreateRetweetWithInvalidUser() {
+        RetweetRepresentation retweet = new RetweetRepresentation();
+
+        given()
+                .header("userId", Fixture.Users.USER4_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(retweet)
+                .post(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID + "/retweet")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+    }
+
+    @Test
+    @TestTransaction
+    public void testCreateRetweetWithInvalidParentPost() {
+        RetweetRepresentation retweet = new RetweetRepresentation();
+
+        given()
+                .header("userId", Fixture.Users.USER1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(retweet)
+                .post(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST4_ID + "/retweet")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+    }
 }
