@@ -98,25 +98,34 @@ public class PostResource {
             @PathParam("postId") Integer postId,
             ReplyRepresentation replyRepresentation
     ) {
-        User user = userRepository.findById(userId);
-        if(user == null) {
-            return  Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
+        try {
+            User user = userRepository.findById(userId);
+            if(user == null) {
+                return  Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
+            }
+
+            replyRepresentation.user = userMapper.toRepresentation(user);
+
+            Post post = postRepository.findById(postId);
+
+            if (post == null){
+                return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
+            }
+
+            Reply reply = postMapper.toReplyModel(replyRepresentation);
+
+            if (reply.getContent().getTweetContent() == null) {
+                throw new TwitterException("Max supported chars: 50");
+            }
+
+            reply.setParentPost(post);
+            postRepository.persist(reply);
+
+            URI uri = UriBuilder.fromResource(PostResource.class).path(String.valueOf(reply.getId())).build();
+            return Response.created(uri).entity(postMapper.toReplyRepresentation(reply)).build();
+        } catch (TwitterException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse(e.getMessage())).build();
         }
-
-        replyRepresentation.user = userMapper.toRepresentation(user);
-
-        Post post = postRepository.findById(postId);
-
-        if (post == null){
-            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse()).build();
-        }
-
-        Reply reply = postMapper.toReplyModel(replyRepresentation);
-        reply.setParentPost(post);
-        postRepository.persist(reply);
-
-        URI uri = UriBuilder.fromResource(PostResource.class).path(String.valueOf(reply.getId())).build();
-        return Response.created(uri).entity(postMapper.toReplyRepresentation(reply)).build();
     }
 
     @POST
