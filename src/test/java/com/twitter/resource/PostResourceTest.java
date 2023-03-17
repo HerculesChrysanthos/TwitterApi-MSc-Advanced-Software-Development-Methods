@@ -2,14 +2,13 @@ package com.twitter.resource;
 
 import com.twitter.Fixture;
 import com.twitter.IntegrationBase;
-import com.twitter.representation.ReplyRepresentation;
-import com.twitter.representation.RetweetRepresentation;
-import com.twitter.representation.TweetRepresentation;
+import com.twitter.representation.*;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import static io.restassured.RestAssured.given;
@@ -62,5 +61,67 @@ public class PostResourceTest  extends IntegrationBase {
                 .then()
                 .statusCode(Response.Status.NOT_FOUND.getStatusCode());
 
+    }
+
+    @Test
+    @TestTransaction
+    public void testCreateTweet() {
+        TweetBodyRepresentation tweetContent = new TweetBodyRepresentation();
+        tweetContent.tweetContent = "test content";
+
+        TweetRepresentation tweet = new TweetRepresentation();
+        tweet.content = tweetContent;
+
+        TweetRepresentation tweetRepresentation = given()
+                .header("userId", Fixture.Users.USER1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(tweet)
+                .post(Fixture.API_ROOT + TwitterUri.POSTS)
+                .then()
+                .statusCode(Response.Status.CREATED.getStatusCode())
+                .extract().as(TweetRepresentation.class);
+
+
+        Assertions.assertNotNull(tweetRepresentation.id);
+        Assertions.assertEquals("test content", tweetRepresentation.content.tweetContent);
+    }
+
+    @Test
+    @TestTransaction
+    public void testCreateTweetWithInvalidUser() {
+        TweetBodyRepresentation tweetContent = new TweetBodyRepresentation();
+        tweetContent.tweetContent = "test content";
+
+        TweetRepresentation tweet = new TweetRepresentation();
+        tweet.content = tweetContent;
+
+        given()
+                .header("userId", Fixture.Users.USER4_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(tweet)
+                .post(Fixture.API_ROOT + TwitterUri.POSTS)
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+    }
+
+    @Test
+    @TestTransaction
+    public void testCreateTweetWithMaxSupportedChars() {
+        TweetBodyRepresentation tweetContent = new TweetBodyRepresentation();
+        tweetContent.tweetContent = "Lorem ipsum dolor sit amet, consectetuer adipiscing"; // 51 chars
+
+        TweetRepresentation tweet = new TweetRepresentation();
+        tweet.content = tweetContent;
+
+        ErrorResponse errorResponse = given()
+                .header("userId", Fixture.Users.USER1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(tweet)
+                .post(Fixture.API_ROOT + TwitterUri.POSTS)
+                .then()
+                .statusCode(Response.Status.BAD_REQUEST.getStatusCode())
+                .extract().as(ErrorResponse.class);
+
+        Assertions.assertEquals("Max supported chars: 50", errorResponse.getMessage());
     }
 }
