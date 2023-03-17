@@ -345,4 +345,60 @@ public class PostResourceTest  extends IntegrationBase {
                 .statusCode(Response.Status.NOT_FOUND.getStatusCode());
     }
 
+    @Test
+    @TestTransaction
+    public void testUnlike() {
+        given()
+                .header("userId", Fixture.Users.USER2_ID)
+                .when()
+                .delete(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID + "/likes")
+                .then()
+                .statusCode(Response.Status.NO_CONTENT.getStatusCode());
+
+        LikeRepresentation likeRepresentation = when()
+                .get(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID + "/likes")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .extract().as(LikeRepresentation.class);
+
+        Assertions.assertEquals(0, likeRepresentation.likes.size());
+    }
+
+    @Test
+    @TestTransaction
+    public void testUnlikeWithNonExistingUser() {
+        given()
+                .header("userId", Fixture.Users.USER4_ID)
+                .when()
+                .delete(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID + "/likes")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+    }
+
+    @Test
+    @TestTransaction
+    public void testUnlikeWithNonExistingPost() {
+        given()
+                .header("userId", Fixture.Users.USER2_ID)
+                .when()
+                .delete(Fixture.API_ROOT + TwitterUri.POSTS + Fixture.Posts.POST4_ID + "/likes")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+    }
+
+    @Test
+    @TestTransaction
+    public void testUnlikePostNotLiked() {
+        ErrorResponse errorResponse = given()
+                .header("userId", Fixture.Users.USER1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .delete(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID + "/likes")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode())
+                .extract().as(ErrorResponse.class);
+
+        Assertions.assertEquals("User 'user1' does not like given post.", errorResponse.getMessage());
+    }
+
 }
