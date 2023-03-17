@@ -215,7 +215,7 @@ public class PostResource {
         }
 
         if(!post.removeLike(user)){
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse("User '" + user.getUsername() + "' does not like given post.")).build();
         }
 
         return Response.noContent().build();
