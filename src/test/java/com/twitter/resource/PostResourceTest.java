@@ -125,4 +125,86 @@ public class PostResourceTest  extends IntegrationBase {
 
         Assertions.assertEquals("Max supported chars: 50", errorResponse.getMessage());
     }
+
+    @Test
+    @TestTransaction
+    public void testCreateReply() {
+        TweetBodyRepresentation tweetContent = new TweetBodyRepresentation();
+        tweetContent.tweetContent = "test content";
+
+        ReplyRepresentation reply = new ReplyRepresentation();
+        reply.content = tweetContent;
+
+        ReplyRepresentation replyRepresentation = given()
+                .header("userId", Fixture.Users.USER1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(reply)
+                .post(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID + "/reply")
+                .then()
+                .statusCode(Response.Status.CREATED.getStatusCode())
+                .extract().as(ReplyRepresentation.class);
+
+
+        Assertions.assertNotNull(replyRepresentation.id);
+        Assertions.assertEquals("test content", replyRepresentation.content.tweetContent);
+        Assertions.assertEquals(1000, replyRepresentation.user.id);
+        Assertions.assertEquals(Fixture.Posts.POST1_ID, replyRepresentation.parentPost.id);
+    }
+
+    @Test
+    @TestTransaction
+    public void testCreateReplyWithInvalidUser() {
+        TweetBodyRepresentation tweetContent = new TweetBodyRepresentation();
+        tweetContent.tweetContent = "test content";
+
+        ReplyRepresentation reply = new ReplyRepresentation();
+        reply.content = tweetContent;
+
+        given()
+                .header("userId", Fixture.Users.USER4_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(reply)
+                .post(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID + "/reply")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+    }
+
+    @Test
+    @TestTransaction
+    public void testCreateReplyWithInvalidParentPost() {
+        TweetBodyRepresentation tweetContent = new TweetBodyRepresentation();
+        tweetContent.tweetContent = "test content";
+
+        ReplyRepresentation reply = new ReplyRepresentation();
+        reply.content = tweetContent;
+
+        given()
+                .header("userId", Fixture.Users.USER1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(reply)
+                .post(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST4_ID + "/reply")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+    }
+
+    @Test
+    @TestTransaction
+    public void testCreateReplyWithMaxSupportedChars() {
+        TweetBodyRepresentation tweetContent = new TweetBodyRepresentation();
+        tweetContent.tweetContent = "Lorem ipsum dolor sit amet, consectetuer adipiscing"; // 51 chars
+
+        ReplyRepresentation reply = new ReplyRepresentation();
+        reply.content = tweetContent;
+
+        ErrorResponse errorResponse = given()
+                .header("userId", Fixture.Users.USER1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(reply)
+                .post(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID + "/reply")
+                .then()
+                .statusCode(Response.Status.BAD_REQUEST.getStatusCode())
+                .extract().as(ErrorResponse.class);
+
+        Assertions.assertEquals("Max supported chars: 50", errorResponse.getMessage());
+    }
 }
