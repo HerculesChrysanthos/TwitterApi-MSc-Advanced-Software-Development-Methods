@@ -84,6 +84,7 @@ public class PostResourceTest  extends IntegrationBase {
 
         Assertions.assertNotNull(tweetRepresentation.id);
         Assertions.assertEquals("test content", tweetRepresentation.content.tweetContent);
+        Assertions.assertEquals(1000, tweetRepresentation.user.id);
     }
 
     @Test
