@@ -2,6 +2,8 @@ package com.twitter.resource;
 
 import com.twitter.Fixture;
 import com.twitter.IntegrationBase;
+import com.twitter.domain.Post;
+import com.twitter.domain.User;
 import com.twitter.representation.*;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
@@ -298,6 +300,47 @@ public class PostResourceTest  extends IntegrationBase {
     public void testGetPostLikesByIdPostNotFound() {
         when()
                 .get(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST4_ID  + "/likes")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+    }
+
+    @Test
+    @TestTransaction
+    public void testLikePost() {
+        given()
+                .header("userId", Fixture.Users.USER1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .put(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID + "/likes")
+                .then()
+                .statusCode(Response.Status.NO_CONTENT.getStatusCode());
+
+        LikeRepresentation likeRepresentation = when()
+                .get(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID + "/likes")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .extract().as(LikeRepresentation.class);
+
+        Assertions.assertEquals(2, likeRepresentation.likes.size());
+    }
+
+    @Test
+    @TestTransaction
+    public void testLikeNonExistingPost() {
+        given()
+                .header("userId", Fixture.Users.USER1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .put(Fixture.API_ROOT + TwitterUri.POSTS+ "/" + Fixture.Posts.POST4_ID +"/likes")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+    }
+
+    @Test
+    @TestTransaction
+    public void testLikeWithNonExistingUser() {
+        given()
+                .header("userId", Fixture.Users.USER4_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .put(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID + "/likes")
                 .then()
                 .statusCode(Response.Status.NOT_FOUND.getStatusCode());
     }
