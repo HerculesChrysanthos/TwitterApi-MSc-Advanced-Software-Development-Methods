@@ -255,4 +255,51 @@ public class PostResourceTest  extends IntegrationBase {
                 .then()
                 .statusCode(Response.Status.NOT_FOUND.getStatusCode());
     }
+
+
+    @Test
+    @TestTransaction
+    public void testGetPostLikesByIdTweetCase() {
+        LikeRepresentation likeRepresentation = when()
+                .get(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID + "/likes")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .extract().as(LikeRepresentation.class);
+
+        Assertions.assertEquals(1, likeRepresentation.likes.size());
+    }
+
+    @Test
+    @TestTransaction
+    public void testGetPostLikesByIdReplyCase() {
+        LikeRepresentation likeRepresentation = when()
+                .get(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST2_ID + "/likes")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .extract().as(LikeRepresentation.class);
+
+        Assertions.assertEquals(1, likeRepresentation.likes.size());
+    }
+
+    @Test
+    @TestTransaction
+    public void testGetPostLikesByIdRetweetCase() {
+        LikeRepresentation likeRepresentation = when()
+                .get(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST3_ID + "/likes")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .extract().as(LikeRepresentation.class);
+
+        Assertions.assertEquals(1, likeRepresentation.likes.size());
+    }
+
+    @Test
+    @TestTransaction
+    public void testGetPostLikesByIdPostNotFound() {
+        when()
+                .get(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST4_ID  + "/likes")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+    }
+
 }
