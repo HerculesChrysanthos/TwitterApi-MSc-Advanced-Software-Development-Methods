@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 import static com.twitter.resource.TwitterUri.POSTS;
 
@@ -249,5 +250,29 @@ public class PostResource {
         postRepository.deleteById(postId);
 
         return Response.ok().build();
+    }
+
+    @GET
+    @Path("timeline")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response timeline(
+            @HeaderParam("userId") Integer userId,
+            @QueryParam("offset") Integer offset,
+            @QueryParam("perPage") @DefaultValue("5") Integer perPage
+    ) {
+        if(userId == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity(new ErrorResponse("Provide userId.")).build();
+        }
+
+        User user = userRepository.findById(userId);
+        if(user == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse("User not found.")).build();
+        }
+
+        Tweet tweet = offset != null ? (Tweet) postRepository.findById(offset) : null;
+
+        List<Tweet> posts = postRepository.postsForUserTimeline(userId, tweet, perPage);
+        return Response.ok().entity(postMapper.toRepresentationList(posts)).build();
     }
 }

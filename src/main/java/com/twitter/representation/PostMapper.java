@@ -71,4 +71,6 @@ public abstract class PostMapper {
     public abstract LikeRepresentation toReplyLikesRepresentation(Reply reply);
 
     public abstract LikeRepresentation toRetweetLikesRepresentation(Retweet retweet);
+
+    public abstract List<TweetRepresentation> toRepresentationList(List<Tweet> tweets);
 }
