@@ -7,11 +7,14 @@ import com.twitter.domain.User;
 import com.twitter.representation.*;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.common.mapper.TypeRef;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
@@ -471,4 +474,66 @@ public class PostResourceTest  extends IntegrationBase {
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode());
     }
+
+    @Test
+    @TestTransaction
+    public void testTimeLineSuccess() {
+        List<TweetRepresentation> timeline = given()
+                .header("userId", Fixture.Users.USER3_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .get(Fixture.API_ROOT + TwitterUri.POSTS + "/timeline")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .extract().as(new TypeRef<List<TweetRepresentation>>() {});
+
+
+        Assertions.assertEquals(2, timeline.size());
+    }
+
+    @Test
+    @TestTransaction
+    public void testTimeLineNullUserId() {
+        ErrorResponse errorResponse = given()
+                .when()
+                .get(Fixture.API_ROOT + TwitterUri.POSTS + "/timeline")
+                .then()
+                .statusCode(Response.Status.UNAUTHORIZED.getStatusCode())
+                .extract().as(ErrorResponse.class);
+
+
+        Assertions.assertEquals("Provide userId.", errorResponse.getMessage());
+    }
+
+    @Test
+    @TestTransaction
+    public void testTimeLineNullUser() {
+        ErrorResponse errorResponse = given()
+                .header("userId", Fixture.Users.USER4_ID)
+                .when()
+                .get(Fixture.API_ROOT + TwitterUri.POSTS + "/timeline")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode())
+                .extract().as(ErrorResponse.class);
+
+
+        Assertions.assertEquals("User not found.", errorResponse.getMessage());
+    }
+
+    @Test
+    @TestTransaction
+    public void testTimeLineSuccessWithOffset() {
+        List<TweetRepresentation> timeline = given()
+                .header("userId", Fixture.Users.USER3_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .get(Fixture.API_ROOT + TwitterUri.POSTS + "/timeline?offset=5000")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .extract().as(new TypeRef<List<TweetRepresentation>>() {});
+
+
+        Assertions.assertEquals(1, timeline.size());
+    }
+
 }
