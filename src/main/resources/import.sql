@@ -11,8 +11,12 @@ insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId,
 insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, parentPostId, OriginalPostId) values (2000, 'REPLY', '2023-03-10T13:03:10.7278844', 50, 'This is reply #2000 to tweet #1000.', 1000, 1000, null);
 insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, parentPostId, OriginalPostId) values (3000, 'RETWEET', '2023-03-10T13:03:10.7278844', null, null, 1000, null, 1000);
 
+insert into Posts (id, postType, createdAt, maxNumOfChars, tweetContent, userId, parentPostId, OriginalPostId) values (5000, 'TWEET', '2023-03-19T13:03:10.7278844', 50, 'This is tweet #5000', 1001, null, null);
+
 insert into Likes (postId, userId) values (1000, 1001); -- user with id 1001 likes post 1000
 insert into Likes (postId, userId) values (2000, 1001);
 insert into Likes (postId, userId) values (3000, 1001);
 
 insert into Following_Users(following, userId) values (1000, 1002);
+insert into Following_Users(following, userId) values (1002, 1000);
+insert into Following_Users(following, userId) values (1002, 1001);
