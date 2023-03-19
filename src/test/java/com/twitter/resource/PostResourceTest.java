@@ -401,4 +401,74 @@ public class PostResourceTest  extends IntegrationBase {
         Assertions.assertEquals("User 'user1' does not like given post.", errorResponse.getMessage());
     }
 
+    @Test
+    @TestTransaction
+    public void testDeletePostWithNullUserId() {
+        ErrorResponse errorResponse = given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .delete(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID)
+                .then()
+                .statusCode(Response.Status.UNAUTHORIZED.getStatusCode())
+                .extract().as(ErrorResponse.class);
+
+        Assertions.assertEquals("Provide userId.", errorResponse.getMessage());
+    }
+
+    @Test
+    @TestTransaction
+    public void testDeletePostWithNullUser() {
+        ErrorResponse errorResponse = given()
+                .header("userId", Fixture.Users.USER4_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .delete(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID)
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode())
+                .extract().as(ErrorResponse.class);
+
+        Assertions.assertEquals("User not found.", errorResponse.getMessage());
+    }
+
+    @Test
+    @TestTransaction
+    public void testDeletePostWithNullPost() {
+        ErrorResponse errorResponse = given()
+                .header("userId", Fixture.Users.USER1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .delete(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST4_ID)
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode())
+                .extract().as(ErrorResponse.class);
+
+        Assertions.assertEquals("Post not found.", errorResponse.getMessage());
+    }
+
+    @Test
+    @TestTransaction
+    public void testDeletePostUserNonPostAuthor() {
+        ErrorResponse errorResponse = given()
+                .header("userId", Fixture.Users.USER2_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .delete(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID)
+                .then()
+                .statusCode(Response.Status.FORBIDDEN.getStatusCode())
+                .extract().as(ErrorResponse.class);
+
+        Assertions.assertEquals("", errorResponse.getMessage());
+    }
+
+    @Test
+    @TestTransaction
+    public void testDeletePostSuccess() {
+        given()
+                .header("userId", Fixture.Users.USER1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .delete(Fixture.API_ROOT + TwitterUri.POSTS + "/" + Fixture.Posts.POST1_ID)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode());
+    }
 }
