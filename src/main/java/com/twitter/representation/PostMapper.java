@@ -44,6 +44,9 @@ public abstract class PostMapper {
     @Mapping(target = "user.password", ignore = true)
     @Mapping(target = "user.email", ignore = true)
     @Mapping(target = "user.dateOfBirth", ignore = true)
+    @Mapping(target = "likes", ignore = true)
+    @Mapping(target = "replies", ignore = true)
+    @Mapping(target = "retweets", ignore = true)
     public abstract Tweet toTweetModel(TweetRepresentation tweetRepresentation);
 
     @Mapping(target = "id", ignore = true)
@@ -54,6 +57,9 @@ public abstract class PostMapper {
     @Mapping(target = "user.password", ignore = true)
     @Mapping(target = "user.email", ignore = true)
     @Mapping(target = "user.dateOfBirth", ignore = true)
+    @Mapping(target = "likes", ignore = true)
+    @Mapping(target = "replies", ignore = true)
+    @Mapping(target = "retweets", ignore = true)
     public abstract Reply toReplyModel(ReplyRepresentation replyRepresentation);
 
     @Mapping(target = "id", ignore = true)
@@ -64,6 +70,9 @@ public abstract class PostMapper {
     @Mapping(target = "user.password", ignore = true)
     @Mapping(target = "user.email", ignore = true)
     @Mapping(target = "user.dateOfBirth", ignore = true)
+    @Mapping(target = "likes", ignore = true)
+    @Mapping(target = "replies", ignore = true)
+    @Mapping(target = "retweets", ignore = true)
     public abstract Retweet toRetweetModel(RetweetRepresentation retweetRepresentation);
 
     public abstract LikeRepresentation toTweetLikesRepresentation(Tweet tweet);
