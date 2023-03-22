@@ -11,7 +11,7 @@ public class Reply extends Post {
 
     // if you delete a reply, you don't delete the post but only you update its set of replies
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "postId")
+    @JoinColumn(name = "ParentPostId")
     private Post parentPost;
 
     protected Reply() { }

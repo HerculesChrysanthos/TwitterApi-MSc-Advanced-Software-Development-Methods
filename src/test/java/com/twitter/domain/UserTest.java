@@ -47,9 +47,9 @@ public class UserTest {
         User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
         User user4 = new User("user4","4",new DateOfBirth(1,7,2004),new EmailAddress("email4@gmail.com"));
 
-        user1.setFollowing(user2);
-        user2.setFollowing(user3);
-        user2.setFollowing(user4);
+        user1.followUser(user2);
+        user2.followUser(user3);
+        user2.followUser(user4);
 
         Assertions.assertTrue(user1.getFollowing().contains(user2));
         Assertions.assertTrue(user2.getFollowing().contains(user3));
@@ -64,7 +64,7 @@ public class UserTest {
     @Test
     public void testUserCanNotFollowAFollowingUser() {
         User user2 = new User("user2","2",new DateOfBirth(1,7,2002),new EmailAddress("email2@gmail.com"));
-        user1.setFollowing(user2);
+        user1.followUser(user2);
 
         Assertions.assertFalse(user1.followUser(user2));
     }
@@ -79,5 +79,23 @@ public class UserTest {
     @Test
     public void testUserCanNotFollowHimself() {
         Assertions.assertFalse(user1.followUser(user1));
+    }
+
+    @Test
+    public void testUserCanUnfollowFollowingUser() {
+        User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
+        user1.followUser(user3);
+        Assertions.assertEquals(1, user1.getFollowing().size());
+
+        user1.unfollowUser(user3);
+        Assertions.assertEquals(0, user1.getFollowing().size());
+    }
+
+    @Test
+    public void testUserCanNotUnfollowNonFollowingUser() {
+        User user3 = new User("user3","3",new DateOfBirth(1,7,2003),new EmailAddress("email3@gmail.com"));
+
+        Assertions.assertFalse(user1.unfollowUser(user3));
+        Assertions.assertEquals(0, user1.getFollowing().size());
     }
 }

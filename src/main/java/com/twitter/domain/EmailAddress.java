@@ -1,29 +1,29 @@
 package com.twitter.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-@Embeddable
 public class EmailAddress {
 
-    @Column(name = "email", length = 50, nullable = false, unique = true)
     private String email;
+
+    public EmailAddress() {
+    }
+
+    public EmailAddress(String email) {
+        if(isValid(email)){
+            this.email = email;
+        }
+    }
 
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public EmailAddress() {
-    }
-
-    public EmailAddress(String email) {
-        this.email = email;
+        if(isValid(email)){
+            this.email = email;
+        }
     }
 
     /**

@@ -37,9 +37,8 @@ public class EmailAddressTest {
     @Test
     public void testIsValidWithInvalidEmail() {
         EmailAddress emailAddress = new EmailAddress("invalid_email");
-        boolean isValid = emailAddress.isValid(emailAddress.getEmail());
 
-        Assertions.assertFalse(isValid);
+        Assertions.assertNull(emailAddress.getEmail());
     }
 
     @Test

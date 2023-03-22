@@ -30,7 +30,7 @@ public abstract class Post {
     // if you delete a like, you don't delete the user
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "user_posts",
+            name = "likes",
             joinColumns = { @JoinColumn(name = "postId")},
             inverseJoinColumns = { @JoinColumn(name = "userId")}
             )
@@ -40,14 +40,18 @@ public abstract class Post {
     @OneToMany(mappedBy = "parentPost", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Reply> replies = new HashSet<Reply>();
 
-    //  if you delete a post, you don't delete the retweet
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    //  if you delete a post, you also delete the retweet
+    @OneToMany(mappedBy = "originalPost", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Retweet> retweets = new HashSet<Retweet>();
 
     public Post(){ }
 
     public Post(User user) {
         this.user = user;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public LocalDateTime getDateTime() {

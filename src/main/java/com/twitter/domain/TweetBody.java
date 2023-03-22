@@ -30,7 +30,9 @@ public class TweetBody {
     }
 
     public void setTweetContent(String tweetContent) {
-        this.tweetContent = tweetContent;
+        if (isValid(tweetContent)) {
+            this.tweetContent = tweetContent;
+        }
     }
 
     public boolean isValid(String tweetContent) {

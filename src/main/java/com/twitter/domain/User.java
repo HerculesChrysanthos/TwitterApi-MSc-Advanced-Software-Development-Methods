@@ -19,7 +19,10 @@ public class User {
     @Column(name = "password", length = 30, nullable = false)
     private String password;
 
-    @Embedded
+    @org.hibernate.annotations.Type(
+            type="com.twitter.persistence.EmailCustomType"
+    )
+    @Column(name = "email", length = 50, nullable = false, unique = true)
     private EmailAddress email;
 
     @Embedded
@@ -41,6 +44,14 @@ public class User {
         this.password = password;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -79,7 +90,7 @@ public class User {
         return following;
     }
 
-    public void setFollowing(User followingUser) {
+    private void setFollowing(User followingUser) {
         this.following.add(followingUser);
     }
 
@@ -88,6 +99,16 @@ public class User {
             return false;
         }
         this.setFollowing(user);
+        return true;
+    }
+
+    private void removeFollowing(User followingUser) { this.following.remove(followingUser); }
+
+    public boolean unfollowUser(User user) {
+        if (!this.following.contains(user) || this.equals(user)) {
+            return false;
+        }
+        this.removeFollowing(user);
         return true;
     }
 
