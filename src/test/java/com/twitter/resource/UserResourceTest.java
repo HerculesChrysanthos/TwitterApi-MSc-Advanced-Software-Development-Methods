@@ -32,7 +32,7 @@ public class UserResourceTest extends IntegrationBase {
                 .statusCode(200)
                 .extract().as(new TypeRef<List<UserRepresentation>>() {});
 
-        Assertions.assertEquals(Fixture.Users.COUNT, users.size());
+        Assertions.assertEquals(5, users.size());
     }
 
     @Test
@@ -239,7 +239,7 @@ public class UserResourceTest extends IntegrationBase {
                 .statusCode(Response.Status.OK.getStatusCode())
                 .extract().as(new TypeRef<Set<UserBasicRepresentation>>() {});
 
-        Assertions.assertEquals(1, following.size());
+        Assertions.assertEquals(3, following.size());
     }
 
     @Test

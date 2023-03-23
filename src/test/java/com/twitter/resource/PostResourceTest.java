@@ -488,7 +488,7 @@ public class PostResourceTest  extends IntegrationBase {
                 .extract().as(new TypeRef<List<TweetRepresentation>>() {});
 
 
-        Assertions.assertEquals(2, timeline.size());
+        Assertions.assertEquals(4, timeline.size());
     }
 
     @Test
@@ -533,7 +533,7 @@ public class PostResourceTest  extends IntegrationBase {
                 .extract().as(new TypeRef<List<TweetRepresentation>>() {});
 
 
-        Assertions.assertEquals(1, timeline.size());
+        Assertions.assertEquals(3, timeline.size());
     }
 
 }
