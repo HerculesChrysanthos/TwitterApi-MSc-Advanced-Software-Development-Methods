@@ -1,0 +1,849 @@
+{
+	"info": {
+		"_postman_id": "610e3184-bda4-4725-8b9e-411eedd84d60",
+		"name": "Twitter",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26307753"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "all users",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/users",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "516"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"dateOfBirth\": {\n            \"day\": 1,\n            \"month\": 1,\n            \"year\": 1980\n        },\n        \"email\": \"user1@email.com\",\n        \"id\": 1000,\n        \"username\": \"user1\"\n    },\n    {\n        \"dateOfBirth\": {\n            \"day\": 1,\n            \"month\": 1,\n            \"year\": 1981\n        },\n        \"email\": \"user2@email.com\",\n        \"id\": 1001,\n        \"username\": \"user2\"\n    },\n    {\n        \"dateOfBirth\": {\n            \"day\": 1,\n            \"month\": 1,\n            \"year\": 1982\n        },\n        \"email\": \"user3@email.com\",\n        \"id\": 1002,\n        \"username\": \"user3\"\n    },\n    {\n        \"dateOfBirth\": {\n            \"day\": 1,\n            \"month\": 1,\n            \"year\": 1983\n        },\n        \"email\": \"user4@email.com\",\n        \"id\": 1004,\n        \"username\": \"user4\"\n    },\n    {\n        \"dateOfBirth\": {\n            \"day\": 1,\n            \"month\": 1,\n            \"year\": 1984\n        },\n        \"email\": \"user5@email.com\",\n        \"id\": 1005,\n        \"username\": \"user5\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "user by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/1001",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1001"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "user by id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/users/1001",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1001"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "102"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"dateOfBirth\": {\n        \"day\": 1,\n        \"month\": 1,\n        \"year\": 1981\n    },\n    \"email\": \"user2@email.com\",\n    \"id\": 1001,\n    \"username\": \"user2\"\n}"
+						}
+					]
+				},
+				{
+					"name": "following",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/1002/following",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1002",
+								"following"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "following",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/users/1002/following",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1002",
+										"following"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "63"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1001,\n        \"username\": \"user2\"\n    },\n    {\n        \"id\": 1000,\n        \"username\": \"user1\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "create new user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"hraasklhs\",\r\n    \"password\": \"password123\",\r\n    \"email\": \"hraklhs@example.com\",\r\n    \"dateOfBirth\": {\r\n        \"day\": 1,\r\n        \"month\": 1,\r\n        \"year\": 1990\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "follow user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/users/1000/follow/1001",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1000",
+								"follow",
+								"1001"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "follow user",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/users/1000/follow/1001",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1000",
+										"follow",
+										"1001"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "content-length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "unfollow user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/users/1000/unfollow/1001",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1000",
+								"unfollow",
+								"1001"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "post by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/posts/3000/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"posts",
+								"3000",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "post by id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/posts/3000/",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"posts",
+										"3000",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "165"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"dateTime\": \"2023-03-10T13:03:10.727884\",\n    \"id\": 3000,\n    \"likes\": [\n        {\n            \"id\": 1001,\n            \"username\": \"user2\"\n        }\n    ],\n    \"originalPost\": {\n        \"id\": 1000\n    },\n    \"replies\": [],\n    \"retweets\": [],\n    \"user\": {\n        \"id\": 1000\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "delete post by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "userId",
+								"value": "1000",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/posts/3000/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"posts",
+								"3000",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete post by id",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "userId",
+										"value": "1000",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/posts/3000/",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"posts",
+										"3000",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "content-length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "create tweet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "userId",
+								"value": "1000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": {\r\n        \"tweetContent\": \"This is a new tweet\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/posts",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "create tweet",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "userId",
+										"value": "1000",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"content\": {\r\n        \"tweetContent\": \"This is a new tweet\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/posts",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"posts"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Location",
+									"value": "http://localhost:8080/posts/1"
+								},
+								{
+									"key": "content-length",
+									"value": "155"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"content\": {\n        \"tweetContent\": \"This is a new tweet\"\n    },\n    \"dateTime\": \"2023-03-26T18:31:28.3242702\",\n    \"id\": 1,\n    \"likes\": [],\n    \"replies\": [],\n    \"retweets\": [],\n    \"user\": {\n        \"id\": 1000\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "create reply",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "userId",
+								"value": "1000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": {\r\n        \"tweetContent\": \"This is a reply to #100ssda\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/posts/1000/reply",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"posts",
+								"1000",
+								"reply"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "create reply",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "userId",
+										"value": "1000",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"content\": {\r\n        \"tweetContent\": \"This is a reply to #100ssda\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/posts/1000/reply",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"posts",
+										"1000",
+										"reply"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Location",
+									"value": "http://localhost:8080/posts/2"
+								},
+								{
+									"key": "content-length",
+									"value": "186"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"content\": {\n        \"tweetContent\": \"This is a reply to #100ssda\"\n    },\n    \"dateTime\": \"2023-03-26T18:31:35.14575\",\n    \"id\": 2,\n    \"likes\": [],\n    \"parentPost\": {\n        \"id\": 1000\n    },\n    \"replies\": [],\n    \"retweets\": [],\n    \"user\": {\n        \"id\": 1000\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "create retweet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "userId",
+								"value": "1000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": {\r\n        \"tweetContent\": \"kalispera k kali\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/posts/1/retweet",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"posts",
+								"1",
+								"retweet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "like post",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "userId",
+								"value": "1000",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/posts/1/likes/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"posts",
+								"1",
+								"likes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post's likes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "userId",
+								"value": "1000",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/posts/1000/likes/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"posts",
+								"1000",
+								"likes",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "post's likes",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "userId",
+										"value": "1000",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/posts/1000/likes/",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"posts",
+										"1000",
+										"likes",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "42"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"likes\": [\n        {\n            \"id\": 1001,\n            \"username\": \"user2\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "unlike post",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "userId",
+								"value": "1000",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/posts/1000/likes/?userId=1000",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"posts",
+								"1000",
+								"likes",
+								""
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1000"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "timeline",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "userId",
+								"value": "1002",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/posts/timeline",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"posts",
+								"timeline"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "5000",
+									"disabled": true
+								},
+								{
+									"key": "perPage",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "timeline",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "userId",
+										"value": "1002",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/posts/timeline",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"posts",
+										"timeline"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "5000",
+											"disabled": true
+										},
+										{
+											"key": "perPage",
+											"value": "2",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "867"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"content\": {\n            \"tweetContent\": \"This is a new tweet\"\n        },\n        \"dateTime\": \"2023-03-26T18:31:28.32427\",\n        \"id\": 1,\n        \"likes\": [\n            {\n                \"id\": 1000,\n                \"username\": \"user1\"\n            }\n        ],\n        \"replies\": [],\n        \"retweets\": [],\n        \"user\": {\n            \"id\": 1000\n        }\n    },\n    {\n        \"content\": {\n            \"tweetContent\": \"This is tweet #5000\"\n        },\n        \"dateTime\": \"2023-03-19T13:03:10.727884\",\n        \"id\": 5000,\n        \"likes\": [],\n        \"replies\": [],\n        \"retweets\": [],\n        \"user\": {\n            \"id\": 1001\n        }\n    },\n    {\n        \"content\": {\n            \"tweetContent\": \"This is tweet #1002\"\n        },\n        \"dateTime\": \"2023-03-15T13:03:10.727884\",\n        \"id\": 1002,\n        \"likes\": [],\n        \"replies\": [],\n        \"retweets\": [],\n        \"user\": {\n            \"id\": 1001\n        }\n    },\n    {\n        \"content\": {\n            \"tweetContent\": \"This is tweet #1001\"\n        },\n        \"dateTime\": \"2023-03-14T13:03:10.727884\",\n        \"id\": 1001,\n        \"likes\": [],\n        \"replies\": [],\n        \"retweets\": [],\n        \"user\": {\n            \"id\": 1000\n        }\n    },\n    {\n        \"content\": {\n            \"tweetContent\": \"This is tweet #1000\"\n        },\n        \"dateTime\": \"2023-03-10T13:03:10.727884\",\n        \"id\": 1000,\n        \"likes\": [\n            {\n                \"id\": 1001,\n                \"username\": \"user2\"\n            }\n        ],\n        \"replies\": [\n            {\n                \"id\": 2\n            },\n            {\n                \"id\": 2000\n            }\n        ],\n        \"retweets\": [],\n        \"user\": {\n            \"id\": 1000\n        }\n    }\n]"
+						}
+					]
+				}
+			]
+		}
+	]
+}
