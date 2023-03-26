@@ -51,3 +51,5 @@ Follow κάποιου χρήστη
 **Μοντέλο Πεδίου**
 
 <img src="https://github.com/softeng-aueb/team2-pt-2022-23/blob/main/domainModelNew.png" alt="Domain Model" style="height: 500px; width:700px;"/>
+
+[Postman collection](https://github.com/softeng-aueb/team2-pt-2022-23/blob/main/Twitter.postman_collection.json)
